@@ -13,7 +13,7 @@ const port = 3000
 
 
 
-io.on('conneciton', function(socket) {
+io.on('connection', function(socket) {
   console.log(`A user has connected: ${socket.id}`);
   
   socket.on('disconnect', function() {
