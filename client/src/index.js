@@ -3,6 +3,7 @@ import logoImg from './assets/Wartank.png';
 import io from 'socket.io-client';
 
 let logo;
+let cursors;
 
 class MyGame extends Phaser.Scene
 {
@@ -19,7 +20,9 @@ class MyGame extends Phaser.Scene
       
     create ()
     {
-        logo = this.add.image(400, 150, 'logo');
+        logo = this.physics.add.image(400, 500, 'logo');
+        // logo.setBounce(0.2);
+        logo.setCollideWorldBounds(true);
       
         this.tweens.add({
             targets: logo,
@@ -36,18 +39,20 @@ class MyGame extends Phaser.Scene
           console.log('this user is connected');
         });
 
-        // cursors = this.input.keyboard.createCursorKeys();
+        cursors = this.input.keyboard.createCursorKeys();
     }
 
     update() {
-        // if (cursors.left.isDown)
-        // {
-        //     logo.setVelocityX(-160);
-        // }
-        // else if (cursors.right.isDown)
-        // {
-        //     logo.setVelocityX(160);
-        // }
+        if (cursors.left.isDown)
+        {
+            logo.setVelocityX(-160);
+            console.log("left");
+        }
+        else if (cursors.right.isDown)
+        {
+            logo.setVelocityX(160);
+            console.log("right");
+        }
     }
 }
 
@@ -56,6 +61,13 @@ const config = {
     parent: 'phaser-example',
     width: 800,
     height: 600,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 300 },
+            debug: false
+        }
+    },
     scene: MyGame
 };
 
