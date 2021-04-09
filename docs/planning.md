@@ -15,13 +15,11 @@
 # Tech stack
 
   - Express and express router
-    - possible EJS for initial template to be served
-  
-  - React front end
+    - go plain JS
   - phaser.js for game engine
-  - Websocket for multiplayer experience
-  - Mongodb  or aws Dynamodb  do we need one ????
+  - Socket.io
   - hosting heroko or s3 buckets aws
+
 
 # Concept
   - X number of rounds to select with timer ( 30 second min , 90 second max)
@@ -98,8 +96,10 @@ extreme strech goals in game chat
   - Use our discord channel LHL Tanks final Project!
   - prune old branches 
   - client and server in same repo
-  - planning docs here https://drive.google.com/drive/folders/1QQlkETo5o7lPaZntoYEggsJL9lEAuBzb?usp=sharing
+  - planning docs here:
+    -https://drive.google.com/drive/folders/1QQlkETo5o7lPaZntoYEggsJL9lEAuBzb?usp=sharing
 
+    - https://balsamiq.cloud/s3ek3io/pwpq7i/r2278
 
 
 
@@ -108,5 +108,5 @@ extreme strech goals in game chat
 - network code for performance minimize latency
 - responsiveness
 - project scaffold
-- websocket
+- socket.io
 - 
