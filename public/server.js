@@ -1,6 +1,14 @@
 const server =  require('express')();
+const cors = require('cors');
 const http = require('http').createServer(server);
-const io = require('socket.io')(http);
+server.use(cors());
+
+const io = require('socket.io')(http, {
+  cors: {
+  origin: "http://localhost:8081",
+  methods: ["GET", "POST"],
+  }
+});
 const port = 3000
 
 
