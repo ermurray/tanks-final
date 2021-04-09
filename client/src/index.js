@@ -1,8 +1,12 @@
 import Phaser from 'phaser';
 import logoImg from './assets/Wartank.png';
+import io from 'socket.io-client';
+
+let logo;
 
 class MyGame extends Phaser.Scene
 {
+
     constructor ()
     {
         super();
@@ -15,7 +19,7 @@ class MyGame extends Phaser.Scene
       
     create ()
     {
-        const logo = this.add.image(400, 150, 'logo');
+        logo = this.add.image(400, 150, 'logo');
       
         this.tweens.add({
             targets: logo,
@@ -26,7 +30,24 @@ class MyGame extends Phaser.Scene
             loop: -1
         });
 
-        cursors = this.input.keyboard.createCursorKeys();
+        this.socket = io('http://localhost:3000') //this will need to change on prod server
+
+        this.socket.on('connect', function() {
+          console.log('this user is connected');
+        });
+
+        // cursors = this.input.keyboard.createCursorKeys();
+    }
+
+    update() {
+        // if (cursors.left.isDown)
+        // {
+        //     logo.setVelocityX(-160);
+        // }
+        // else if (cursors.right.isDown)
+        // {
+        //     logo.setVelocityX(160);
+        // }
     }
 }
 
