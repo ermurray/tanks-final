@@ -15,10 +15,10 @@
 # Tech stack
 
   - Express and express router
-    - go plain JS
+    - plain JS
   - phaser.js for game engine
   - Socket.io
-  - hosting heroko or s3 buckets aws
+  - hosting herokU
 
 
 # Concept
