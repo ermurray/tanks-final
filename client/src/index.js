@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import logoImg from './assets/logo.png';
+import logoImg from './assets/Wartank.png';
 
 class MyGame extends Phaser.Scene
 {
@@ -25,6 +25,8 @@ class MyGame extends Phaser.Scene
             yoyo: true,
             loop: -1
         });
+
+        cursors = this.input.keyboard.createCursorKeys();
     }
 }
 
