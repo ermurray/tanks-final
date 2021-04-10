@@ -56,11 +56,12 @@ class MyGame extends Phaser.Scene
       
     create ()
     {
-        logo = this.physics.add.sprite(900, 500, 'logo');
+      let self = this
+        //logo = this.physics.add.sprite(900, 500, 'logo');
         tankP1 = this.physics.add.sprite(50, 50, 'tankP1')
         unbreakable = this.physics.add.staticSprite(400, 400, 'unbreakable')
         // logo.setBounce(0.2);
-        logo.setCollideWorldBounds(true);
+        // logo.setCollideWorldBounds(true);
         tankP1.setCollideWorldBounds(true);
       
         // this.tweens.add({
@@ -168,25 +169,25 @@ class MyGame extends Phaser.Scene
 //           rotation: this.ship.rotation
 // };
 
-        if (this.cursors.left.isDown || wasd.left.isDown)
+        if (this.cursors.left.isDown || this.wasd.left.isDown)
         {
           this.tankP1.setVelocityX(-160);
           tankP1.setTexture('tankLeft')
           console.log("left");
         }
-        else if (this.cursors.right.isDown || wasd.right.isDown)
+        else if (this.cursors.right.isDown || this.wasd.right.isDown)
         {
           this.tankP1.setVelocityX(160);
           tankP1.setTexture('tankRight')
           console.log("right");
         }
-        else if (this.cursors.up.isDown || wasd.up.isDown)
+        else if (this.cursors.up.isDown || this.wasd.up.isDown)
         {
           this.tankP1.setVelocityY(-160);
           tankP1.setTexture('tankUp')
           console.log("up");
         }
-        else if (this.cursors.down.isDown || wasd.down.isDown)
+        else if (this.cursors.down.isDown || this.wasd.down.isDown)
         {
           this.tankP1.setVelocityY(160);
           tankP1.setTexture('tankDown')
