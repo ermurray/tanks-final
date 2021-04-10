@@ -6,6 +6,10 @@ import tankGreen from './assets/tank-green.png';
 import tankYellow from  './assets/tank-yellow.png';
 import tankRed from  './assets/tank-red.png';
 import unbreakableBlock from './assets/platform.png';
+import tank_down from './assets/tank_down.png';
+import tank_up from './assets/tank_up.png'
+import tank_left from './assets/tank_left.png'
+import tank_right from './assets/tank_right.png'
 
 let logo;
 let cursors;
@@ -27,6 +31,10 @@ class MyGame extends Phaser.Scene
         this.load.image('logo', logoImg);
         this.load.image('tankP1', tankBlue);
         this.load.image('unbreakable', unbreakableBlock)
+        this.load.image('tankUp', tank_up)
+        this.load.image('tankDown', tank_down)
+        this.load.image('tankLeft', tank_left)
+        this.load.image('tankRight', tank_right)
     }
       
     create ()
@@ -70,21 +78,25 @@ class MyGame extends Phaser.Scene
         if (cursors.left.isDown || wasd.left.isDown)
         {
             tankP1.setVelocityX(-160);
+            tankP1.setTexture('tankLeft')
             console.log("left");
         }
         else if (cursors.right.isDown || wasd.right.isDown)
         {
             tankP1.setVelocityX(160);
+            tankP1.setTexture('tankRight')
             console.log("right");
         }
         else if (cursors.up.isDown || wasd.up.isDown)
         {
           tankP1.setVelocityY(-160);
+          tankP1.setTexture('tankUp')
           console.log("up");
         }
         else if (cursors.down.isDown || wasd.down.isDown)
         {
           tankP1.setVelocityY(160);
+          tankP1.setTexture('tankDown')
           console.log("down");
         }
         else
