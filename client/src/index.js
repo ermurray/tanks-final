@@ -26,8 +26,11 @@ class MyGame extends Phaser.Scene
       
     create ()
     {
+
+      let self = this;
+
         logo = this.physics.add.sprite(50, 50, 'logo');
-        tankP1 = this.physics.add.sprite(50,50, 'tankP1')
+        //tankP1 = this.physics.add.sprite(50,50, 'tankP1')
         // logo.setBounce(0.2);
         logo.setCollideWorldBounds(true);
       
@@ -44,8 +47,27 @@ class MyGame extends Phaser.Scene
 
         this.socket.on('connect', function() {
           console.log(`User: .... has connected`);
-          
         });
+
+        this.socket.on('currentPlayers', (players) => {
+          Object.keys(players).forEach((id) => {
+            if (players[id].playerId === self.socket.id) {
+              addPlayer(self, players[id]);
+            }
+          });
+        });
+
+         function addPlayer(self, playerInfo) {
+          self.tankP1 = self.physics.add.image(playerInfo.x, playerInfo.y, 'tankP1').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+          if (playerInfo.team === 'blue') {
+            self.tankP1.setTint(0x0000ff);
+          } else {
+            self.tankP1.setTint(0xff0000);
+          }
+          self.tankP1.setDrag(100);
+          self.tankP1.setAngularDrag(100);
+          self.tankP1.setMaxVelocity(200);
+        }
 
         cursors = this.input.keyboard.createCursorKeys();
     }
