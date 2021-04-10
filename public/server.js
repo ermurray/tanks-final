@@ -21,6 +21,7 @@ const spawnPoints = [
   [1136, 536, "pFour"]
 ];
 
+
 io.on('createRoom', (roomName, callback) => {
   const room = {
     id: uuid(),
@@ -67,8 +68,8 @@ io.on('connection', function(socket) {
 // create and add new player with id matching socket.id
   players[socket.id] = {
     rotation: 0,
-    x: Math.floor(Math.random() * 700) + 50,
-    y: Math.floor(Math.random() * 500) + 50,
+    x: spawnPoints[0][0],
+    y: spawnPoints[0][1],
     playerId: socket.id,
     // team: (Math.floor(Math.random() * 2) == 0) ? 'red' : 'blue'
   };
