@@ -1,9 +1,14 @@
 import Phaser from 'phaser';
 import logoImg from './assets/Wartank.png';
 import io from 'socket.io-client';
+import tankBlue from './assets/tank-blue.png';
+import tankGreen from './assets/tank-green.png';
+import tankYellow from  './assets/tank-yellow.png';
+import tankRed from  './assets/tank-red.png'
 
 let logo;
 let cursors;
+let tankP1;
 
 class MyGame extends Phaser.Scene
 {
@@ -16,11 +21,13 @@ class MyGame extends Phaser.Scene
     preload ()
     {
         this.load.image('logo', logoImg);
+        this.load.image('tankP1', tankBlue);
     }
       
     create ()
     {
-        logo = this.physics.add.sprite(400, 500, 'logo');
+        logo = this.physics.add.sprite(50, 50, 'logo');
+        tankP1 = this.physics.add.sprite(50,50, 'tankP1')
         // logo.setBounce(0.2);
         logo.setCollideWorldBounds(true);
       
@@ -36,7 +43,8 @@ class MyGame extends Phaser.Scene
         this.socket = io('http://localhost:3000') //this will need to change on prod server
 
         this.socket.on('connect', function() {
-          console.log('this user is connected');
+          console.log(`User: .... has connected`);
+          
         });
 
         cursors = this.input.keyboard.createCursorKeys();
@@ -74,7 +82,7 @@ class MyGame extends Phaser.Scene
 const config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 800,
+    width: 1200,
     height: 600,
     physics: {
         default: 'arcade',
