@@ -8,6 +8,7 @@ import tankRed from  './assets/tank-red.png'
 
 let logo;
 let cursors;
+let tankP1;
 
 class MyGame extends Phaser.Scene
 {
@@ -20,11 +21,13 @@ class MyGame extends Phaser.Scene
     preload ()
     {
         this.load.image('logo', logoImg);
+        this.load.image('tankP1', tankBlue);
     }
       
     create ()
     {
         logo = this.physics.add.sprite(50, 50, 'logo');
+        tankP1 = this.physics.add.sprite(50,50, 'tankP1')
         // logo.setBounce(0.2);
         logo.setCollideWorldBounds(true);
       
@@ -41,6 +44,7 @@ class MyGame extends Phaser.Scene
 
         this.socket.on('connect', function() {
           console.log(`User: .... has connected`);
+          
         });
 
         cursors = this.input.keyboard.createCursorKeys();
