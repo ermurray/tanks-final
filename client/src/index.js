@@ -33,26 +33,15 @@ class MyGame extends Phaser.Scene
         this.load.image('logo', logoImg);
         this.load.image('tankP1', tankBlue);
         this.load.image('tankP2', tankRed);
-      }
-      
-      
-      create ()
-      {
-        
-        let self = this;
-        tankP1 = this.physics.add.sprite(50, 50, 'tankP1');
-        tankP2 = this.physics.add.sprite(50, 50, 'tankP2');
-        
-        tankP1.setCollideWorldBounds(true);
-        // logo.setBounce(0.2);
-        
-        //tankP2.setCollideWorldBounds(true);
         this.load.image('unbreakable', unbreakableBlock)
         this.load.image('tankUp', tank_up)
         this.load.image('tankDown', tank_down)
         this.load.image('tankLeft', tank_left)
         this.load.image('tankRight', tank_right)
-    }
+      }
+      
+      
+  
       
     create ()
     {
