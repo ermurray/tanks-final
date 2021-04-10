@@ -4,13 +4,21 @@ import io from 'socket.io-client';
 import tankBlue from './assets/tank-blue.png';
 import tankGreen from './assets/tank-green.png';
 import tankYellow from  './assets/tank-yellow.png';
-import tankRed from  './assets/tank-red.png'
+import tankRed from  './assets/tank-red.png';
+import unbreakableBlock from './assets/platform.png';
+import tank_down from './assets/tank_down.png';
+import tank_up from './assets/tank_up.png'
+import tank_left from './assets/tank_left.png'
+import tank_right from './assets/tank_right.png'
 
 let logo;
 let cursors;
+let wasd;
 let tankP1;
 let tankP2;
 
+let unbreakable;
+let gameOver = false;
 
 class MyGame extends Phaser.Scene
 {
@@ -39,6 +47,21 @@ class MyGame extends Phaser.Scene
         // logo.setBounce(0.2);
         
         //tankP2.setCollideWorldBounds(true);
+        this.load.image('unbreakable', unbreakableBlock)
+        this.load.image('tankUp', tank_up)
+        this.load.image('tankDown', tank_down)
+        this.load.image('tankLeft', tank_left)
+        this.load.image('tankRight', tank_right)
+    }
+      
+    create ()
+    {
+        logo = this.physics.add.sprite(900, 500, 'logo');
+        tankP1 = this.physics.add.sprite(50, 50, 'tankP1')
+        unbreakable = this.physics.add.staticSprite(400, 400, 'unbreakable')
+        // logo.setBounce(0.2);
+        logo.setCollideWorldBounds(true);
+        tankP1.setCollideWorldBounds(true);
       
         // this.tweens.add({
         //     targets: logo,
@@ -117,6 +140,15 @@ class MyGame extends Phaser.Scene
         //     }
         //   });
         // });
+        this.wasd = {
+          up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+          down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+          left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+          right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        }
+
+        this.physics.add.collider(tankP1, unbreakable);
+
     }
 
     update() {
@@ -136,30 +168,37 @@ class MyGame extends Phaser.Scene
 //           rotation: this.ship.rotation
 // };
 
-        if (this.cursors.left.isDown)
+        if (this.cursors.left.isDown || wasd.left.isDown)
         {
           this.tankP1.setVelocityX(-160);
+          tankP1.setTexture('tankLeft')
           console.log("left");
         }
-        else if (this.cursors.right.isDown)
+        else if (this.cursors.right.isDown || wasd.right.isDown)
         {
           this.tankP1.setVelocityX(160);
+          tankP1.setTexture('tankRight')
           console.log("right");
         }
-        else if (this.cursors.up.isDown)
+        else if (this.cursors.up.isDown || wasd.up.isDown)
         {
           this.tankP1.setVelocityY(-160);
+          tankP1.setTexture('tankUp')
           console.log("up");
         }
-        else if (this.cursors.down.isDown)
+        else if (this.cursors.down.isDown || wasd.down.isDown)
         {
           this.tankP1.setVelocityY(160);
+          tankP1.setTexture('tankDown')
           console.log("down");
         }
         else
         {
           this.tankP1.setVelocityX(0);
           this.tankP1.setVelocityY(0);
+        }
+        if (gameOver === true) {
+          return;
         }
       }
     }
