@@ -4,11 +4,15 @@ import io from 'socket.io-client';
 import tankBlue from './assets/tank-blue.png';
 import tankGreen from './assets/tank-green.png';
 import tankYellow from  './assets/tank-yellow.png';
-import tankRed from  './assets/tank-red.png'
+import tankRed from  './assets/tank-red.png';
+import unbreakableBlock from './assets/platform.png';
 
 let logo;
 let cursors;
+let wasd;
 let tankP1;
+let unbreakable;
+let gameOver = false;
 
 class MyGame extends Phaser.Scene
 {
@@ -22,14 +26,17 @@ class MyGame extends Phaser.Scene
     {
         this.load.image('logo', logoImg);
         this.load.image('tankP1', tankBlue);
+        this.load.image('unbreakable', unbreakableBlock)
     }
       
     create ()
     {
-        logo = this.physics.add.sprite(50, 50, 'logo');
-        tankP1 = this.physics.add.sprite(50,50, 'tankP1')
+        logo = this.physics.add.sprite(900, 500, 'logo');
+        tankP1 = this.physics.add.sprite(50, 50, 'tankP1')
+        unbreakable = this.physics.add.staticSprite(400, 400, 'unbreakable')
         // logo.setBounce(0.2);
         logo.setCollideWorldBounds(true);
+        tankP1.setCollideWorldBounds(true);
       
         // this.tweens.add({
         //     targets: logo,
@@ -48,33 +55,45 @@ class MyGame extends Phaser.Scene
         });
 
         cursors = this.input.keyboard.createCursorKeys();
+
+        wasd = {
+          up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+          down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+          left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+          right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        }
+
+        this.physics.add.collider(tankP1, unbreakable);
     }
 
     update() {
-        if (cursors.left.isDown)
+        if (cursors.left.isDown || wasd.left.isDown)
         {
-            logo.setVelocityX(-160);
+            tankP1.setVelocityX(-160);
             console.log("left");
         }
-        else if (cursors.right.isDown)
+        else if (cursors.right.isDown || wasd.right.isDown)
         {
-            logo.setVelocityX(160);
+            tankP1.setVelocityX(160);
             console.log("right");
         }
-        else if (cursors.up.isDown)
+        else if (cursors.up.isDown || wasd.up.isDown)
         {
-          logo.setVelocityY(-160);
+          tankP1.setVelocityY(-160);
           console.log("up");
         }
-        else if (cursors.down.isDown)
+        else if (cursors.down.isDown || wasd.down.isDown)
         {
-          logo.setVelocityY(160);
+          tankP1.setVelocityY(160);
           console.log("down");
         }
         else
         {
-          logo.setVelocityX(0);
-          logo.setVelocityY(0);
+          tankP1.setVelocityX(0);
+          tankP1.setVelocityY(0);
+        }
+        if (gameOver === true) {
+          return;
         }
     }
 }
