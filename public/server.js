@@ -13,6 +13,46 @@ const port = 3000
 
 const players = {};
 
+io.on('createRoom', (roomName, callback) => {
+  const room = {
+    id: uuid(),
+    name: roomName,
+    sockets: []
+  };
+  rooms[room.id] = room;
+  joinRoom(socket, room);
+  callback();
+})
+
+io.on('getRoomNames', (data, callback) => {
+  const roomNames = [];
+  for (const id in rooms) {
+    const {name} = rooms[id];
+    const room = {name, id};
+    roomNames.push(room)
+  }
+  callback(roomNames)
+})
+
+const joinRoom = (socket, room) => {
+  room.sockets.push(socket)
+  socket.join(room.id, ()=>{
+    socket.roomId = room.id;
+    console.log(socket.id, "Joined", room.id)
+  });
+};
+
+io.on('ready', ()=>{
+  console.log(socket.id, "is ready");
+  const room = rooms[socket.roomId];
+
+  if (room.sockets.length == 4){
+    for (const client of room.sockets){
+      client.emit('startGame')
+    }
+  }
+})
+
 io.on('connection', function(socket) {
   console.log(`A user has connected: ${socket.id}`);
 
