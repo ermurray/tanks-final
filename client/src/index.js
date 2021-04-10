@@ -9,6 +9,8 @@ import tankRed from  './assets/tank-red.png'
 let logo;
 let cursors;
 let tankP1;
+let tankP2;
+
 
 class MyGame extends Phaser.Scene
 {
@@ -22,17 +24,21 @@ class MyGame extends Phaser.Scene
     {
         this.load.image('logo', logoImg);
         this.load.image('tankP1', tankBlue);
-    }
+        this.load.image('tankP2', tankRed);
+      }
       
-    create ()
-    {
-
-      let self = this;
-
-        logo = this.physics.add.sprite(50, 50, 'logo');
-        //tankP1 = this.physics.add.sprite(50,50, 'tankP1')
+      
+      create ()
+      {
+        
+        let self = this;
+        tankP1 = this.physics.add.sprite(50, 50, 'tankP1');
+        tankP2 = this.physics.add.sprite(50, 50, 'tankP2');
+        
+        tankP1.setCollideWorldBounds(true);
         // logo.setBounce(0.2);
-        logo.setCollideWorldBounds(true);
+        
+        //tankP2.setCollideWorldBounds(true);
       
         // this.tweens.add({
         //     targets: logo,
@@ -56,52 +62,110 @@ class MyGame extends Phaser.Scene
             }
           });
         });
+       
+        this.otherPlayers = this.physics.add.group();
+        this.socket.on('currentPlayers', function (players) {
+          Object.keys(players).forEach(function (id) {
+            if (players[id].playerId === self.socket.id) {
+              addPlayer(self, players[id]);
+            } else {
+              addOtherPlayers(self, players[id]);
+            }
+          });
+        });
+
+        this.socket.on('newPlayer', function (playerInfo) {
+          addOtherPlayers(self, playerInfo);
+        });
+
+        this.socket.on('disconnect', function (playerId) {
+          self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+            if (playerId === otherPlayer.playerId) {
+              otherPlayer.destroy();
+            }
+          });
+        });
 
          function addPlayer(self, playerInfo) {
-          self.tankP1 = self.physics.add.image(playerInfo.x, playerInfo.y, 'tankP1').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
-          if (playerInfo.team === 'blue') {
-            self.tankP1.setTint(0x0000ff);
-          } else {
-            self.tankP1.setTint(0xff0000);
-          }
+          self.tankP1 = self.physics.add.image(playerInfo.x, playerInfo.y, 'tankP1').setOrigin(0.5, 0.5).setDisplaySize(64, 64);
+          // if (playerInfo.team === 'blue') {
+          //   self.tankP1.setTint(0x0000ff);
+          // } else {
+          //   self.tankP1.setTint(0xff0000);
+          // }
           self.tankP1.setDrag(100);
           self.tankP1.setAngularDrag(100);
           self.tankP1.setMaxVelocity(200);
         }
 
-        cursors = this.input.keyboard.createCursorKeys();
+        function addOtherPlayers(self, playerInfo) {
+          const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'tankP2').setOrigin(0.5, 0.5).setDisplaySize(64, 64);
+          // if (playerInfo.team === 'blue') {
+          //   otherPlayer.setTint(0x0000ff);
+          // } else {
+          //   otherPlayer.setTint(0xff0000);
+          // }
+          otherPlayer.playerId = playerInfo.playerId;
+          self.otherPlayers.add(otherPlayer);
+        }
+        this.cursors = this.input.keyboard.createCursorKeys();
+        // this.socket.on('playerMoved', function (playerInfo) {
+        //   self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+        //     if (playerInfo.playerId === otherPlayer.playerId) {
+        //       otherPlayer.setRotation(playerInfo.rotation);
+        //       otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+        //     }
+        //   });
+        // });
     }
 
     update() {
-        if (cursors.left.isDown)
+      if (this.tankP1) {
+//         // emit player movement
+//         let x = this.tankP1.x;
+//         let y = this.tankP1.y;
+//         let r = this.tankP1.rotation;
+//         if (this.tankP1.oldPosition && (x !== this.tankP1.oldPosition.x || y !== this.tankP1.oldPosition.y || r !== this.tankP1.oldPosition.rotation)) {
+//           this.socket.emit('playerMovement', { x: this.tankP1.x, y: this.tankP1.y, rotation: this.tankP1.rotation });
+//         }
+        
+//         // save old position data
+//         this.ship.oldPosition = {
+//           x: this.ship.x,
+//           y: this.ship.y,
+//           rotation: this.ship.rotation
+// };
+
+        if (this.cursors.left.isDown)
         {
-            logo.setVelocityX(-160);
-            console.log("left");
+          this.tankP1.setVelocityX(-160);
+          console.log("left");
         }
-        else if (cursors.right.isDown)
+        else if (this.cursors.right.isDown)
         {
-            logo.setVelocityX(160);
-            console.log("right");
+          this.tankP1.setVelocityX(160);
+          console.log("right");
         }
-        else if (cursors.up.isDown)
+        else if (this.cursors.up.isDown)
         {
-          logo.setVelocityY(-160);
+          this.tankP1.setVelocityY(-160);
           console.log("up");
         }
-        else if (cursors.down.isDown)
+        else if (this.cursors.down.isDown)
         {
-          logo.setVelocityY(160);
+          this.tankP1.setVelocityY(160);
           console.log("down");
         }
         else
         {
-          logo.setVelocityX(0);
-          logo.setVelocityY(0);
+          this.tankP1.setVelocityX(0);
+          this.tankP1.setVelocityY(0);
         }
+      }
     }
-}
-
-const config = {
+  }
+    
+    const config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
     width: 1200,
