@@ -1,6 +1,10 @@
 import Phaser from 'phaser';
 import logoImg from './assets/Wartank.png';
 import io from 'socket.io-client';
+import tankBlue from './assets/tank-blue.png';
+import tankGreen from './assets/tank-green.png';
+import tankYellow from  './assets/tank-yellow.png';
+import tankRed from  './assets/tank-red.png'
 
 let logo;
 let cursors;
