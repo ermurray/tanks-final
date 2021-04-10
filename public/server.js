@@ -12,6 +12,14 @@ const io = require('socket.io')(http, {
 const port = 3000
 
 const players = {};
+//player spwan points top 4 corners
+
+const spawnPoints = [
+  [64, 64, "pOne"],
+  [1136, 64, "pTwo"],
+  [64, 536, "pThree"],
+  [1136, 536, "pFour"]
+];
 
 io.on('createRoom', (roomName, callback) => {
   const room = {
