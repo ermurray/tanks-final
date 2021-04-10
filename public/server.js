@@ -5,7 +5,7 @@ server.use(cors());
 
 const io = require('socket.io')(http, {
   cors: {
-  origin: "http://localhost:8081",
+  origin: "http://localhost:8080",
   methods: ["GET", "POST"],
   }
 });
@@ -33,6 +33,7 @@ socket.broadcast.emit('newPlayer', players[socket.id]);
   socket.on('disconnect', function() {
     console.log(`A user has disconnected: ${socket.id}`)
     delete players[socket.id];
+    io.emit('remove', socket.id);
   });
 
   // when a player moves, update the player data

@@ -102,7 +102,7 @@ class MyGame extends Phaser.Scene
           addOtherPlayers(self, playerInfo);
         });
 
-        this.socket.on('disconnect', function (playerId) {
+        this.socket.on('remove', function (playerId) {
           self.otherPlayers.getChildren().forEach(function (otherPlayer) {
             if (playerId === otherPlayer.playerId) {
               otherPlayer.destroy();
@@ -214,7 +214,7 @@ class MyGame extends Phaser.Scene
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     },
     scene: MyGame
