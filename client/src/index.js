@@ -20,18 +20,18 @@ class MyGame extends Phaser.Scene
       
     create ()
     {
-        logo = this.physics.add.image(400, 500, 'logo');
+        logo = this.physics.add.sprite(400, 500, 'logo');
         // logo.setBounce(0.2);
         logo.setCollideWorldBounds(true);
       
-        this.tweens.add({
-            targets: logo,
-            y: 450,
-            duration: 2000,
-            ease: "Power2",
-            yoyo: true,
-            loop: -1
-        });
+        // this.tweens.add({
+        //     targets: logo,
+        //     y: 450,
+        //     duration: 2000,
+        //     ease: "Power2",
+        //     yoyo: true,
+        //     loop: -1
+        // });
 
         this.socket = io('http://localhost:3000') //this will need to change on prod server
 
@@ -53,6 +53,21 @@ class MyGame extends Phaser.Scene
             logo.setVelocityX(160);
             console.log("right");
         }
+        else if (cursors.up.isDown)
+        {
+          logo.setVelocityY(-160);
+          console.log("up");
+        }
+        else if (cursors.down.isDown)
+        {
+          logo.setVelocityY(160);
+          console.log("down");
+        }
+        else
+        {
+          logo.setVelocityX(0);
+          logo.setVelocityY(0);
+        }
     }
 }
 
@@ -64,7 +79,7 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 },
+            gravity: { y: 0 },
             debug: false
         }
     },
