@@ -24,7 +24,7 @@ class MyGame extends Phaser.Scene
       
     create ()
     {
-        logo = this.physics.add.sprite(400, 500, 'logo');
+        logo = this.physics.add.sprite(50, 50, 'logo');
         // logo.setBounce(0.2);
         logo.setCollideWorldBounds(true);
       
@@ -40,7 +40,7 @@ class MyGame extends Phaser.Scene
         this.socket = io('http://localhost:3000') //this will need to change on prod server
 
         this.socket.on('connect', function() {
-          console.log('this user is connected');
+          console.log(`User: .... has connected`);
         });
 
         cursors = this.input.keyboard.createCursorKeys();
@@ -78,7 +78,7 @@ class MyGame extends Phaser.Scene
 const config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 800,
+    width: 1200,
     height: 600,
     physics: {
         default: 'arcade',
