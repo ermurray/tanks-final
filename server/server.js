@@ -1,14 +1,16 @@
-const server =  require('express')();
-const cors = require('cors');
-const http = require('http').createServer(server);
-server.use(cors());
+const app = require('express')();
+const cors   = require('cors');
+const http   = require('http').createServer(app);
+const morgan = require('morgan');
+app.use(cors());
 
+app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
 // const path = require("path");
 // var express = require("express");
 // var app = express();
-// var server = require("http").Server(app);
+// var app = require("http").Server(app);
 // const socketio = require("socket.io");
-// const io = socketio(server);
+// const io = socketio(app);
 
 const io = require('socket.io')(http, {
   cors: {
