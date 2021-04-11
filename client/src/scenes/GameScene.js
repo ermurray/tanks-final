@@ -116,13 +116,15 @@ export default class GameScene extends Scene {
   
       
   create () {
-    const map = this.make.tilemap({key: 'map1'});
-    const tilesetGrass = map.addTilesetImage('rpl_grass', 'tilesGrass', 32, 32);
-    const tilesetSand = map.addTilesetImage('rpl_sand','tilesSand', 32, 32);
+    const map = this.createMap();
+    const layers = this.createLayers(map);
+    // const map = this.make.tilemap({key: 'map1'});
+    // const tilesetGrass = map.addTilesetImage('rpl_grass', 'tilesGrass', 32, 32);
+    // const tilesetSand = map.addTilesetImage('rpl_sand','tilesSand', 32, 32);
 
-    const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand], 0, 0);
-    const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
-    wallLayer.setCollisionByExclusion([-1]);
+    // const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand], 0, 0);
+    // const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
+    // wallLayer.setCollisionByExclusion([-1]);
     
     // Create objects
     // let self = this;
@@ -313,5 +315,20 @@ export default class GameScene extends Scene {
     // }
   }
 
+  createMap() {
+    const map = this.make.tilemap({key: 'map1'});
+    map.addTilesetImage('rpl_grass', 'tilesGrass', 32, 32);
+    map.addTilesetImage('rpl_sand','tilesSand', 32, 32);
+   
+    return map;
+  }
 
+  createLayers(map) {
+    const tilesetGrass = map.getTileset('rpl_grass');
+    const tilesetSand = map.getTileset('rpl_sand');
+    const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand], 0, 0);
+    const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
+    return {groundLayer, wallLayer};
+
+  }
 }
