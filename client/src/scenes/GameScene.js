@@ -5,10 +5,10 @@ import tankGreen from '../assets/tank-green.png';
 import tankYellow from  '../assets/tank-yellow.png';
 import tankRed from  '../assets/tank-red.png';
 import unbreakableBlock from '../assets/platform.png';
-import tank_down from '../assets/tank_down.png';
-import tank_up from '../assets/tank_up.png';
-import tank_left from '../assets/tank_left.png';
-import tank_right from '../assets/tank_right.png';
+import tank_down from '../assets/tank_dwn32px.png';
+import tank_up from '../assets/tank_up32px.png';
+import tank_left from '../assets/tank_lft32px.png';
+import tank_right from '../assets/tank_rht32px.png';
 import bullet from '../assets/bomb.png';
 // import baseMap from '../assets/Maps/tankMap.json';
 // import grassTiles from '../assets/Maps/rpl_grass.png';
@@ -99,8 +99,8 @@ export default class GameScene extends Scene {
 
 
   preload () {
-      this.load.image('tankP1', tankBlue);
-      this.load.image('tankP2', tankRed);
+      this.load.image('tankP1', tank_right);
+      //this.load.image('tankP2', tankRed);
       this.load.image('unbreakable', unbreakableBlock);
       this.load.image('tankUp', tank_up);
       this.load.image('tankDown', tank_down);
