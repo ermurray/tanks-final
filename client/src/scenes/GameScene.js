@@ -10,6 +10,10 @@ import tank_up from '../assets/tank_up.png';
 import tank_left from '../assets/tank_left.png';
 import tank_right from '../assets/tank_right.png';
 import bullet from '../assets/bomb.png';
+// import baseMap from '../assets/Maps/tankMap.json';
+// import grassTiles from '../assets/Maps/rpl_grass.png';
+// import sandTiles from '../assets/Maps/rpl_sand.png';
+
 
 let logo;
 let cursors;
@@ -21,6 +25,7 @@ let tankP2;
 let p1Bullets;
 let unbreakable;
 let gameOver = false;
+let hardWalls;
 
 /*
 var Bullet = new Phaser.Class({
@@ -89,24 +94,35 @@ export default class GameScene extends Scene {
 
   constructor () {
       super("scene-game");
+      
   }
 
 
   preload () {
       this.load.image('tankP1', tankBlue);
       this.load.image('tankP2', tankRed);
-      this.load.image('unbreakable', unbreakableBlock)
-      this.load.image('tankUp', tank_up)
-      this.load.image('tankDown', tank_down)
-      this.load.image('tankLeft', tank_left)
-      this.load.image('tankRight', tank_right)
-      this.load.image('bullet', bullet)
+      this.load.image('unbreakable', unbreakableBlock);
+      this.load.image('tankUp', tank_up);
+      this.load.image('tankDown', tank_down);
+      this.load.image('tankLeft', tank_left);
+      this.load.image('tankRight', tank_right);
+      this.load.image('bullet', bullet);
+      this.load.image('tilesGrass', 'src/assets/maps/rpl_grass.png');
+      this.load.image('tilesSand', 'src/assets/maps/rpl_sand.png');
+      this.load.tilemapTiledJSON('map1', 'src/assets/maps/tankMap.json');
   }
       
       
   
       
   create () {
+    const map = this.make.tilemap({key: 'map1'});
+    const tilesetGrass = map.addTilesetImage('rpl_grass', 'tilesGrass', 32, 32);
+    const tilesetSand = map.addTilesetImage('rpl_sand','tilesSand', 32, 32);
+
+    const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand], 0, 0);
+    const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
+    wallLayer.setCollisionByExclusion([-1]);
     
     // Create objects
     // let self = this;
