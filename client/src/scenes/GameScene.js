@@ -1,9 +1,5 @@
 import {Scene} from 'phaser';
 import io from 'socket.io-client';
-import tankBlue from '../assets/tank-blue.png';
-import tankGreen from '../assets/tank-green.png';
-import tankYellow from  '../assets/tank-yellow.png';
-import tankRed from  '../assets/tank-red.png';
 import unbreakableBlock from '../assets/platform.png';
 import tank_down from '../assets/tank_dwn32px.png';
 import tank_up from '../assets/tank_up32px.png';
@@ -43,8 +39,7 @@ export default class GameScene extends Scene {
 
 
   preload () {
-      this.load.image('tankP1', tank_right);
-      //this.load.image('tankP2', tankRed);
+      this.load.image('player', 'src/assets/tank_rht32px.png');
       this.load.image('unbreakable', unbreakableBlock);
       this.load.image('tankUp', tank_up);
       this.load.image('tankDown', tank_down);
@@ -62,94 +57,100 @@ export default class GameScene extends Scene {
   create () {
     const map = this.createMap();
     const layers = this.createLayers(map);
-    
+    this.player = this.createPlayer();
+    const boundary = layers.wallLayer;
+    this.playerSpeed = 160;
+    console.log(this.physics.add);
+    this.physics.add.collider(this.player, boundary);
+    this.cursors = this.input.keyboard.createCursorKeys();
     // Create objects
-    tankP1 = this.physics.add.sprite(200, 200, 'tankP1');
-    tankP1.direction = "up";
-    unbreakable = this.physics.add.staticSprite(400, 400, 'unbreakable');
-    tankP1.setCollideWorldBounds(true);
-    this.physics.add.collider(tankP1, layers.wallLayer)
+    // tankP1 = this.physics.add.sprite(200, 200, 'tankP1');
+    // tankP1.direction = "up";
+    // unbreakable = this.physics.add.staticSprite(400, 400, 'unbreakable');
+    // tankP1.setCollideWorldBounds(true);
+    // this.physics.add.collider(tankP1, layers.wallLayer)
 
     // Add groups for Bullet objects
-    p1Bullets = this.physics.add.group({ key: "bullet" });
-    this.physics.add.collider(p1Bullets, layers.wallLayer)
+      // p1Bullets = this.physics.add.group({ key: "bullet" });
+      // this.physics.add.collider(p1Bullets, layers.wallLayer)
     
 
 
 
     //SOCKETS
-    let self = this;
-    this.socket = io('http://localhost:3000') //this will need to change on prod server
-    this.socket.on('connect', function() {
-      console.log(`User: ... has connected`);
-    });
+  //   let self = this;
+  //   this.socket = io('http://localhost:3000') //this will need to change on prod server
+  //   this.socket.on('connect', function() {
+  //     console.log(`User: ... has connected`);
+  //   });
 
-    this.socket.on('currentPlayers', (players) => {
-      Object.keys(players).forEach((id) => {
-        if (players[id].playerId === self.socket.id) {
-          addPlayer(self, players[id]);
-        }
-      });
-    });
-    this.otherPlayers = this.physics.add.group();
-    this.socket.on('currentPlayers', function (players) {
-      Object.keys(players).forEach(function (id) {
-        if (players[id].playerId === self.socket.id) {
-          addPlayer(self, players[id]);
-        } else {
-          addOtherPlayers(self, players[id]);
-        }
-      });
-    });
+  //   this.socket.on('currentPlayers', (players) => {
+  //     Object.keys(players).forEach((id) => {
+  //       if (players[id].playerId === self.socket.id) {
+  //         addPlayer(self, players[id]);
+  //       }
+  //     });
+  //   });
+  //   this.otherPlayers = this.physics.add.group();
+  //   this.socket.on('currentPlayers', function (players) {
+  //     Object.keys(players).forEach(function (id) {
+  //       if (players[id].playerId === self.socket.id) {
+  //         addPlayer(self, players[id]);
+  //       } else {
+  //         addOtherPlayers(self, players[id]);
+  //       }
+  //     });
+  //   });
 
-    this.socket.on('newPlayer', function (playerInfo) {
-      addOtherPlayers(self, playerInfo);
-    });
+  //   this.socket.on('newPlayer', function (playerInfo) {
+  //     addOtherPlayers(self, playerInfo);
+  //   });
 
-    this.socket.on('remove', function (playerId) {
-      self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-        if (playerId === otherPlayer.playerId) {
-          otherPlayer.destroy();
-        }
-      });
-    });
+  //   this.socket.on('remove', function (playerId) {
+  //     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+  //       if (playerId === otherPlayer.playerId) {
+  //         otherPlayer.destroy();
+  //       }
+  //     });
+  //   });
 
-    // Add players
-    function addPlayer(self, playerInfo) {
-      self.tankP1 = self.physics.add.image(playerInfo.x, playerInfo.y, 'tankP1').setOrigin(0.5, 0.5).setDisplaySize(64, 64);
-      // if (playerInfo.team === 'blue') {
-      //   self.tankP1.setTint(0x0000ff);
-      // } else {
-      //   self.tankP1.setTint(0xff0000);
-      // }
-      self.tankP1.setDrag(100);
-      self.tankP1.setAngularDrag(100);
-      self.tankP1.setMaxVelocity(200);
-    }
+  //   // Add players
+  //   function addPlayer(self, playerInfo) {
+  //     self.tankP1 = self.physics.add.image(playerInfo.x, playerInfo.y, 'tankP1').setOrigin(0.5, 0.5).setDisplaySize(64, 64);
+  //     // if (playerInfo.team === 'blue') {
+  //     //   self.tankP1.setTint(0x0000ff);
+  //     // } else {
+  //     //   self.tankP1.setTint(0xff0000);
+  //     // }
+  //     self.tankP1.setDrag(100);
+  //     self.tankP1.setAngularDrag(100);
+  //     self.tankP1.setMaxVelocity(200);
+  //   }
 
-    function addOtherPlayers(self, playerInfo) {
-      const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'tankP2').setOrigin(0.5, 0.5).setDisplaySize(64, 64);
-      // if (playerInfo.team === 'blue') {
-      //   otherPlayer.setTint(0x0000ff);
-      // } else {
-      //   otherPlayer.setTint(0xff0000);
-      // }
-      otherPlayer.playerId = playerInfo.playerId;
-      self.otherPlayers.add(otherPlayer);
-    }
+  //   function addOtherPlayers(self, playerInfo) {
+  //     const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'tankP2').setOrigin(0.5, 0.5).setDisplaySize(64, 64);
+  //     // if (playerInfo.team === 'blue') {
+  //     //   otherPlayer.setTint(0x0000ff);
+  //     // } else {
+  //     //   otherPlayer.setTint(0xff0000);
+  //     // }
+  //     otherPlayer.playerId = playerInfo.playerId;
+  //     self.otherPlayers.add(otherPlayer);
+  //   }
     
 
-    // Input
-    cursors = this.input.keyboard.createCursorKeys();
-    this.socket.on('playerMoved', function (playerInfo) {
-      self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-        if (playerInfo.playerId === otherPlayer.playerId) {
-          otherPlayer.setRotation(playerInfo.rotation);
-          otherPlayer.setPosition(playerInfo.x, playerInfo.y);
-        }
-      });
-    });
-    wasd = {
+  //   // Input
+    
+
+  //   this.socket.on('playerMoved', function (playerInfo) {
+  //     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+  //       if (playerInfo.playerId === otherPlayer.playerId) {
+  //         otherPlayer.setRotation(playerInfo.rotation);
+  //         otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+  //       }
+  //     });
+  //   });
+   wasd = {
       up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
       down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
       left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
@@ -157,11 +158,11 @@ export default class GameScene extends Scene {
       // shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     }
 
-    spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+  //   spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-    // Collisions
-    this.physics.add.collider(tankP1, unbreakable);
-    this.physics.add.overlap(p1Bullets, unbreakable, destroyBullet, null, this);
+  //   // Collisions
+  //   this.physics.add.collider(tankP1, unbreakable);
+  //   this.physics.add.overlap(p1Bullets, unbreakable, destroyBullet, null, this);
 
     // bullets = this.physics.add.group();
 
@@ -169,51 +170,52 @@ export default class GameScene extends Scene {
 
   update() {
       // Movement
-      if (cursors.left.isDown || wasd.left.isDown) {
+      const { left, right , up, down} = this.cursors;
+      if (left.isDown || wasd.left.isDown) {
         console.log("left");
-        tankP1.setVelocityX(-160);
-        tankP1.setTexture('tankLeft');
-        tankP1.direction = "left";
+        this.player.setVelocityX(-this.playerSpeed);
+        this.player.setTexture('tankLeft');
+        this.player.direction = "left";
       }
-      else if (cursors.right.isDown || wasd.right.isDown) {
+      else if (right.isDown || wasd.right.isDown) {
         console.log("right");
-        tankP1.setVelocityX(160);
-        tankP1.setTexture('tankRight');
-        tankP1.direction = "right";
+        this.player.setVelocityX(this.playerSpeed);
+        this.player.setTexture('tankRight');
+        this.player.direction = "right";
       }
-      else if (cursors.up.isDown || wasd.up.isDown) {
+      else if (up.isDown || wasd.up.isDown) {
         console.log("up");
-        tankP1.setVelocityY(-160);
-        tankP1.setTexture('tankUp');
-        tankP1.direction = "up";
+        this.player.setVelocityY(-this.playerSpeed);
+        this.player.setTexture('tankUp');
+        this.player.direction = "up";
       }
-      else if (cursors.down.isDown || wasd.down.isDown) {
+      else if (down.isDown || wasd.down.isDown) {
         console.log("down");
-        tankP1.setVelocityY(160);
-        tankP1.setTexture('tankDown');
-        tankP1.direction = "down";
+        this.player.setVelocityY(this.playerSpeed);
+        this.player.setTexture('tankDown');
+        this.player.direction = "down";
       }
-      else if (Phaser.Input.Keyboard.JustDown(spacebar)) {
-        console.log("shoot");
-        let bullet = p1Bullets.create(tankP1.x, tankP1.y, 'bullet');
-        if (tankP1.direction === "left") {
-          bullet.setVelocityX(-600);
-        }
-        else if (tankP1.direction === "right") {
-          bullet.setVelocityX(600);
-        }
-        else if (tankP1.direction === "up") {
-          bullet.setVelocityY(-600);
-        }
-        else if (tankP1.direction === "down") {
-          bullet.setVelocityY(600);
-          bullet.allowGravity = false;
-        }
-      }
+      // else if (Phaser.Input.Keyboard.JustDown(spacebar)) {
+      //   console.log("shoot");
+      //   let bullet = p1Bullets.create(this.player.x, this.player.y, 'bullet');
+      //   if (this.player.direction === "left") {
+      //     bullet.setVelocityX(-600);
+      //   }
+      //   else if (this.player.direction === "right") {
+      //     bullet.setVelocityX(600);
+      //   }
+      //   else if (this.player.direction === "up") {
+      //     bullet.setVelocityY(-600);
+      //   }
+      //   else if (this.player.direction === "down") {
+      //     bullet.setVelocityY(600);
+      //     bullet.allowGravity = false;
+      //   }
+      // }
       else
       {
-        tankP1.setVelocityX(0);
-        tankP1.setVelocityY(0);
+        this.player.setVelocityX(0);
+        this.player.setVelocityY(0);
       }
       
     // let x = this.tankP1.x;
@@ -268,7 +270,12 @@ export default class GameScene extends Scene {
 
   }
 
-  
+  createPlayer() {
+    const player = this.physics.add.sprite(100, 100, 'player');
+    player.body.setGravity(0);
+    player.setCollideWorldBounds(true);
+    return player;
+  }
   
 
 
