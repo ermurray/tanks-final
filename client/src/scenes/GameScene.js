@@ -1,5 +1,6 @@
 import {Scene} from 'phaser';
 import io from 'socket.io-client';
+import Player from '../entities/Player';
 import unbreakableBlock from '../assets/platform.png';
 import tank_down from '../assets/tank_dwn32px.png';
 import tank_up from '../assets/tank_up32px.png';
@@ -275,7 +276,7 @@ export default class GameScene extends Scene {
   }
 
   createPlayer() {
-    const player = this.physics.add.sprite(100, 100, 'player');
+    const player = new Player(this,100,100,);
     player.body.setGravity(0);
     player.setCollideWorldBounds(true);
     return player;
