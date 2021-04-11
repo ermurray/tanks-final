@@ -135,7 +135,7 @@ export default class GameScene extends Scene {
     // logo.setBounce(0.2);;=
     // logo.setCollideWorldBounds(true);
     tankP1.setCollideWorldBounds(true);
-  
+    this.physics.add.collider(tankP1, layers.wallLayer)
     // this.tweens.add({
     //     targets: logo,
     //     y: 450,
@@ -146,12 +146,14 @@ export default class GameScene extends Scene {
     // });
 
     // Add groups for Bullet objects
-    p1Bullets = this.physics.add.group({ key: "bullet" }/*{ classType: Bullet, runChildUpdate: true }*/);
+    p1Bullets = this.physics.add.group({ key: "bullet" }
+    /*{ classType: Bullet, runChildUpdate: true }*/);
     // p2Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
     // p3Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
     // p4Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
-
+    this.physics.add.collider(p1Bullets, layers.wallLayer)
     /*
+    
     // Sockets
     this.socket = io('http://localhost:3000') //this will need to change on prod server
 
@@ -328,6 +330,8 @@ export default class GameScene extends Scene {
     const tilesetSand = map.getTileset('rpl_sand');
     const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand], 0, 0);
     const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
+
+    wallLayer.setCollisionByExclusion([-1]);
     return {groundLayer, wallLayer};
 
   }
