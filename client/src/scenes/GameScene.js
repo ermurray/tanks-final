@@ -14,6 +14,7 @@ import bullet from '../assets/bomb.png';
 let logo;
 let cursors;
 let wasd;
+let spacebar;
 let tankP1;
 let tankP2;
 
@@ -78,12 +79,18 @@ var Bullet = new Phaser.Class({
 });
 */
 
+function destroyBullet (unbreakable, bullet) {
+  bullet.disableBody(true, true);
+}
+
+
 
 export default class GameScene extends Scene {
 
   constructor () {
       super("scene-game");
   }
+
 
   preload () {
       this.load.image('tankP1', tankBlue);
@@ -119,6 +126,12 @@ export default class GameScene extends Scene {
     //     yoyo: true,
     //     loop: -1
     // });
+
+    // Add groups for Bullet objects
+    p1Bullets = this.physics.add.group({ key: "bullet" }/*{ classType: Bullet, runChildUpdate: true }*/);
+    // p2Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
+    // p3Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
+    // p4Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
 
     /*
     // Sockets
@@ -199,18 +212,14 @@ export default class GameScene extends Scene {
       down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
       left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
       right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-      shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J)
+      // shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     }
 
-    this.physics.add.collider(tankP1, unbreakable);
+    spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-    
-    // Add groups for Bullet objects
-    p1Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
-    // p2Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
-    // p3Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
-    // p4Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
-    
+    // Collisions
+    this.physics.add.collider(tankP1, unbreakable);
+    this.physics.add.overlap(p1Bullets, unbreakable, destroyBullet, null, this);
 
     // bullets = this.physics.add.group();
 
@@ -258,7 +267,7 @@ export default class GameScene extends Scene {
         tankP1.setTexture('tankDown');
         tankP1.direction = "down";
       }
-      else if (wasd.shoot.isDown) {
+      else if (Phaser.Input.Keyboard.JustDown(spacebar)) {
         console.log("shoot");
         let bullet = p1Bullets.create(tankP1.x, tankP1.y, 'bullet');
         if (tankP1.direction === "left") {
@@ -287,4 +296,6 @@ export default class GameScene extends Scene {
       }
     // }
   }
+
+
 }
