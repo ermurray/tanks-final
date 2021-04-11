@@ -99,8 +99,8 @@ export default class GameScene extends Scene {
 
 
   preload () {
-      this.load.image('tankP1', tankBlue);
-      this.load.image('tankP2', tankRed);
+      this.load.image('tankP1', tank_right);
+      //this.load.image('tankP2', tankRed);
       this.load.image('unbreakable', unbreakableBlock);
       this.load.image('tankUp', tank_up);
       this.load.image('tankDown', tank_down);
