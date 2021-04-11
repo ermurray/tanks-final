@@ -1,0 +1,15 @@
+{ "columns":9,
+ "image":"Grounds & Walls\/rpl_sand.png",
+ "imageheight":480,
+ "imagewidth":288,
+ "margin":0,
+ "name":"rpl_sand",
+ "spacing":0,
+ "tilecount":135,
+ "tiledversion":"1.5.0",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ff00ff",
+ "type":"tileset",
+ "version":1.5
+}
