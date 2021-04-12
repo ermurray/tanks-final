@@ -1,6 +1,4 @@
 import {Scene} from 'phaser';
-import logoimg from '../assets/Wartank.png'
-import startBtn from '../assets/startBtn.png'
 
 
 export default class BootScene extends Scene {
@@ -12,8 +10,16 @@ export default class BootScene extends Scene {
   // }
 
   preload() {
-    this.load.image('logo', logoimg)
-    this.load.image('start', startBtn)
+    this.load.image('logo', 'src/assets/Wartank.png')
+    this.load.image('start', 'src/assets/startBtn.png')
+    this.load.image('tankUp', 'src/assets/tank_up32px.png');
+    this.load.image('tankDown','src/assets/tank_dwn32px.png');
+    this.load.image('tankLeft', 'src/assets/tank_lft32px.png');
+    this.load.image('tankRight', 'src/assets/tank_rht32px.png');
+    this.load.image('player', 'src/assets/tank_rht32px.png');
+    this.load.image('tilesGrass', 'src/assets/maps/rpl_grass.png');
+    this.load.image('tilesSand', 'src/assets/maps/rpl_sand.png');
+    this.load.tilemapTiledJSON('map1', 'src/assets/maps/tankMap.json');
 
   }
 
