@@ -1,5 +1,5 @@
 import {Scene} from 'phaser';
-import bullet from '../assets/bomb.png';
+
 
 export default class BootScene extends Scene {
   constructor() {
