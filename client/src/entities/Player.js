@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import collidable from '../mixins/collidable';
+import Projectile from '../attacks/Projectile';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -18,7 +19,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.playerSpeed = 100;
     this.depth = this.y;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
-    this.scene.physics.add.group({ key: "bullet" })
     // this.wasd = {
     //   up: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
     //   down: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
@@ -27,6 +27,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     //   // shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     // }
     this.setCollideWorldBounds(true);
+    this.scene.input.keyboard.on('keydown-SPACE', (e) => {
+      console.log('Shoot');
+      const projectile = new Projectile(this.scene, this.x, this.y, 'bullet');
+      projectile.fire();
+    });
+
   }
   initEvents() {
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this)
@@ -68,23 +74,23 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(0);
         this.setVelocityY(0);
       }
-      if (Phaser.Input.Keyboard.JustDown(space)) {
-        console.log("shoot");
-        // const bullet = this.scene.create(this.x, this.y, 'bullet');
-        // if (this.direction === "left") {
-        //   this.bullet.setVelocityX(-600);
-        // }
-        // else if (this.direction === "right") {
-        //   this.bullet.setVelocityX(600);
-        // }
-        // else if (this.direction === "up") {
-        //   this.bullet.setVelocityY(-600);
-        // }
-        // else if (this.direction === "down") {
-        //   this.bullet.setVelocityY(600);
-        //   this.bullet.allowGravity = false;
-        // }
-      }
+      // if (Phaser.Input.Keyboard.JustDown(space)) {
+      //   console.log("shoot");
+      //   // const bullet = this.scene.create(this.x, this.y, 'bullet');
+      //   // if (this.direction === "left") {
+      //   //   this.bullet.setVelocityX(-600);
+      //   // }
+      //   // else if (this.direction === "right") {
+      //   //   this.bullet.setVelocityX(600);
+      //   // }
+      //   // else if (this.direction === "up") {
+      //   //   this.bullet.setVelocityY(-600);
+      //   // }
+      //   // else if (this.direction === "down") {
+      //   //   this.bullet.setVelocityY(600);
+      //   //   this.bullet.allowGravity = false;
+      //   // }
+      // }
       
     // let x = this.tankP1.x;
     // let y = this.tankP1.y;
