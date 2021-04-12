@@ -76,29 +76,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(0);
         this.setVelocityY(0);
       }
-      
-    // let x = this.tankP1.x;
-    // let y = this.tankP1.y;
-    // let r = this.tankP1.rotation;
-    // if (
-    //   this.tankP1.oldPosition &&
-    //   (x !== this.tankP1.oldPosition.x ||
-    //     y !== this.tankP1.oldPosition.y ||
-    //     r !== this.tankP1.oldPosition.rotation)
-    // ) {
-    //   this.socket.emit("playerMovement", {
-    //     x: this.tankP1.x,
-    //     y: this.tankP1.y,
-    //     rotation: this.tankP1.rotation,
-    //   });
-    // }
-
-    // // save old position data
-    // this.tankP1.oldPosition = {
-    //   x: this.tankP1.x,
-    //   y: this.tankP1.y,
-    //   rotation: this.tankP1.rotation,
-    // };
   }
 
   
