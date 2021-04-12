@@ -85,9 +85,16 @@ var Bullet = new Phaser.Class({
 */
 
 function destroyBullet (unbreakable, bullet) {
+  // console.log(bullet);
+  // p1Bullets.killAndHide(bullet);
+  // bullet.body.enable = false;
   bullet.disableBody(true, true);
 }
 
+function destroyBullet2(bullet, wall) {
+  // console.log(p1Bullets.children.entries[0]);
+  bullet.disableBody(true, true);
+}
 
 
 export default class GameScene extends Scene {
@@ -135,7 +142,7 @@ export default class GameScene extends Scene {
     // logo.setBounce(0.2);;=
     // logo.setCollideWorldBounds(true);
     tankP1.setCollideWorldBounds(true);
-    this.physics.add.collider(tankP1, layers.wallLayer)
+
     // this.tweens.add({
     //     targets: logo,
     //     y: 450,
@@ -146,14 +153,12 @@ export default class GameScene extends Scene {
     // });
 
     // Add groups for Bullet objects
-    p1Bullets = this.physics.add.group({ key: "bullet" }
-    /*{ classType: Bullet, runChildUpdate: true }*/);
+    p1Bullets = this.physics.add.group({ key: "bullet" });
     // p2Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
     // p3Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
     // p4Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
-    this.physics.add.collider(p1Bullets, layers.wallLayer)
+
     /*
-    
     // Sockets
     this.socket = io('http://localhost:3000') //this will need to change on prod server
 
@@ -239,7 +244,13 @@ export default class GameScene extends Scene {
 
     // Collisions
     this.physics.add.collider(tankP1, unbreakable);
+    this.physics.add.collider(tankP1, layers.wallLayer);
+    // this.physics.add.collider(p1Bullets, layers.wallLayer, destroyBullet(layers.wallLayer, p1Bullets.children.entries[0]));
     this.physics.add.overlap(p1Bullets, unbreakable, destroyBullet, null, this);
+    // console.log(p1Bullets);
+    // hardWalls = layers.wallLayer;
+    // this.physics.add.overlap(p1Bullets, hardWalls, destroyBullet2);
+    this.physics.add.collider(p1Bullets, layers.wallLayer, destroyBullet2);
 
     // bullets = this.physics.add.group();
 
