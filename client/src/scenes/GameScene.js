@@ -99,8 +99,13 @@ export default class GameScene extends Scene {
     this.socket.on('connect', function() {
       console.log(`User: ... has connected`);
     });
-    
-    this.socket.emit('test', "hello from GameScene");
+    let payload = {
+      x: 0,
+      y: 0,
+      name: "test",
+      stuff: [1,2, "things", 451]
+    }
+    this.socket.emit('payloadDataTest', payload);
     /*
     
 

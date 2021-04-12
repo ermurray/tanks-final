@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
     `A socket connection to the server has been made: ${socket.id}`
   );
 
-  socket.on('test', (data) => {
+  socket.on('payloadDataTest', (data) => {
     console.log("data: ",data)
   })
 
