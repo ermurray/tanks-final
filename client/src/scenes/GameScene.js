@@ -24,11 +24,11 @@ export default class GameScene extends Scene {
 
 
     //SOCKETS
-  //   let self = this;
-  //   this.socket = io('http://localhost:3000') //this will need to change on prod server
-  //   this.socket.on('connect', function() {
-  //     console.log(`User: ... has connected`);
-  //   });
+    let self = this;
+    this.socket = io('http://localhost:3000') //this will need to change on prod server
+    this.socket.on('connect', function() {
+      console.log(`User: ... has connected`);
+    });
 
   //   this.socket.on('currentPlayers', (players) => {
   //     Object.keys(players).forEach((id) => {
