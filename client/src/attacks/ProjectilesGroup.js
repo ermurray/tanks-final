@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Projectile from './Projectile';
+import { getTimeStamp } from '../utils/helpers'
 
 export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
@@ -10,36 +11,59 @@ export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
       frameQuantity: 10,
       active: false,
       visible: false,
-      key: 'bullet',
+      key: ['bullet','bulletUp'],
       classType: Projectile
     })
+
+    this.timeFromlastFire = null;
 
   }
 
   fireProjectile(initiator) {
     const projectile = this.getFirstDead(false);
+    const initiatorCenter = initiator.getCenter();
+    let centerX;
+    let centerY;
+    
     if (!projectile) { return; }
+    if (this.timeFromlastFire && this.timeFromlastFire + projectile.fireRate > getTimeStamp()) { return; }
 
     if (initiator.lastDirection === Phaser.Physics.Arcade.FACING_RIGHT) {
-      projectile.speed = 300
-      projectile.speed = Math.abs(projectile.speed);
-      projectile.setFlipX(false)
-    } else if ((initiator.lastDirection === Phaser.Physics.Arcade.FACING_LEFT)) {
-      projectile.speed = 300
-      projectile.speed = -Math.abs(projectile.speed)
-      projectile.setFlipX(true);
-    } else if ((initiator.lastDirection === Phaser.Physics.Arcade.FACING_UP)) {
-      projectile.speedY = -Math.abs(projectile.speed);
-      projectile.speed = 0;
+      projectile.speedY = 0;
+      projectile.speedX = Math.abs(projectile.maxSpeed);
+      projectile.setTexture('bullet');
+      projectile.setFlipX(false);
       projectile.setFlipY(false);
-
+      centerX = initiatorCenter.x + 16;
+      centerY = initiatorCenter.y;
+    } else if ((initiator.lastDirection === Phaser.Physics.Arcade.FACING_LEFT)) {
+      projectile.speedY = 0;
+      projectile.speedX = -Math.abs(projectile.maxSpeed)
+      projectile.setTexture('bullet');
+      projectile.setFlipX(true);
+      projectile.setFlipY(false);
+      centerX = initiatorCenter.x - 16;
+      centerY = initiatorCenter.y;
+    } else if ((initiator.lastDirection === Phaser.Physics.Arcade.FACING_UP)) {
+      projectile.speedX = 0;
+      projectile.speedY = -Math.abs(projectile.maxSpeed);
+      projectile.setTexture('bulletUp');
+      projectile.setFlipX(false);
+      projectile.setFlipY(false);
+      centerX = initiatorCenter.x;
+      centerY = initiatorCenter.y - 16;
     } else if ((initiator.lastDirection === Phaser.Physics.Arcade.FACING_DOWN)){
-      projectile.speedY = -Math.abs(projectile.speed);
-      projectile.speed = 0;
-      projectile.setFlipY(true);
+      projectile.speedX = 0;
+      projectile.speedY = Math.abs(projectile.maxSpeed); 
+      projectile.setTexture('bulletUp')
+      projectile.setFlipX(false);  
+      projectile.setFlipY(true); 
+      centerX = initiatorCenter.x;
+      centerY = initiatorCenter.y + 16;
     }
 
-    projectile.fire(initiator.x, initiator.y);
+    projectile.fire(centerX, centerY);
+    this.timeFromlastFire = getTimeStamp();
 
   }
 
