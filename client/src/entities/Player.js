@@ -6,14 +6,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y);
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    
-    
-    this.init();
 
+    this.init();
+    this.initEvents();
   }
 
   init() {
     this.playerSpeed = 100;
+    this.depth = this.y;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     // this.wasd = {
     //   up: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
@@ -24,10 +24,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // }
     this.setCollideWorldBounds(true);
   }
-  
-  preUpdate(time, delta) {
-    super.preUpdate(time, delta);
+  initEvents() {
+    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this)
 
+  }
+  update() {
+    this.depth = this.y + this.height /2;
     const { left, right , up, down} = this.cursors;
       if (left.isDown) {
         console.log("left");
