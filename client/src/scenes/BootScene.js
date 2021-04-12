@@ -7,6 +7,9 @@ export default class BootScene extends Scene {
   constructor() {
     super("scene-boot");
   }
+  // init(data) {
+  //   this.socket = data.socket;
+  // }
 
   preload() {
     this.load.image('logo', logoimg)
@@ -25,6 +28,8 @@ export default class BootScene extends Scene {
   }
   onDown() {
     this.scene.start ('scene-game')
+    // let data = "hello there from bootscene"
+    // this.socket.emit("test", data)
   }
 
 
