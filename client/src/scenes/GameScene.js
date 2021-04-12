@@ -32,6 +32,9 @@ function destroyBullet (unbreakable, bullet) {
   bullet.disableBody(true, true);
 }
 
+function destroyBullet2(bullet, wall) {
+  bullet.disableBody(true, true);
+}
 
 
 export default class GameScene extends Scene {
@@ -68,12 +71,25 @@ export default class GameScene extends Scene {
     tankP1.direction = "up";
     unbreakable = this.physics.add.staticSprite(400, 400, 'unbreakable');
     tankP1.setCollideWorldBounds(true);
-    this.physics.add.collider(tankP1, layers.wallLayer)
+
+    // this.tweens.add({
+    //     targets: logo,
+    //     y: 450,
+    //     duration: 2000,
+    //     ease: "Power2",
+    //     yoyo: true,
+    //     loop: -1
+    // });
 
     // Add groups for Bullet objects
     p1Bullets = this.physics.add.group({ key: "bullet" });
-    this.physics.add.collider(p1Bullets, layers.wallLayer)
-    
+    // p2Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
+    // p3Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
+    // p4Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
+
+    /*
+    // Sockets
+    this.socket = io('http://localhost:3000') //this will need to change on prod server
 
 
 
@@ -137,10 +153,12 @@ export default class GameScene extends Scene {
       otherPlayer.playerId = playerInfo.playerId;
       self.otherPlayers.add(otherPlayer);
     }
+    */
     
 
     // Input
     cursors = this.input.keyboard.createCursorKeys();
+    /*
     this.socket.on('playerMoved', function (playerInfo) {
       self.otherPlayers.getChildren().forEach(function (otherPlayer) {
         if (playerInfo.playerId === otherPlayer.playerId) {
@@ -149,21 +167,21 @@ export default class GameScene extends Scene {
         }
       });
     });
+    */
     wasd = {
       up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
       down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
       left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
       right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-      // shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     }
 
     spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // Collisions
     this.physics.add.collider(tankP1, unbreakable);
+    this.physics.add.collider(tankP1, layers.wallLayer);
     this.physics.add.overlap(p1Bullets, unbreakable, destroyBullet, null, this);
-
-    // bullets = this.physics.add.group();
+    this.physics.add.collider(p1Bullets, layers.wallLayer, destroyBullet2);
 
   }
 
@@ -269,7 +287,4 @@ export default class GameScene extends Scene {
   }
 
   
-  
-
-
 }
