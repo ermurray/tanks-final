@@ -156,7 +156,3 @@ io.on("connection", (socket) => {
 http.listen(port, function() {
   console.log(`Server started and listening on port: ${port}`)
 });
-
-http.listen(port, function() {
-  console.log(`Server started and listening on port: ${port}`)
-});
