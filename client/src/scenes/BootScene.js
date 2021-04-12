@@ -22,6 +22,7 @@ export default class BootScene extends Scene {
     this.load.image('tilesSand', 'src/assets/maps/rpl_sand.png');
     this.load.tilemapTiledJSON('map1', 'src/assets/maps/tankMap.json');
     this.load.image('bullet', 'src/assets/bullet.png');
+    this.load.image('bulletUp', 'src/assets/bullet_vert.png');
 
   }
 
