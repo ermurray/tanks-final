@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import collidable from '../mixins/collidable';
-import Projectile from '../attacks/Projectile';
+import ProjectilesGroup from '../attacks/ProjectilesGroup';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -19,18 +19,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.playerSpeed = 100;
     this.depth = this.y;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
-    // this.wasd = {
-    //   up: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
-    //   down: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
-    //   left: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
-    //   right: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-    //   // shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
-    // }
+
+    this.projectilesGroup = new ProjectilesGroup(this.scene);
+  
     this.setCollideWorldBounds(true);
-    this.scene.input.keyboard.on('keydown-SPACE', (e) => {
+    this.scene.input.keyboard.on('keydown-SPACE', () => {
       console.log('Shoot');
-      const projectile = new Projectile(this.scene, this.x, this.y, 'bullet');
-      projectile.fire();
+      this.projectilesGroup.fireProjectile(this);
     });
 
   }

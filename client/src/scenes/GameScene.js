@@ -164,6 +164,7 @@ export default class GameScene extends Scene {
     const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
 
     wallLayer.setCollisionByExclusion([-1]);
+    groundLayer.setDepth(-1);
     return {groundLayer, wallLayer};
 
   }
