@@ -16,9 +16,10 @@ const config = {
       }
   },
   scene:[
-    WaitingRoom,
+    
     BootScene,
     GameScene,
+    WaitingRoom,
     
   ]
 };

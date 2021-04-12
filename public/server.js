@@ -52,6 +52,11 @@ io.on("connection", (socket) => {
   console.log(
     `A socket connection to the server has been made: ${socket.id}`
   );
+
+  socket.on('test', (data) => {
+    console.log("data: ",data)
+  })
+
   socket.on("joinRoom", (roomKey) => {
     socket.join(roomKey);
     const roomInfo = gameRooms[roomKey];
@@ -139,6 +144,7 @@ io.on("connection", (socket) => {
       players: {},
       numPlayers: 0,
     };
+    console.log("Room created", key);
     socket.emit("roomCreated", key);
   });
 });
