@@ -51,13 +51,10 @@ export default class GameScene extends Scene {
     player1.setTexture('tankRight');
     const map = this.createMap();
     const layers = this.createLayers(map);
-    const boundary = layers.wallLayer;
     
-    this.physics.add.collider(player1, boundary);
+    player1.addCollider(layers.wallLayer);
     
     // Create objects
-    // tankP1 = this.physics.add.sprite(200, 200, 'tankP1');
-    // tankP1.direction = "up";
     // unbreakable = this.physics.add.staticSprite(400, 400, 'unbreakable');
     // tankP1.setCollideWorldBounds(true);
     // this.physics.add.collider(tankP1, layers.wallLayer)
@@ -180,6 +177,5 @@ export default class GameScene extends Scene {
     return new Player(this,100,100,);
   }
   
-
 
 }

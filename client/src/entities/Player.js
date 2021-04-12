@@ -1,11 +1,14 @@
 import Phaser from 'phaser';
-
+import collidable from '../mixins/collidable';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     super(scene, x, y);
     scene.add.existing(this);
     scene.physics.add.existing(this);
+    
+    //Mixins to assign other objects to this context
+    Object.assign(this, collidable);
 
     this.init();
     this.initEvents();
@@ -35,28 +38,37 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       if (left.isDown) {
         console.log("left");
         this.setVelocityX(-this.playerSpeed);
+        this.setVelocityY(0)
         this.setTexture('tankLeft');
         this.direction = "left";
       }
       else if (right.isDown) {
         console.log("right");
         this.setVelocityX(this.playerSpeed);
+        this.setVelocityY(0)
         this.setTexture('tankRight');
         this.direction = "right";
       }
       else if (up.isDown) {
         console.log("up");
         this.setVelocityY(-this.playerSpeed);
+        this.setVelocityX(0)
         this.setTexture('tankUp');
         this.direction = "up";
       }
       else if (down.isDown) {
         console.log("down");
         this.setVelocityY(this.playerSpeed);
+        this.setVelocityX(0)
         this.setTexture('tankDown');
         this.direction = "down";
       }
-      else if (Phaser.Input.Keyboard.JustDown(space)) {
+      else
+      {
+        this.setVelocityX(0);
+        this.setVelocityY(0);
+      }
+      if (Phaser.Input.Keyboard.JustDown(space)) {
         console.log("shoot");
         // const bullet = this.scene.create(this.x, this.y, 'bullet');
         // if (this.direction === "left") {
@@ -72,11 +84,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         //   this.bullet.setVelocityY(600);
         //   this.bullet.allowGravity = false;
         // }
-      }
-      else
-      {
-        this.setVelocityX(0);
-        this.setVelocityY(0);
       }
       
     // let x = this.tankP1.x;
@@ -102,4 +109,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     //   rotation: this.tankP1.rotation,
     // };
   }
+
+  
 }
