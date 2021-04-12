@@ -7,14 +7,19 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
-
-    this.maxSpeed = 300;
+    //projectile speed 
+    this.maxSpeed = 400;
     this.speedX = 0;
     this.speedY = 0;
+
+    //projectile distance before inactive
     this.maxDistanceX = 300;
     this.maxDistanceY = 300;
     this.traveledDistanceX = 0;
     this.traveledDistanceY = 0
+
+    // projectile rate of fire
+    this.fireRate = 500;
 
   }
 
