@@ -42,6 +42,8 @@ const gameRooms = {
 };
 
 
+
+
 function codeGenerator() {
   let code = "";
   let chars = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789";
@@ -52,9 +54,14 @@ function codeGenerator() {
 }
 
 io.on("connection", (socket) => {
+
   console.log(
     `A socket connection to the server has been made: ${socket.id}`
   );
+
+  setInterval(() => {
+    console.log("gamerooms:",gameRooms)
+  }, 10000);
 
   socket.on('payloadDataTest', (data) => {
     console.log("data: ",data)
@@ -150,12 +157,11 @@ io.on("connection", (socket) => {
     console.log("Room created", key);
     socket.emit("roomCreated", key);
   });
+
+
 });
 
 
-http.listen(port, function() {
-  console.log(`Server started and listening on port: ${port}`)
-});
 
 http.listen(port, function() {
   console.log(`Server started and listening on port: ${port}`)

@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import io from 'socket.io-client';
 
 export default class WaitingRoom extends Phaser.Scene {
   constructor() {
@@ -12,31 +13,27 @@ export default class WaitingRoom extends Phaser.Scene {
   }
 
   preload() {
-    this.load.html("codeform", `<style>
-    #input-box {
-      resize: none;
-      background: none;
-      border: none;
-      outline: none;
-    }
-  </style>
-  
-  <div class="container">
-    <form>
-      <input
-        type="text"
-        id="code-form-id"
-        name="code-form"
-        placeholder="enter room key"
-      />
-      <button type="button" id="enterRoom-id" name="enterRoom">enter</button>
-    </form>
-  </div>`);
+
   }
 
   create() {
+
+    
+    
     const scene = this;
 
+
+    //SOCKETS
+    scene.socket = io('http://localhost:3000') //this will need to change on prod server
+    scene.socket.on('connect', function() {
+      console.log(`You have connected`);
+    });
+    let payload = {message: "hello from waiting room scene"}
+    scene.socket.emit('payloadDataTest', payload);
+    
+
+    
+    
     scene.popUp = scene.add.graphics();
     scene.boxes = scene.add.graphics();
 
@@ -68,10 +65,26 @@ export default class WaitingRoom extends Phaser.Scene {
       fontStyle: "bold",
     });
 
+    
     //right popup
     scene.boxes.strokeRect(425, 200, 275, 100);
     scene.boxes.fillRect(425, 200, 275, 100);
-    scene.inputElement = scene.add.dom(562.5, 250).createFromCache("codeform");
+
+    let form = `
+    <div class="container">
+      <form>
+        <input
+          type="text"
+          id="code-form-id"
+          name="code-form"
+          placeholder="enter room key"
+        />
+        <button type="button" id="enterRoom-id" name="enterRoom">enter</button>
+      </form>
+    </div>`;
+    
+    
+    scene.inputElement = scene.add.dom(562.5, 250).createFromHTML(form)
     scene.inputElement.addListener("click");
     scene.inputElement.on("click", function (event) {
       if (event.target.name === "enterRoom") {
@@ -107,7 +120,10 @@ export default class WaitingRoom extends Phaser.Scene {
     scene.socket.on("keyIsValid", function (input) {
       scene.socket.emit("joinRoom", input);
       scene.scene.stop("WaitingRoom");
+      scene.scene.start ('scene-game')
     });
   }
+
+
   update() {}
 }

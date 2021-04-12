@@ -15,11 +15,14 @@ const config = {
           debug: false
       }
   },
+  dom: {
+    createContainer: true,
+  },
   scene:[
-    
+    WaitingRoom,
     BootScene,
     GameScene,
-    WaitingRoom,
+    
     
   ]
 };
