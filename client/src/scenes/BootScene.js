@@ -36,7 +36,7 @@ export default class BootScene extends Scene {
     // this.scene.start ('scene-game')
   }
   onDown() {
-    this.scene.start ('scene-game')
+    this.scene.start ('scene-waitingRoom')
     // let data = "hello there from bootscene"
     // this.socket.emit("test", data)
   }

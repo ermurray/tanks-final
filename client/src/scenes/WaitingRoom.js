@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 export default class WaitingRoom extends Phaser.Scene {
   constructor() {
-    super("WaitingRoom");
+    super("scene-waitingRoom");
     this.state = {};
     this.hasBeenSet = false;
   }
@@ -103,6 +103,7 @@ export default class WaitingRoom extends Phaser.Scene {
       fill: "#ff0000",
       fontSize: "15px",
     });
+
     scene.roomKeyText = scene.add.text(210, 250, "", {
       fill: "#00ff00",
       fontSize: "20px",
@@ -117,9 +118,10 @@ export default class WaitingRoom extends Phaser.Scene {
     scene.socket.on("keyNotValid", function () {
       scene.notValidText.setText("Invalid Room Key");
     });
+
     scene.socket.on("keyIsValid", function (input) {
       scene.socket.emit("joinRoom", input);
-      // scene.scene.stop("WaitingRoom");
+      scene.scene.stop("WaitingRoom");
       scene.scene.start ('scene-game', input)
     });
   }
