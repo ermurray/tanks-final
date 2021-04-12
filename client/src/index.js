@@ -19,8 +19,8 @@ const config = {
     createContainer: true,
   },
   scene:[
-    WaitingRoom,
     BootScene,
+    WaitingRoom,
     GameScene,
     
     
