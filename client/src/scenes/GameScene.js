@@ -5,47 +5,13 @@ import unbreakableBlock from '../assets/platform.png';
 
 
 
-
-
-// let logo;
-// let cursors;
-// let wasd;
-// let spacebar;
-// let tankP1;
-// let tankP2;
-
-// let p1Bullets;
-// let unbreakable;
-// let gameOver = false;
-// let hardWalls;
-
-
-function destroyBullet (unbreakable, bullet) {
-  bullet.disableBody(true, true);
-}
-
-function destroyBullet2(bullet, wall) {
-  bullet.disableBody(true, true);
-}
-
-
 export default class GameScene extends Scene {
 
   constructor () {
       super("scene-game");
       
   }
-
-
-  preload () {
-    this.load.image('unbreakable', unbreakableBlock);
-   
- 
-  }
-      
-      
-  
-      
+            
   create () {
     const player1 = this.createPlayer();
     player1.setTexture('tankRight');
@@ -54,17 +20,6 @@ export default class GameScene extends Scene {
     
     player1.addCollider(layers.wallLayer);
     
-    // Create objects
-    // unbreakable = this.physics.add.staticSprite(400, 400, 'unbreakable');
-    // tankP1.setCollideWorldBounds(true);
-    // this.physics.add.collider(tankP1, layers.wallLayer)
-
-    // Add groups for Bullet objects
-      // p1Bullets = this.physics.add.group({ key: "bullet" });
-      // this.physics.add.collider(p1Bullets, layers.wallLayer)
-    
-    // Sockets
-    this.socket = io('http://localhost:3000') //this will need to change on prod server
 
 
 
