@@ -1,13 +1,24 @@
 import Phaser from 'phaser';
 import BootScene from './scenes/BootScene';
 import GameScene from './scenes/GameScene';
-import WaitingRoom from './scenes/WaitingRoom'
-    
+import WaitingRoom from './scenes/WaitingRoom';
+import Lobby from './scenes/Lobby';
+
+
+//config constants
+const WIDTH = 1216
+const HEIGHT = 640
+
+//common configs between scenes
+const SHARED_CONFIG = {
+  width: WIDTH,
+  height: HEIGHT
+}
+
 const config = {
   type: Phaser.AUTO,
-  parent: 'phaser-example',
-  width: 1216,
-  height: 640,
+  ...SHARED_CONFIG,
+  parent: 'body',
   physics: {
       default: 'arcade',
       arcade: {
@@ -22,6 +33,7 @@ const config = {
     BootScene,
     WaitingRoom,
     GameScene,
+    Lobby,
     
     
   ]
