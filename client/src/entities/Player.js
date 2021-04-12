@@ -29,7 +29,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   }
   update() {
-    this.setDepth(2);
+    this.setDepth(2)
     const { left, right , up, down} = this.cursors;
       if (left.isDown) {
         console.log("left");
