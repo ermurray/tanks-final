@@ -83,6 +83,9 @@ export default class GameScene extends Scene {
     this.socket.on('connect', function() {
       console.log(`User: ... has connected`);
     });
+
+    this.socket.emit('test', "hello from GameScene");
+
     this.socket.on('currentPlayers', (players) => {
       Object.keys(players).forEach((id) => {
         if (players[id].playerId === self.socket.id) {
