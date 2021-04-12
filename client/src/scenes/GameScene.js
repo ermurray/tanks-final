@@ -48,6 +48,7 @@ export default class GameScene extends Scene {
     const layers = this.createLayers(map);
     const boundary = layers.wallLayer;
     const player = this.createPlayer();
+    player.setDepth(1);
     
     this.physics.add.collider(player, boundary);
     

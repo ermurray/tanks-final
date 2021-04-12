@@ -15,6 +15,7 @@ export default class BootScene extends Scene {
     this.load.image('tankRight', 'src/assets/tank_rht32px.png');
     this.load.image('player', 'src/assets/tank_rht32px.png');
     this.load.image('tilesGrass', 'src/assets/maps/rpl_grass.png');
+    this.load.image('tilePaths', 'src/assets/maps/rpl_paths-export.png')
     this.load.image('tilesSand', 'src/assets/maps/rpl_sand.png');
     this.load.tilemapTiledJSON('map1', 'src/assets/maps/tankMap.json');
 
