@@ -15,6 +15,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.playerSpeed = 100;
     this.depth = this.y;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
+    this.scene.physics.add.group({ key: "bullet" })
     // this.wasd = {
     //   up: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
     //   down: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
@@ -57,20 +58,20 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       }
       else if (Phaser.Input.Keyboard.JustDown(space)) {
         console.log("shoot");
-        let bullet = p1Bullets.create(this.player.x, this.player.y, 'bullet');
-        if (this.direction === "left") {
-          bullet.setVelocityX(-600);
-        }
-        else if (this.direction === "right") {
-          bullet.setVelocityX(600);
-        }
-        else if (this.direction === "up") {
-          bullet.setVelocityY(-600);
-        }
-        else if (this.direction === "down") {
-          bullet.setVelocityY(600);
-          bullet.allowGravity = false;
-        }
+        // const bullet = this.scene.create(this.x, this.y, 'bullet');
+        // if (this.direction === "left") {
+        //   this.bullet.setVelocityX(-600);
+        // }
+        // else if (this.direction === "right") {
+        //   this.bullet.setVelocityX(600);
+        // }
+        // else if (this.direction === "up") {
+        //   this.bullet.setVelocityY(-600);
+        // }
+        // else if (this.direction === "down") {
+        //   this.bullet.setVelocityY(600);
+        //   this.bullet.allowGravity = false;
+        // }
       }
       else
       {
