@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Projectile from './Projectile';
+import { getTimeStamp } from '../utils/helpers'
 
 export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
@@ -14,6 +15,8 @@ export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
       classType: Projectile
     })
 
+    this.timeFromlastFire = null;
+
   }
 
   fireProjectile(initiator) {
@@ -23,7 +26,7 @@ export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
     let centerY;
     
     if (!projectile) { return; }
-    
+    if (this.timeFromlastFire && this.timeFromlastFire + projectile.fireRate > getTimeStamp()) { return; }
 
     if (initiator.lastDirection === Phaser.Physics.Arcade.FACING_RIGHT) {
       projectile.speedY = 0;
@@ -60,6 +63,7 @@ export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
     }
 
     projectile.fire(centerX, centerY);
+    this.timeFromlastFire = getTimeStamp();
 
   }
 
