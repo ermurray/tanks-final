@@ -87,7 +87,7 @@ export default class GameScene extends Scene {
     // p3Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
     // p4Bullets = this.physics.add.group(/*{ classType: Bullet, runChildUpdate: true }*/);
 
-    /*
+    
     // Sockets
     this.socket = io('http://localhost:3000') //this will need to change on prod server
 
@@ -99,8 +99,10 @@ export default class GameScene extends Scene {
     this.socket.on('connect', function() {
       console.log(`User: ... has connected`);
     });
-
+    
     this.socket.emit('test', "hello from GameScene");
+    /*
+    
 
     this.socket.on('currentPlayers', (players) => {
       Object.keys(players).forEach((id) => {
