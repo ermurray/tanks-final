@@ -1,6 +1,6 @@
 import {Scene} from 'phaser';
 import logoimg from '../assets/Wartank.png'
-import startBtn from '../assets/StartBtn.png'
+import startBtn from '../assets/startBtn.png'
 
 
 export default class BootScene extends Scene {

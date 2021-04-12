@@ -27,72 +27,12 @@ let unbreakable;
 let gameOver = false;
 let hardWalls;
 
-/*
-var Bullet = new Phaser.Class({
-
-  Extends: Phaser.GameObjects.Image,
-
-  initialize:
-
-  // Bullet Constructor
-  function Bullet (scene)
-  {
-      Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
-      this.speed = 1;
-      this.born = 0;
-      this.direction = 0;
-      this.xSpeed = 0;
-      this.ySpeed = 0;
-      this.setSize(12, 12, true);
-  },
-
-  // Fires a bullet from the player to the reticle
-  fire: function (shooter, target)
-  {
-      this.setPosition(shooter.x, shooter.y); // Initial position
-      this.direction = Math.atan( (target.x-this.x) / (target.y-this.y));
-
-      // Calculate X and y velocity of bullet to moves it from shooter to target
-      if (target.y >= this.y)
-      {
-          this.xSpeed = this.speed*Math.sin(this.direction);
-          this.ySpeed = this.speed*Math.cos(this.direction);
-      }
-      else
-      {
-          this.xSpeed = -this.speed*Math.sin(this.direction);
-          this.ySpeed = -this.speed*Math.cos(this.direction);
-      }
-
-      this.rotation = shooter.rotation; // angle bullet with shooters rotation
-      this.born = 0; // Time since new bullet spawned
-  },
-
-  // Updates the position of the bullet each cycle
-  update: function (time, delta)
-  {
-      this.x += this.xSpeed * delta;
-      this.y += this.ySpeed * delta;
-      this.born += delta;
-      if (this.born > 1800)
-      {
-          this.setActive(false);
-          this.setVisible(false);
-      }
-  }
-
-});
-*/
 
 function destroyBullet (unbreakable, bullet) {
-  // console.log(bullet);
-  // p1Bullets.killAndHide(bullet);
-  // bullet.body.enable = false;
   bullet.disableBody(true, true);
 }
 
 function destroyBullet2(bullet, wall) {
-  // console.log(p1Bullets.children.entries[0]);
   bullet.disableBody(true, true);
 }
 
@@ -125,22 +65,11 @@ export default class GameScene extends Scene {
   create () {
     const map = this.createMap();
     const layers = this.createLayers(map);
-    // const map = this.make.tilemap({key: 'map1'});
-    // const tilesetGrass = map.addTilesetImage('rpl_grass', 'tilesGrass', 32, 32);
-    // const tilesetSand = map.addTilesetImage('rpl_sand','tilesSand', 32, 32);
-
-    // const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand], 0, 0);
-    // const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
-    // wallLayer.setCollisionByExclusion([-1]);
     
     // Create objects
-    // let self = this;
-    //logo = this.physics.add.sprite(900, 500, 'logo');
     tankP1 = this.physics.add.sprite(200, 200, 'tankP1');
     tankP1.direction = "up";
     unbreakable = this.physics.add.staticSprite(400, 400, 'unbreakable');
-    // logo.setBounce(0.2);;=
-    // logo.setCollideWorldBounds(true);
     tankP1.setCollideWorldBounds(true);
 
     // this.tweens.add({
@@ -162,8 +91,13 @@ export default class GameScene extends Scene {
     // Sockets
     this.socket = io('http://localhost:3000') //this will need to change on prod server
 
+
+
+    //SOCKETS
+    let self = this;
+    this.socket = io('http://localhost:3000') //this will need to change on prod server
     this.socket.on('connect', function() {
-      console.log(`User: .... has connected`);
+      console.log(`User: ... has connected`);
     });
 
     this.socket.on('currentPlayers', (players) => {
@@ -173,7 +107,6 @@ export default class GameScene extends Scene {
         }
       });
     });
-    
     this.otherPlayers = this.physics.add.group();
     this.socket.on('currentPlayers', function (players) {
       Object.keys(players).forEach(function (id) {
@@ -221,23 +154,25 @@ export default class GameScene extends Scene {
       self.otherPlayers.add(otherPlayer);
     }
     */
+    
 
     // Input
     cursors = this.input.keyboard.createCursorKeys();
-    // this.socket.on('playerMoved', function (playerInfo) {
-    //   self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-    //     if (playerInfo.playerId === otherPlayer.playerId) {
-    //       otherPlayer.setRotation(playerInfo.rotation);
-    //       otherPlayer.setPosition(playerInfo.x, playerInfo.y);
-    //     }
-    //   });
-    // });
+    /*
+    this.socket.on('playerMoved', function (playerInfo) {
+      self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+        if (playerInfo.playerId === otherPlayer.playerId) {
+          otherPlayer.setRotation(playerInfo.rotation);
+          otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+        }
+      });
+    });
+    */
     wasd = {
       up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
       down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
       left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
       right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-      // shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     }
 
     spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -245,34 +180,12 @@ export default class GameScene extends Scene {
     // Collisions
     this.physics.add.collider(tankP1, unbreakable);
     this.physics.add.collider(tankP1, layers.wallLayer);
-    // this.physics.add.collider(p1Bullets, layers.wallLayer, destroyBullet(layers.wallLayer, p1Bullets.children.entries[0]));
     this.physics.add.overlap(p1Bullets, unbreakable, destroyBullet, null, this);
-    // console.log(p1Bullets);
-    // hardWalls = layers.wallLayer;
-    // this.physics.add.overlap(p1Bullets, hardWalls, destroyBullet2);
     this.physics.add.collider(p1Bullets, layers.wallLayer, destroyBullet2);
-
-    // bullets = this.physics.add.group();
 
   }
 
   update() {
-    // if (tankP1) {
-//         // emit player movement
-//         let x = tankP1.x;
-//         let y = tankP1.y;
-//         let r = tankP1.rotation;
-//         if (tankP1.oldPosition && (x !== tankP1.oldPosition.x || y !== tankP1.oldPosition.y || r !== tankP1.oldPosition.rotation)) {
-//           this.socket.emit('playerMovement', { x: tankP1.x, y: tankP1.y, rotation: tankP1.rotation });
-//         }
-      
-//         // save old position data
-//         this.ship.oldPosition = {
-//           x: this.ship.x,
-//           y: this.ship.y,
-//           rotation: this.ship.rotation
-// };
-
       // Movement
       if (cursors.left.isDown || wasd.left.isDown) {
         console.log("left");
@@ -321,11 +234,37 @@ export default class GameScene extends Scene {
         tankP1.setVelocityY(0);
       }
       
+    // let x = this.tankP1.x;
+    // let y = this.tankP1.y;
+    // let r = this.tankP1.rotation;
+    // if (
+    //   this.tankP1.oldPosition &&
+    //   (x !== this.tankP1.oldPosition.x ||
+    //     y !== this.tankP1.oldPosition.y ||
+    //     r !== this.tankP1.oldPosition.rotation)
+    // ) {
+    //   this.socket.emit("playerMovement", {
+    //     x: this.tankP1.x,
+    //     y: this.tankP1.y,
+    //     rotation: this.tankP1.rotation,
+    //   });
+    // }
+
+    // // save old position data
+    // this.tankP1.oldPosition = {
+    //   x: this.tankP1.x,
+    //   y: this.tankP1.y,
+    //   rotation: this.tankP1.rotation,
+    // };
+
+
+
       // Game Over
       if (gameOver === true) {
         return;
       }
-    // }
+
+
   }
 
   createMap() {
@@ -346,4 +285,6 @@ export default class GameScene extends Scene {
     return {groundLayer, wallLayer};
 
   }
+
+  
 }
