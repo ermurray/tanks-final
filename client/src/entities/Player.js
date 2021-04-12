@@ -29,8 +29,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   }
   update() {
-    this.setDepth(2)
-    const { left, right , up, down} = this.cursors;
+    const { left, right , up, down, space, } = this.cursors;
+
       if (left.isDown) {
         console.log("left");
         this.setVelocityX(-this.playerSpeed);
@@ -55,23 +55,23 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setTexture('tankDown');
         this.direction = "down";
       }
-      // else if (Phaser.Input.Keyboard.JustDown(spacebar)) {
-      //   console.log("shoot");
-      //   let bullet = p1Bullets.create(this.player.x, this.player.y, 'bullet');
-      //   if (this.player.direction === "left") {
-      //     bullet.setVelocityX(-600);
-      //   }
-      //   else if (this.player.direction === "right") {
-      //     bullet.setVelocityX(600);
-      //   }
-      //   else if (this.player.direction === "up") {
-      //     bullet.setVelocityY(-600);
-      //   }
-      //   else if (this.player.direction === "down") {
-      //     bullet.setVelocityY(600);
-      //     bullet.allowGravity = false;
-      //   }
-      // }
+      else if (Phaser.Input.Keyboard.JustDown(space)) {
+        console.log("shoot");
+        let bullet = p1Bullets.create(this.player.x, this.player.y, 'bullet');
+        if (this.direction === "left") {
+          bullet.setVelocityX(-600);
+        }
+        else if (this.direction === "right") {
+          bullet.setVelocityX(600);
+        }
+        else if (this.direction === "up") {
+          bullet.setVelocityY(-600);
+        }
+        else if (this.direction === "down") {
+          bullet.setVelocityY(600);
+          bullet.allowGravity = false;
+        }
+      }
       else
       {
         this.setVelocityX(0);

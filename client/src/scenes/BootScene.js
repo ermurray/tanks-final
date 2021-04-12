@@ -1,5 +1,5 @@
 import {Scene} from 'phaser';
-
+import bullet from '../assets/bomb.png';
 
 export default class BootScene extends Scene {
   constructor() {
@@ -21,6 +21,7 @@ export default class BootScene extends Scene {
     this.load.image('tilePaths', 'src/assets/maps/rpl_paths-export.png')
     this.load.image('tilesSand', 'src/assets/maps/rpl_sand.png');
     this.load.tilemapTiledJSON('map1', 'src/assets/maps/tankMap.json');
+    this.load.image('bullet', 'src/assets/bomb.png');
 
   }
 

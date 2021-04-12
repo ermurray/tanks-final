@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import Player from '../entities/Player';
 import unbreakableBlock from '../assets/platform.png';
 
-import bullet from '../assets/bomb.png';
+
 
 
 
@@ -39,7 +39,7 @@ export default class GameScene extends Scene {
 
   preload () {
     this.load.image('unbreakable', unbreakableBlock);
-    this.load.image('bullet', bullet);
+   
  
   }
       
@@ -47,13 +47,13 @@ export default class GameScene extends Scene {
   
       
   create () {
+    const player1 = this.createPlayer();
+    player1.setTexture('tankRight');
     const map = this.createMap();
     const layers = this.createLayers(map);
     const boundary = layers.wallLayer;
-    const player = this.createPlayer();
-    player.setDepth(1);
     
-    this.physics.add.collider(player, boundary);
+    this.physics.add.collider(player1, boundary);
     
     // Create objects
     // tankP1 = this.physics.add.sprite(200, 200, 'tankP1');
