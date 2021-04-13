@@ -64,7 +64,7 @@ io.on("connection", (socket) => {
     const roomInfo = gameRooms[roomKey];
     console.log("roomInfo", roomInfo);
     roomInfo.players[socket.id] = {
-      pname: playerName,
+      pName: playerName,
       rotation: 0,
       x: 400,
       y: 300,

@@ -57,7 +57,7 @@ export default class WaitingRoom extends Phaser.Scene {
     //left popup
     thisScene.boxes.strokeRect(125, 200, 275, 100);
     thisScene.boxes.fillRect(125, 200, 275, 100);
-    thisScene.requestButton = thisScene.add.text(140, 215, "Request Room Key", {
+    thisScene.requestButton = thisScene.add.text(140, 215, "CREATE NEW GAME", {
       fill: "#000000",
       fontSize: "20px",
       fontStyle: "bold",
