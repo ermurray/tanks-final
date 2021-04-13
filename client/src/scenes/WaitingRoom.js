@@ -9,7 +9,7 @@ export default class WaitingRoom extends Phaser.Scene {
   }
 
   init(data) {
-    this.socket = data.socket;
+  
   }
 
   preload() {
@@ -17,19 +17,17 @@ export default class WaitingRoom extends Phaser.Scene {
   }
 
   create() {
-
     
+    this.socket = this.registry.get('socket');
+    
+    
+    this.scene.moveAbove('scene-lobby','scene-waitingRoom');
     
     const scene = this;
 
 
     //SOCKETS
-    scene.socket = io('http://localhost:3000') //this will need to change on prod server
-    scene.socket.on('connect', function() {
-      console.log(`You have connected`);
-    });
-    let payload = {message: "hello from waiting room scene"}
-    scene.socket.emit('payloadDataTest', payload);
+    
     
 
     
@@ -46,8 +44,9 @@ export default class WaitingRoom extends Phaser.Scene {
     scene.boxes.fillStyle(0xa9a9a9, 1);
 
     // popup window
-    scene.popUp.strokeRect(25, 25, 750, 500);
-    scene.popUp.fillRect(25, 25, 750, 500);
+    
+    scene.popUp.strokeRect(100, 25, 750, 500);
+    scene.popUp.fillRect(100, 25, 750, 500);
 
     //title
     scene.title = scene.add.text(100, 75, "Tank Multiplayer", {
@@ -57,8 +56,8 @@ export default class WaitingRoom extends Phaser.Scene {
     });
 
     //left popup
-    scene.boxes.strokeRect(100, 200, 275, 100);
-    scene.boxes.fillRect(100, 200, 275, 100);
+    scene.boxes.strokeRect(125, 200, 275, 100);
+    scene.boxes.fillRect(125, 200, 275, 100);
     scene.requestButton = scene.add.text(140, 215, "Request Room Key", {
       fill: "#000000",
       fontSize: "20px",
@@ -67,8 +66,8 @@ export default class WaitingRoom extends Phaser.Scene {
 
     
     //right popup
-    scene.boxes.strokeRect(425, 200, 275, 100);
-    scene.boxes.fillRect(425, 200, 275, 100);
+    scene.boxes.strokeRect(450, 200, 275, 100);
+    scene.boxes.fillRect(450, 200, 275, 100);
 
     
 
@@ -79,14 +78,15 @@ export default class WaitingRoom extends Phaser.Scene {
     scene.inputElement.addListener("click");
     scene.inputElement.on("click", function (event) {
       if (event.target.name === "enterRoom") {
+// form input in waiting room
         const input = scene.inputElement.getChildByName("code-form");
         const playerName = scene.inputElement.getChildByName('pname-form')
-        console.log("this is the key code:", input.value);
         console.log("this is the player name:", playerName.value);
+        console.log("this is the key code:", input.value);
         scene.socket.emit("isKeyValid", input.value);
       }
     });
-
+//emit event to server to generate room code and create new room
     scene.requestButton.setInteractive();
     scene.requestButton.on("pointerdown", () => {
       scene.socket.emit("getRoomCode");
@@ -114,8 +114,8 @@ export default class WaitingRoom extends Phaser.Scene {
 
     scene.socket.on("keyIsValid", function (input) {
       scene.socket.emit("joinRoom", input);
-      scene.scene.stop("WaitingRoom");
-      scene.scene.start('scene-lobby', input)
+      scene.scene.stop("scene-waitingRoom");
+      // scene.scene.start('scene-lobby', input) 
     });
   }
 

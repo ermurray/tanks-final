@@ -5,12 +5,6 @@ const morgan = require('morgan');
 app.use(cors());
 
 app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
-// const path = require("path");
-// var express = require("express");
-// var app = express();
-// var app = require("http").Server(app);
-// const socketio = require("socket.io");
-// const io = socketio(app);
 
 const io = require('socket.io')(http, {
   cors: {
@@ -21,7 +15,7 @@ const io = require('socket.io')(http, {
 const port = 3000
 
 const players = {};
-//player spwan points top 4 corners
+//player spwan points 4 corners
 
 const spawnPoints = [
   [64, 64, "pOne"],
