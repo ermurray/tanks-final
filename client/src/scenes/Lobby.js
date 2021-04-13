@@ -24,7 +24,19 @@ export default class Lobby extends Phaser.Scene {
     this.scene.launch("scene-waitingRoom", {Socket: this.scene.socket})
     this.add.image(0,0, 'bckgrnd').setOrigin(0).setScale(0.5);
     this.textInput = this.add.dom(1100, 540).createFromCache('chat-form').setOrigin(0.5);   
-    
+
+    const roomInfoText = this.add.text(500, 20, "", {
+      fill: "#00ff00",
+      fontSize: "20px",
+      fontStyle: "bold"
+    })
+
+
+    this.socket.on('setState', function(roomInfo) {
+      const roomtext = `GAME KEY: ${roomInfo.roomKey} \n PLAYERS: ${roomInfo.numPlayers}/4`
+      roomInfoText.setText(roomtext);
+      console.log("--->",roomInfo)
+    });
     this.chat = this.add.text(900, 10, `${this.chatMessages}`,{
       lineSpacing: 15,
       backroundColor: '0xa9a9a9',

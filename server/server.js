@@ -75,7 +75,7 @@ io.on("connection", (socket) => {
 
     // set initial state
     socket.emit("setState", roomInfo);
-
+    
     // send the players object to the new player
     socket.emit("currentPlayers", {
       players: roomInfo.players,
