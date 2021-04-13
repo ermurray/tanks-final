@@ -23,6 +23,7 @@ export default class BootScene extends Scene {
     this.load.tilemapTiledJSON('map1', 'src/assets/maps/tankMap.json');
     this.load.image('bullet', 'src/assets/bullet.png');
     this.load.image('bulletUp', 'src/assets/bullet_vert.png');
+    this.load.html('key-form', '../../html/room-key-form.html')
 
   }
 

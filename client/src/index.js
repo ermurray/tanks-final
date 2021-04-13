@@ -18,7 +18,7 @@ const SHARED_CONFIG = {
 const config = {
   type: Phaser.AUTO,
   ...SHARED_CONFIG,
-  parent: 'body',
+  parent: 'game',
   physics: {
       default: 'arcade',
       arcade: {
