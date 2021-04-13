@@ -21,7 +21,7 @@ export default class WaitingRoom extends Phaser.Scene {
     
     
     this.scene.moveAbove('scene-lobby','scene-waitingRoom');
-    
+    this.scene.setActive(false,'scene-lobby');
     const thisScene = this;
 
 

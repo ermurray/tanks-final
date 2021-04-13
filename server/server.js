@@ -156,7 +156,11 @@ io.on("connection", (socket) => {
     socket.emit("roomCreated", key);
   });
 
-
+  socket.on("chatmessage", (data)=>{
+    const {roomKey, message, playerId} = data;
+    socket.to(roomKey)
+  })
+  
 });
 
 

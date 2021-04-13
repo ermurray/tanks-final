@@ -14,6 +14,8 @@ export default class Lobby extends Phaser.Scene {
   }
   
   create() {
+
+
     const thisScene = this;
     this.socket = io('http://localhost:3000') //this will need to change on prod server
     this.socket.on('connect', function() {
@@ -54,16 +56,9 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: 'bold'
     });
 
-    // this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-    // this.enterKey.on('down', e => {
+    
 
-    // })
-
-    // this.socket.connect();
-
-    // this.socket.on("connect", async () => {
-    //   this.socket.emit("join", "room")
-    // })
+   
 
 
     this.strtSmall = this.add.sprite(600, 540, 'start-sm')
