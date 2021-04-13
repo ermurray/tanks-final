@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Projectile from './Projectile';
 import { getTimeStamp } from '../utils/helpers'
+import collidable from '../mixins/collidable';
 
 export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
@@ -16,6 +17,7 @@ export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
     })
 
     this.timeFromlastFire = null;
+    Object.assign(this, collidable);
 
   }
 
@@ -24,7 +26,9 @@ export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
     const initiatorCenter = initiator.getCenter();
     let centerX;
     let centerY;
+
     
+  
     if (!projectile) { return; }
     if (this.timeFromlastFire && this.timeFromlastFire + projectile.fireRate > getTimeStamp()) { return; }
 
