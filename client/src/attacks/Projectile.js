@@ -57,10 +57,4 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     console.log('Shoot a projectile');
   
   }
-
-  destroyBullet() {
-    this.setActive(false);
-    this.setVisible(false);
-    this.body.reset(0, 0);
-  }
 }
