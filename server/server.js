@@ -5,12 +5,6 @@ const morgan = require('morgan');
 app.use(cors());
 
 app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
-// const path = require("path");
-// var express = require("express");
-// var app = express();
-// var app = require("http").Server(app);
-// const socketio = require("socket.io");
-// const io = socketio(app);
 
 const io = require('socket.io')(http, {
   cors: {
@@ -20,8 +14,9 @@ const io = require('socket.io')(http, {
 });
 const port = 3000
 
-const players = {};
-//player spwan points top 4 corners
+const MAX_PLAYERS = 4;
+// const players = {};
+//player spwan points 4 corners
 
 const spawnPoints = [
   [64, 64, "pOne"],
@@ -42,23 +37,27 @@ const gameRooms = {
 };
 
 
+
+
 function codeGenerator() {
   let code = "";
   let chars = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789";
   for (let i = 0; i < 5; i++) {
     code += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  return code;
+  return 123;
 }
 
 io.on("connection", (socket) => {
+
   console.log(
     `A socket connection to the server has been made: ${socket.id}`
   );
 
-  socket.on('payloadDataTest', (data) => {
-    console.log("data: ",data)
-  })
+  setInterval(() => {
+    console.log("gamerooms:",gameRooms)
+  }, 10000);
+
 
   socket.on("joinRoom", (roomKey) => {
     socket.join(roomKey);
@@ -132,9 +131,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("isKeyValid", function (input) {
-    Object.keys(gameRooms).includes(input)
-      ? socket.emit("keyIsValid", input)
-      : socket.emit("keyNotValid");
+    if(!Object.keys(gameRooms).includes(input)){
+      socket.emit("keyNotValid");
+    } else {
+      socket.emit("keyIsValid", input);
+      console.log("---->",gameRooms[input].numPlayers)
+    }
+
   });
   // get a random code for the room
   socket.on("getRoomCode", async function () {
@@ -150,7 +153,10 @@ io.on("connection", (socket) => {
     console.log("Room created", key);
     socket.emit("roomCreated", key);
   });
+
+
 });
+
 
 
 http.listen(port, function() {

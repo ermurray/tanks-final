@@ -10,6 +10,7 @@ export default class BootScene extends Scene {
   // }
 
   preload() {
+    this.load.image('bckgrnd', 'src/assets/background.png')
     this.load.image('logo', 'src/assets/Wartank.png')
     this.load.image('start', 'src/assets/startBtn.png')
     this.load.image('tankUp', 'src/assets/tank_up32px.png');
@@ -23,7 +24,9 @@ export default class BootScene extends Scene {
     this.load.tilemapTiledJSON('map1', 'src/assets/maps/tankMap.json');
     this.load.image('bullet', 'src/assets/bullet.png');
     this.load.image('bulletUp', 'src/assets/bullet_vert.png');
-
+    this.load.html('key-form', '../../html/room-key-form.html');
+    this.load.html('chat-form', '../../html/lobby-chat-form.html');
+    this.load.image('start-sm', 'src/assets/start.png');
   }
 
   create() {
@@ -36,7 +39,7 @@ export default class BootScene extends Scene {
     // this.scene.start ('scene-game')
   }
   onDown() {
-    this.scene.start ('scene-game')
+    this.scene.start ('scene-lobby')
     // let data = "hello there from bootscene"
     // this.socket.emit("test", data)
   }

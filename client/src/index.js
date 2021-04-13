@@ -1,13 +1,35 @@
 import Phaser from 'phaser';
 import BootScene from './scenes/BootScene';
 import GameScene from './scenes/GameScene';
-import WaitingRoom from './scenes/WaitingRoom'
-    
+import WaitingRoom from './scenes/WaitingRoom';
+import Lobby from './scenes/Lobby';
+
+
+//config constants
+const WIDTH = 1216
+const HEIGHT = 640
+
+//common configs between scenes
+const SHARED_CONFIG = {
+  width: WIDTH,
+  height: HEIGHT,
+
+}
+
+const Scenes = [BootScene, WaitingRoom, GameScene, Lobby];
+const createScene = Scene => new Scene(SHARED_CONFIG)
+const initScenes = () => Scenes.map(createScene)
+
 const config = {
   type: Phaser.AUTO,
-  parent: 'phaser-example',
-  width: 1216,
-  height: 640,
+  ...SHARED_CONFIG,
+  render: {
+    pixelArt: true,
+  },
+  scale:{
+    parent: 'game-container',
+    autoCenter: true,
+  },
   physics: {
       default: 'arcade',
       arcade: {
@@ -15,13 +37,10 @@ const config = {
           debug: true
       }
   },
-  scene:[
-    
-    BootScene,
-    GameScene,
-    WaitingRoom,
-    
-  ]
+  dom: {
+    createContainer: true,
+  },
+  scene: initScenes()
 };
 
 const game = new Phaser.Game(config);
