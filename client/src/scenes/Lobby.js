@@ -77,4 +77,7 @@ export default class Lobby extends Phaser.Scene {
     // this.socket.emit("test", data)
   }
 
+  update(){
+    // console.log("state in lobby update method",this.state);
+  }
 }
