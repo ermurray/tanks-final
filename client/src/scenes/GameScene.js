@@ -136,5 +136,7 @@ export default class GameScene extends Scene {
     return new Player(this,100,100,);
   }
   
-
+  createOtherPlayer() {
+    
+  }
 }

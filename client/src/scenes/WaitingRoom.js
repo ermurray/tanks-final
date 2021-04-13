@@ -23,7 +23,7 @@ export default class WaitingRoom extends Phaser.Scene {
     
     this.scene.moveAbove('scene-lobby','scene-waitingRoom');
     
-    const scene = this;
+    const thisScene = this;
 
 
     //SOCKETS
@@ -32,33 +32,33 @@ export default class WaitingRoom extends Phaser.Scene {
 
     
     
-    scene.popUp = scene.add.graphics();
-    scene.boxes = scene.add.graphics();
+    thisScene.popUp = thisScene.add.graphics();
+    thisScene.boxes = thisScene.add.graphics();
 
     // for popup window
-    scene.popUp.lineStyle(1, 0xffffff);
-    scene.popUp.fillStyle(0xffffff, 0.5);
+    thisScene.popUp.lineStyle(1, 0xffffff);
+    thisScene.popUp.fillStyle(0xffffff, 0.5);
 
     // for boxes
-    scene.boxes.lineStyle(1, 0xffffff);
-    scene.boxes.fillStyle(0xa9a9a9, 1);
+    thisScene.boxes.lineStyle(1, 0xffffff);
+    thisScene.boxes.fillStyle(0xa9a9a9, 1);
 
     // popup window
     
-    scene.popUp.strokeRect(100, 25, 750, 500);
-    scene.popUp.fillRect(100, 25, 750, 500);
+    thisScene.popUp.strokeRect(100, 25, 750, 500);
+    thisScene.popUp.fillRect(100, 25, 750, 500);
 
     //title
-    scene.title = scene.add.text(100, 75, "Tank Multiplayer", {
+    thisScene.title = thisScene.add.text(100, 75, "Tank Multiplayer", {
       fill: "#add8e6",
       fontSize: "66px",
       fontStyle: "bold",
     });
 
     //left popup
-    scene.boxes.strokeRect(125, 200, 275, 100);
-    scene.boxes.fillRect(125, 200, 275, 100);
-    scene.requestButton = scene.add.text(140, 215, "Request Room Key", {
+    thisScene.boxes.strokeRect(125, 200, 275, 100);
+    thisScene.boxes.fillRect(125, 200, 275, 100);
+    thisScene.requestButton = thisScene.add.text(140, 215, "Request Room Key", {
       fill: "#000000",
       fontSize: "20px",
       fontStyle: "bold",
@@ -66,57 +66,57 @@ export default class WaitingRoom extends Phaser.Scene {
 
     
     //right popup
-    scene.boxes.strokeRect(450, 200, 275, 100);
-    scene.boxes.fillRect(450, 200, 275, 100);
+    thisScene.boxes.strokeRect(450, 200, 275, 100);
+    thisScene.boxes.fillRect(450, 200, 275, 100);
 
     
 
-    scene.inputElement = scene.add.dom(562.5, 250).createFromCache('key-form');
-    scene.input.keyboard.on('keydown_ENTER', e => {
+    thisScene.inputElement = thisScene.add.dom(562.5, 250).createFromCache('key-form');
+    thisScene.input.keyboard.on('keydown_ENTER', e => {
       e.preventDefault();
     })
-    scene.inputElement.addListener("click");
-    scene.inputElement.on("click", function (event) {
+    thisScene.inputElement.addListener("click");
+    thisScene.inputElement.on("click", function (event) {
       if (event.target.name === "enterRoom") {
 // form input in waiting room
-        const input = scene.inputElement.getChildByName("code-form");
-        const playerName = scene.inputElement.getChildByName('pname-form')
+        const input = thisScene.inputElement.getChildByName("code-form");
+        const playerName = thisScene.inputElement.getChildByName('pname-form')
         console.log("this is the player name:", playerName.value);
         console.log("this is the key code:", input.value);
-        scene.socket.emit("isKeyValid", input.value);
+        thisScene.socket.emit("isKeyValid", input.value);
       }
     });
 //emit event to server to generate room code and create new room
-    scene.requestButton.setInteractive();
-    scene.requestButton.on("pointerdown", () => {
-      scene.socket.emit("getRoomCode");
+    thisScene.requestButton.setInteractive();
+    thisScene.requestButton.on("pointerdown", () => {
+      thisScene.socket.emit("getRoomCode");
     });
 
-    scene.notValidText = scene.add.text(670, 295, "", {
+    thisScene.notValidText = thisScene.add.text(670, 295, "", {
       fill: "#ff0000",
       fontSize: "15px",
     });
 
-    scene.roomKeyText = scene.add.text(210, 250, "", {
+    thisScene.roomKeyText = thisScene.add.text(210, 250, "", {
       fill: "#00ff00",
       fontSize: "20px",
       fontStyle: "bold",
     });
 
-    scene.socket.on("roomCreated", function (roomKey) {
-      scene.roomKey = roomKey;
-      scene.roomKeyText.setText(scene.roomKey);
+    thisScene.socket.on("roomCreated", function (roomKey) {
+      thisScene.roomKey = roomKey;
+      thisScene.roomKeyText.setText(thisScene.roomKey);
     });
 
-    scene.socket.on("keyNotValid", function () {
-      scene.notValidText.setText("Invalid Room Key");
+    thisScene.socket.on("keyNotValid", function () {
+      thisScene.notValidText.setText("Invalid Room Key");
     });
-    scene.socket.on("gameIsFull", () =>{
-      scene.notValidText.setText("This game is full");
+    thisScene.socket.on("gameIsFull", () =>{
+      thisScene.notValidText.setText("This game is full");
     })
-    scene.socket.on("keyIsValid", function (input) {
-      scene.socket.emit("joinRoom", input);
-      scene.scene.stop("scene-waitingRoom");
+    thisScene.socket.on("keyIsValid", function (input) {
+      thisScene.socket.emit("joinRoom", input);
+      thisScene.scene.stop("scene-waitingRoom");
       // scene.scene.start('scene-lobby', input) 
     });
   }

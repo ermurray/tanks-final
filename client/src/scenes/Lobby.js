@@ -37,6 +37,8 @@ export default class Lobby extends Phaser.Scene {
       roomInfoText.setText(roomtext);
       console.log("--->",roomInfo)
     });
+
+    
     this.chat = this.add.text(900, 10, `${this.chatMessages}`,{
       lineSpacing: 15,
       backroundColor: '0xa9a9a9',
