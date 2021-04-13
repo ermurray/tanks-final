@@ -58,12 +58,13 @@ io.on("connection", (socket) => {
     console.log("gamerooms:",gameRooms)
   }, 10000);
 
-
-  socket.on("joinRoom", (roomKey) => {
+// on join room function begins
+  socket.on("joinRoom", (roomKey, playerName) => {
     socket.join(roomKey);
     const roomInfo = gameRooms[roomKey];
     console.log("roomInfo", roomInfo);
     roomInfo.players[socket.id] = {
+      pname: playerName,
       rotation: 0,
       x: 400,
       y: 300,
@@ -88,6 +89,7 @@ io.on("connection", (socket) => {
       numPlayers: roomInfo.numPlayers,
     });
   });
+// on join room function ends
 
   // when a player moves, update the player data
   socket.on("playerMovement", function (data) {
@@ -130,11 +132,11 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("isKeyValid", function (input) {
+  socket.on("isKeyValid", function (input, playerName) {
     if(!Object.keys(gameRooms).includes(input)){
       socket.emit("keyNotValid");
     } else {
-      socket.emit("keyIsValid", input);
+      socket.emit("keyIsValid", input, playerName);
       console.log("---->",gameRooms[input].numPlayers)
     }
 

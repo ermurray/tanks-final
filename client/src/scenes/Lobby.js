@@ -41,7 +41,7 @@ export default class Lobby extends Phaser.Scene {
         thisScene.state.numPlayers = numPlayers;
       const roomtext = `GAME KEY: ${roomKey} \n PLAYERS: ${numPlayers}/4`
       roomInfoText.setText(roomtext);
-      console.log("--->",state)
+      console.log("--->",players)
     });
 
 
