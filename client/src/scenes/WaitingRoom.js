@@ -81,7 +81,7 @@ export default class WaitingRoom extends Phaser.Scene {
       if (event.target.name === "enterRoom") {
 // form input in waiting room
         const input = thisScene.inputElement.getChildByName("code-form");
-        const playerName = thisScene.inputElement.getChildByName('pname-form')
+        const playerName = thisScene.inputElement.getChildByName('pname-form');
         console.log(thisScene.inputElement.getChildByName("pname-form").value);
         console.log("this is the player name:", playerName.value);
         console.log("this is the key code:", input.value);
@@ -93,6 +93,7 @@ export default class WaitingRoom extends Phaser.Scene {
       if (thisScene.inputElement.getChildByName("pname-form").value) {
         thisScene.socket.emit("joinRoom", input, playerName);
         thisScene.scene.stop("scene-waitingRoom");
+        thisScene.scene.setActive(true, "scene-lobby");
         // scene.scene.start('scene-lobby', input) 
       } else {
         thisScene.notValidText.setText("Invalid player name");

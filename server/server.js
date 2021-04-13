@@ -32,9 +32,11 @@ const gameRooms = {
   // scores: [],
   // gameScore: 0,
   // players: {},
-  // numPlayers: 0
+  // numPlayers: 0,
+  // chatMessages: []
   // }
 };
+
 
 
 
@@ -64,11 +66,12 @@ io.on("connection", (socket) => {
     const roomInfo = gameRooms[roomKey];
     console.log("roomInfo", roomInfo);
     roomInfo.players[socket.id] = {
-      pName: playerName,
       rotation: 0,
       x: 400,
       y: 300,
       playerId: socket.id,
+      pName: playerName,
+      chatMessages:[]
     };
 
     // update number of players
@@ -76,6 +79,7 @@ io.on("connection", (socket) => {
 
     // set initial state
     socket.emit("setState", roomInfo);
+    
 
     // send the players object to the new player
     socket.emit("currentPlayers", {
@@ -160,7 +164,7 @@ io.on("connection", (socket) => {
     const {roomKey, message, playerId} = data;
     socket.to(roomKey)
   })
-  
+
 });
 
 
