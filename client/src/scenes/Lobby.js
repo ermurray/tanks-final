@@ -21,15 +21,13 @@ export default class Lobby extends Phaser.Scene {
     });
     
     this.registry.set('socket', this.socket);
-    let payload = {message: "hello from waiting room scene"}
-    this.socket.emit('payloadDataTest', payload);
     this.scene.launch("scene-waitingRoom", {Socket: this.scene.socket})
     this.add.image(0,0, 'bckgrnd').setOrigin(0).setScale(0.5);
     this.textInput = this.add.dom(1100, 540).createFromCache('chat-form').setOrigin(0.5);   
     
     this.chat = this.add.text(900, 10, `${this.chatMessages}`,{
       lineSpacing: 15,
-      backroundColor: '#21313CDD',
+      backroundColor: '0xa9a9a9',
       color: '#26924F',
       padding: 10,
       fontStyle: 'bold'

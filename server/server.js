@@ -14,7 +14,8 @@ const io = require('socket.io')(http, {
 });
 const port = 3000
 
-const players = {};
+const MAX_PLAYERS = 1;
+// const players = {};
 //player spwan points 4 corners
 
 const spawnPoints = [
@@ -57,9 +58,6 @@ io.on("connection", (socket) => {
     console.log("gamerooms:",gameRooms)
   }, 10000);
 
-  socket.on('payloadDataTest', (data) => {
-    console.log("data: ",data)
-  })
 
   socket.on("joinRoom", (roomKey) => {
     socket.join(roomKey);
@@ -133,9 +131,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("isKeyValid", function (input) {
-    Object.keys(gameRooms).includes(input)
-      ? socket.emit("keyIsValid", input)
-      : socket.emit("keyNotValid");
+    if(!Object.keys(gameRooms).includes(input)){
+      socket.emit("keyNotValid");
+    } else {
+      socket.emit("keyIsValid", input);
+      console.log("---->",gameRooms[input].numPlayers)
+    }
+
   });
   // get a random code for the room
   socket.on("getRoomCode", async function () {
