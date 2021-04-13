@@ -10,6 +10,7 @@ export default class BootScene extends Scene {
   // }
 
   preload() {
+    this.load.image('bckgrnd', 'src/assets/background.png')
     this.load.image('logo', 'src/assets/Wartank.png')
     this.load.image('start', 'src/assets/startBtn.png')
     this.load.image('tankUp', 'src/assets/tank_up32px.png');

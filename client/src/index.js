@@ -15,10 +15,14 @@ const SHARED_CONFIG = {
   height: HEIGHT
 }
 
+const Scenes = [BootScene, WaitingRoom, GameScene, Lobby];
+const createScene = Scene => new Scene(SHARED_CONFIG)
+const initScenes = () => Scenes.map(createScene)
+
 const config = {
   type: Phaser.AUTO,
   ...SHARED_CONFIG,
-  parent: 'game',
+  parent: 'game-container',
   physics: {
       default: 'arcade',
       arcade: {
@@ -29,14 +33,7 @@ const config = {
   dom: {
     createContainer: true,
   },
-  scene:[
-    BootScene,
-    WaitingRoom,
-    GameScene,
-    Lobby,
-    
-    
-  ]
+  scene: initScenes()
 };
 
 const game = new Phaser.Game(config);
