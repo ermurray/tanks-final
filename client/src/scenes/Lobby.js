@@ -9,7 +9,7 @@ export default class Lobby extends Phaser.Scene {
   }
 
   create() {
-  
+    this.chat = this.add.text(1000)
     this.strtSmall = this.add.sprite(600, 540, 'start-sm')
     this.strtSmall.setInteractive();
     this.strtSmall.on('pointerdown', this.onDown,this)

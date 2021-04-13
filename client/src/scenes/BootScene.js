@@ -24,6 +24,7 @@ export default class BootScene extends Scene {
     this.load.image('bullet', 'src/assets/bullet.png');
     this.load.image('bulletUp', 'src/assets/bullet_vert.png');
     this.load.html('key-form', '../../html/room-key-form.html');
+    this.load.html('chat-form', '../../html/lobby-chat-form.html');
     this.load.image('start-sm', 'src/assets/start.png');
   }
 
