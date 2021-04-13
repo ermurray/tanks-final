@@ -19,7 +19,8 @@ export default class GameScene extends Scene {
     const layers = this.createLayers(map);
     
     player1.addCollider(layers.wallLayer);
-    
+    player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
+    // this.physics.add.collider(player1.projectilesGroup, layers.wallLayer);
 
 
 

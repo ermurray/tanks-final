@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import collidable from '../mixins/collidable';
 
 export default class Projectile extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key) {
@@ -16,10 +17,12 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.maxDistanceX = 300;
     this.maxDistanceY = 300;
     this.traveledDistanceX = 0;
-    this.traveledDistanceY = 0
+    this.traveledDistanceY = 0;
 
     // projectile rate of fire
     this.fireRate = 500;
+
+    Object.assign(this, collidable);
 
   }
 
@@ -53,5 +56,11 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.setVelocityY(this.speedY)
     console.log('Shoot a projectile');
   
+  }
+
+  destroyBullet() {
+    this.setActive(false);
+    this.setVisible(false);
+    this.body.reset(0, 0);
   }
 }
