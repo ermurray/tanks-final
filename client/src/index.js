@@ -12,7 +12,8 @@ const HEIGHT = 640
 //common configs between scenes
 const SHARED_CONFIG = {
   width: WIDTH,
-  height: HEIGHT
+  height: HEIGHT,
+
 }
 
 const Scenes = [BootScene, WaitingRoom, GameScene, Lobby];
@@ -22,7 +23,13 @@ const initScenes = () => Scenes.map(createScene)
 const config = {
   type: Phaser.AUTO,
   ...SHARED_CONFIG,
-  parent: 'game-container',
+  render: {
+    pixelArt: true,
+  },
+  scale:{
+    parent: 'game-container',
+    autoCenter: true,
+  },
   physics: {
       default: 'arcade',
       arcade: {

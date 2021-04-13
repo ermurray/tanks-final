@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 export default class WaitingRoom extends Phaser.Scene {
   constructor() {
     super("scene-waitingRoom");
+    
   }
 
   init(data) {

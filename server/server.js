@@ -45,7 +45,7 @@ function codeGenerator() {
   for (let i = 0; i < 5; i++) {
     code += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  return code;
+  return 123;
 }
 
 io.on("connection", (socket) => {
