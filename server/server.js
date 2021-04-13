@@ -14,7 +14,7 @@ const io = require('socket.io')(http, {
 });
 const port = 3000
 
-const MAX_PLAYERS = 1;
+const MAX_PLAYERS = 4;
 // const players = {};
 //player spwan points 4 corners
 
@@ -75,7 +75,7 @@ io.on("connection", (socket) => {
 
     // set initial state
     socket.emit("setState", roomInfo);
-    
+
     // send the players object to the new player
     socket.emit("currentPlayers", {
       players: roomInfo.players,

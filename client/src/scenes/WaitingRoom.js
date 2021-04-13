@@ -4,8 +4,6 @@ import io from 'socket.io-client';
 export default class WaitingRoom extends Phaser.Scene {
   constructor() {
     super("scene-waitingRoom");
-    this.state = {};
-    this.hasBeenSet = false;
   }
 
   init(data) {
@@ -70,11 +68,13 @@ export default class WaitingRoom extends Phaser.Scene {
     thisScene.boxes.fillRect(450, 200, 275, 100);
 
     
-
+//prevent form default action on enter key
     thisScene.inputElement = thisScene.add.dom(562.5, 250).createFromCache('key-form');
     thisScene.input.keyboard.on('keydown_ENTER', e => {
       e.preventDefault();
     })
+
+// on click of enterRoom button emit isKeyValid to server and initiate validation
     thisScene.inputElement.addListener("click");
     thisScene.inputElement.on("click", function (event) {
       if (event.target.name === "enterRoom") {
@@ -86,6 +86,14 @@ export default class WaitingRoom extends Phaser.Scene {
         thisScene.socket.emit("isKeyValid", input.value);
       }
     });
+// if room key validation succeds on server recive keyIsValid message and emit joinRoom with input of form from above stop waiting room scene to make lobby scene active.
+    thisScene.socket.on("keyIsValid", function (input) {
+      thisScene.socket.emit("joinRoom", input);
+      thisScene.scene.stop("scene-waitingRoom");
+      // scene.scene.start('scene-lobby', input) 
+    });
+
+
 //emit event to server to generate room code and create new room
     thisScene.requestButton.setInteractive();
     thisScene.requestButton.on("pointerdown", () => {
@@ -114,13 +122,6 @@ export default class WaitingRoom extends Phaser.Scene {
     thisScene.socket.on("gameIsFull", () =>{
       thisScene.notValidText.setText("This game is full");
     })
-    thisScene.socket.on("keyIsValid", function (input) {
-      thisScene.socket.emit("joinRoom", input);
-      thisScene.scene.stop("scene-waitingRoom");
-      // scene.scene.start('scene-lobby', input) 
-    });
   }
 
-
-  update() {}
 }
