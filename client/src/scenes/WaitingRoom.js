@@ -57,7 +57,7 @@ export default class WaitingRoom extends Phaser.Scene {
     //left popup
     thisScene.boxes.strokeRect(125, 200, 275, 100);
     thisScene.boxes.fillRect(125, 200, 275, 100);
-    thisScene.requestButton = thisScene.add.text(140, 215, "Request Room Key", {
+    thisScene.requestButton = thisScene.add.text(140, 215, "CREATE NEW GAME", {
       fill: "#000000",
       fontSize: "20px",
       fontStyle: "bold",
@@ -84,12 +84,12 @@ export default class WaitingRoom extends Phaser.Scene {
         const playerName = thisScene.inputElement.getChildByName('pname-form')
         console.log("this is the player name:", playerName.value);
         console.log("this is the key code:", input.value);
-        thisScene.socket.emit("isKeyValid", input.value);
+        thisScene.socket.emit("isKeyValid", input.value, playerName.value);
       }
     });
 // if room key validation succeds on server recive keyIsValid message and emit joinRoom with input of form from above stop waiting room scene to make lobby scene active.
-    thisScene.socket.on("keyIsValid", function (input) {
-      thisScene.socket.emit("joinRoom", input);
+    thisScene.socket.on("keyIsValid", function (input, playerName) {
+      thisScene.socket.emit("joinRoom", input, playerName);
       thisScene.scene.stop("scene-waitingRoom");
       // scene.scene.start('scene-lobby', input) 
     });
