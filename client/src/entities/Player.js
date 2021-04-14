@@ -21,6 +21,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
     this.projectilesGroup = new ProjectilesGroup(this.scene);
+    this.playerHealth = 30;
   
     this.setCollideWorldBounds(true);
     this.scene.input.keyboard.on('keydown-SPACE', () => {

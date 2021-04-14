@@ -84,7 +84,7 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: 'bold',
     }) 
     this.chat = this.add.text(850, 25, "",{
-      lineSpacing: 10,
+      lineSpacing: 5,
       backroundColor: '0xa9a9a9',
       color: '#26924F',
       padding: 10,
@@ -94,7 +94,7 @@ export default class Lobby extends Phaser.Scene {
       }
       
     });
-    thisScene.textInput = this.add.dom(875, 540).createFromCache('chat-form');  
+    thisScene.textInput = this.add.dom(855, 540).createFromCache('chat-form').setOrigin(0);  
     this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
     
     this.enterKey.on('down', e => {
