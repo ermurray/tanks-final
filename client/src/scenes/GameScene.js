@@ -17,9 +17,12 @@ export default class GameScene extends Scene {
     const map = this.createMap();
     const layers = this.createLayers(map);
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
-    const player1 = this.createPlayer(playerSpawnZones);
+    
+    const player1 = this.createPlayer(playerSpawnZones); 
     console.log("layer--->",layers.spawnZone)
+    ///work around for player sprite render below tile map until move?
     player1.setTexture('tankRight');
+    // ----------------------------------------------
     
     // player1.addCollider(layers.wallLayer);
     // player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);

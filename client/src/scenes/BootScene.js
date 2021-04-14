@@ -27,6 +27,11 @@ export default class BootScene extends Scene {
     this.load.html('key-form', '../../html/room-key-form.html');
     this.load.html('chat-form', '../../html/lobby-chat-form.html');
     this.load.image('start-sm', 'src/assets/start.png');
+    this.load.image('tankBlue', 'src/assets/tank-blue.png');
+    this.load.image('tankRed', 'src/assets/tank-green.png');
+    this.load.image('tankGreen', 'src/assets/tank-red.png');
+    this.load.image('tankYellow', 'src/assets/tank-yellow.png');
+    
   }
 
   create() {

@@ -48,13 +48,28 @@ export default class Lobby extends Phaser.Scene {
       if(thisScene.chatMessages.length > 20){
         thisScene.chatMessages.shift();
       }
-      thisScene.chat.setText(this.chatMessages)
       thisScene.chatMessages.push(`Hi ${thisScene.state.playerName} Welcome to ${roomKey}`)
-      // console.log("setstate", thisScene.chatMessages)
       thisScene.chat.setText(thisScene.chatMessages)
       console.log("--->",thisScene.state.playerName)
     });
     
+    this.socket.on("newPlayer", function(data){
+      const newPlayerId = data.playerInfo.playerId;
+      const newPName = data.playerInfo.pName;
+      console.log("new player", newPName);
+      thisScene.chatMessages.push(`---------------\nA Rouge Operator: ${newPName} has joined the battle \n---------------\nFire Away`);
+      if(thisScene.chatMessages.length > 20){
+        thisScene.chatMessages.shift();
+      }
+      thisScene.chat.setText(thisScene.chatMessages)
+      console.log("current state on playerjoin", thisScene.state);
+      console.log("newplayer-->", newPlayerId);
+      thisScene.state.players[newPlayerId] = data.playerInfo;
+      thisScene.state.numPlayers = data.numPlayers;
+      const roomtext = `GAME KEY: ${thisScene.state.roomKey} \n PLAYERS: ${thisScene.state.numPlayers}/4`;
+      roomInfoText.setText(roomtext);
+      console.log("current state afterplayerJoin", thisScene.state);
+    });
     // PLAYERS
     // this.socket.on("currentPlayers", function (arg) {
     //   const { players, numPlayers } = arg;
