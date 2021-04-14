@@ -76,7 +76,6 @@ export default class Lobby extends Phaser.Scene {
     //   thisScene.addOtherPlayers(thisScene, playerInfo);
     //   thisScene.state.numPlayers = numPlayers;
     // });
-    this.textInput = this.add.dom(875, 540).createFromCache('chat-form').setOrigin(0);  
     this.chatheader = this.add.text(850, 10, "TANK CHAT",{
       lineSpacing: 10,
       backroundColor: '0xa9a9a9',
@@ -95,15 +94,13 @@ export default class Lobby extends Phaser.Scene {
       }
       
     });
-    thisScene.input.keyboard.on('keydown_ENTER', e => {
-      e.preventDefault();
-    })
-      this.textInput.addListener("click");
-      thisScene.textInput.on("click", function (event) {
-        if (event.target.name === "chat-submit") {
+    thisScene.textInput = this.add.dom(875, 540).createFromCache('chat-form');  
+    this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
+    
+    this.enterKey.on('down', e => {
       const chatBox = thisScene.textInput.getChildByName("chat-form");
-          console.log(chatBox.value);
-      if(chatBox.value !== ""){
+      if (chatBox.value !== "") {
+        console.log(chatBox.value);
         const message = {
           message: chatBox.value,
           pName: thisScene.state.playerName,
@@ -112,12 +109,12 @@ export default class Lobby extends Phaser.Scene {
         thisScene.socket.emit("chatMessage", message)
         chatBox.value = ""
       }
-      }
+      // }
     })
     
     this.socket.on("message", (pName,message)=>{
-      
-      thisScene.chatMessages.push(`${pName}: => ${message}`)
+
+      thisScene.chatMessages.push(`${pName}: ${message}`)
       if(this.chatMessages.length > 20){
         this.chatMessages.shift();
       }

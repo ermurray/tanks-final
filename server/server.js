@@ -56,9 +56,9 @@ io.on("connection", (socket) => {
     `A socket connection to the server has been made: ${socket.id}`
   );
 
-  setInterval(() => {
-    console.log("gamerooms:",gameRooms)
-  }, 10000);
+  // setInterval(() => {
+  //   console.log("gamerooms:",gameRooms)
+  // }, 10000);
 
 // on join room function begins
   socket.on("joinRoom", (roomKey, playerName) => {
@@ -162,8 +162,14 @@ io.on("connection", (socket) => {
 
   socket.on("chatMessage", (data)=>{
     const {roomKey, message, pName} = data;
-    console.log('chatlogserver:\n', roomKey, pName,message);
-    socket.to(roomKey).emit("message", pName, message )
+    const newMessage = `${pName}: ${message}`
+    // gameRooms[roomKey].chatMessages.push(newMessage)
+    // if(gameRooms[roomKey].chatMessages.length > 20) {
+    //   gameRooms[roomKey].chatMessages.length.shift();
+    // }
+    console.log('chatlogserver:\n',newMessage);
+    console.log(gameRooms)
+    io.in(roomKey).emit("message", pName, message )
   })
 
 
