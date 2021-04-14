@@ -41,9 +41,14 @@ export default class Lobby extends Phaser.Scene {
       const {roomKey, players, numPlayers } = state
       thisScene.state.roomKey = roomKey;
       thisScene.state.players = players;
-      thisScene.state.playerName = players[thisScene.socket.id].pName;
+      //-----------------------------------------
+      // assignment will need to be fixed here it is adding it to state object instead of inside the players object there are other locations that it is being called in the lobby that will break if not all changed.
+      thisScene.state.playerName = players[thisScene.socket.id].pName; 
+      //--------------------------------------
       thisScene.state.numPlayers = numPlayers;
-      thisScene.state.pNumber = players[thisScene.socket.id].pNumber;
+      console.log("setstate obj",state)
+      console.log("setState--->game state obj", thisScene.state)
+      thisScene.state.players[thisScene.socket.id].pNumber = players[thisScene.socket.id].pNumber;
       const roomtext = `GAME KEY: ${roomKey} \n PLAYERS: ${numPlayers}/4`
       roomInfoText.setText(roomtext);
       if(thisScene.chatMessages.length > 20){
@@ -51,7 +56,6 @@ export default class Lobby extends Phaser.Scene {
       }
       thisScene.chatMessages.push(`Hi ${thisScene.state.playerName} Welcome to ${roomKey}`)
       thisScene.chat.setText(thisScene.chatMessages)
-      console.log("--->",thisScene.state.playerName)
     });
     
     this.socket.on("newPlayer", function(data){
@@ -143,76 +147,99 @@ export default class Lobby extends Phaser.Scene {
     this.strtSmall = this.add.sprite(600, 540, 'start-sm');
     this.strtSmall.setInteractive();
     this.strtSmall.on('pointerdown', this.onDown,this);
-   
-    // sprites for player number selection
-    this.p1Text = this.add.text(500, 150, "", {
+  
+    // player Number Selection
+  //----------------------------------------------------------------
+    this.p1Text = this.add.text(400, 150, "", {
       fill: "#00ff00",
       fontSize: "20px",
       fontStyle: "bold"
     });
 
-    this.p1Select = this.add.sprite(400,150,'tankBlue').setInteractive();
+    this.p1Select = this.add.sprite(300,150,'tankBlue').setInteractive();
     this.p1Select.on('pointerdown', (e) => {
-      thisScene.setPlayerText(thisScene.p1Text, thisScene.state.playerName, thisScene.state.pNumber);
-      console.log("before emit setpNumber1",thisScene.state.pNumber)
-      thisScene.state.pNumber = "p1";
-      thisScene.socket.emit("setpNumber", this.socket.id, thisScene.state)
-      console.log("after emit setpNumber1",this.socket)
-      console.log("after emit setpNumber1",thisScene.state.pNumber)
+      thisScene.setPlayerText(thisScene.p1Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
+      
+      thisScene.state.players[thisScene.socket.id].pNumber = "p1";
+      thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
+    
     });
 
     
 
-    this.p2Select = this.add.sprite(400,250,'tankRed').setInteractive();
+    this.p2Select = this.add.sprite(300,250,'tankRed').setInteractive();
     this.p2Select.on('pointerdown', (e) => {
-      thisScene.setPlayerText(thisScene.p2Text, thisScene.state.playerName, thisScene.state.pNumber);
-      console.log("before emit setpNumber2",thisScene.state.pNumber)
-      thisScene.state.pNumber = "p2";
-      thisScene.socket.emit("setpNumber", this.socket.id, thisScene.state)
-      console.log("after emit setpNumber2",this.socket)
-      console.log("after emit setpNumber2",thisScene.state.pNumber)
+      thisScene.setPlayerText(thisScene.p2Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
+     
+      thisScene.state.players[thisScene.socket.id].pNumber = "p2";
+      thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
+  
     });
 
 
-    this.p2Text = this.add.text(500, 250, "", {
+    this.p2Text = this.add.text(400, 250, "", {
       fill: "#00ff00",
       fontSize: "20px",
       fontStyle: "bold"
     })
 
-    this.p3Select = this.add.sprite(400,350,'tankGreen').setInteractive();
+    this.p3Select = this.add.sprite(300,350,'tankGreen').setInteractive();
     this.p3Select.on('pointerdown', (e) => {
       
       console.log("before emit setpNumber2",thisScene.state.pNumber)
-      thisScene.setPlayerText(thisScene.p3Text, thisScene.state.playerName, thisScene.state.pNumber);
-      thisScene.state.pNumber = "p3";
-      thisScene.socket.emit("setpNumber", this.socket.id, thisScene.state)
-      console.log("after emit setpNumber2",this.socket)
-      console.log("after emit setpNumber2",thisScene.state.pNumber)
+      thisScene.setPlayerText(thisScene.p3Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
+      thisScene.state.players[thisScene.socket.id].pNumber = "p3";
+      thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
+   
     });
 
-    this.p3Text = this.add.text(500, 350, "", {
+    this.p3Text = this.add.text(400, 350, "", {
       fill: "#00ff00",
       fontSize: "20px",
       fontStyle: "bold"
     })
 
 
-    this.p4Select = this.add.sprite(400,450,'tankYellow').setInteractive();
+    this.p4Select = this.add.sprite(300,450,'tankYellow').setInteractive();
     this.p4Select.on('pointerdown', (e) => {
-      thisScene.setPlayerText(thisScene.p4Text, thisScene.state.playerName, thisScene.state.pNumber);
-      console.log("before emit setpNumber2",thisScene.state.pNumber)
-      thisScene.state.pNumber = "p4";
-      thisScene.socket.emit("setpNumber", this.socket.id, thisScene.state);
-      console.log("after emit setpNumber2",this.socket)
-      console.log("after emit setpNumber2",thisScene.state.pNumber)
+      thisScene.setPlayerText(thisScene.p4Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
+      thisScene.state.players[thisScene.socket.id].pNumber = "p4";
+      console.log("set-pNumber",thisScene.state)
+      thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
+ 
     });
-    this.p4Text = this.add.text(500, 450, "", {
+    this.p4Text = this.add.text(400, 450, "", {
       fill: "#00ff00",
       fontSize: "20px",
       fontStyle: "bold"
     });
     
+    this.socket.on('player-selectedTank', (playerID, playerObj, playerName) => {
+      const oldTankSelected = thisScene.state.players[playerID].pNumber
+      thisScene.state.players[playerID] = playerObj
+      const tankSelected = playerObj.pNumber
+      switch(tankSelected){
+        case 'p1':
+          thisScene.setPlayerText(thisScene.p1Text, playerName, oldTankSelected)
+          break;
+        case 'p2':
+          thisScene.setPlayerText(thisScene.p2Text, playerName, oldTankSelected)
+          break;
+        case 'p3':
+          thisScene.setPlayerText(thisScene.p3Text, playerName, oldTankSelected )
+          break;
+        case 'p4':
+          thisScene.setPlayerText(thisScene.p4Text, playerName, oldTankSelected )    
+          break;
+
+      };
+      console.log("player-selectedTank playerID:", playerID);
+      console.log("player-selectedTank playerObj:", playerObj);
+      console.log("player-selectedTank playerName:", playerName);
+      console.log("state obj after player-selectedTank:",thisScene.state)
+    });
+//-----------------------------------------------------------------
+//endof player number selection
   }
 
   onDown() {

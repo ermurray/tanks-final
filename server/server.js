@@ -35,7 +35,7 @@ const gameRooms = {
       // numPlayers: 0,
       // chatMessages: []  //will hold room chat messages
       //roomfull: false  //use to check room is full
-      
+
   // }
 };
 
@@ -68,9 +68,9 @@ io.on("connection", (socket) => {
     const roomInfo = gameRooms[roomKey];
     console.log("roomInfo", roomInfo);
     roomInfo.players[socket.id] = {
-      rotation: 0,
-      x: 400,
-      y: 300,
+      // rotation: 0,
+      // x: 400,
+      // y: 300,
       playerId: socket.id,
       pName: playerName,
       pNumber:'',
@@ -176,7 +176,16 @@ io.on("connection", (socket) => {
     io.in(roomKey).emit("message", pName, message )
   })
 
-
+  socket.on('set-pNumber', (socketID, stateObj)=>{
+    const { roomKey, players} = stateObj;
+    console.log('before game room update:',gameRooms[roomKey]);
+    const selectedPNumber = players[socketID].pNumber;
+    gameRooms[roomKey].players[socketID].pNumber = selectedPNumber;
+    console.log('set-pNumber stateobj players:', players[socketID].pNumber)
+    console.log('players obj in room', gameRooms[roomKey].players[socketID])
+   
+    io.in(roomKey).emit('player-selectedTank', socketID, players[socketID], players[socketID].pName)
+  });
 });
 
 
