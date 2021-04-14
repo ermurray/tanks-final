@@ -41,20 +41,23 @@ export default class GameScene extends Scene {
     });
 
     // Destructible box logic, may need refactoring
-    let boxes = this.physics.add.staticGroup();
-    boxes.create(600, 400, 'breakable').setScale(0.08).refreshBody();
-    boxes.create(800, 400, 'breakable').setScale(0.08).refreshBody();
+    let boxes = this.physics.add.group();
+    boxes.create(600, 400, 'breakable').setScale(0.08);
+    boxes.create(800, 400, 'breakable').setScale(0.08);
+    boxes.children.each((box) => {
+      box.body.immovable = true;
+      box.body.moves = false;
+    })
+
     player1.addCollider(boxes);
-    // this.physics.add.collider(player1.projectilesGroup, boxes, this.destroyBox);
-    player1.projectilesGroup.addCollider(boxes, (box, projectile) => {
-      // box.disableBody(true, true);
+
+    this.physics.add.overlap(player1.projectilesGroup, boxes, (projectile, box) => {
       box.destroy();
-      box.setActive(false);
-      // box.setVisible(false);
-      // projectile.body.reset(0,0);
+      projectile.body.reset(0,0);
+      // projectile.disableBody(true, true);
       projectile.setActive(false);
       projectile.setVisible(false);
-    });
+    }, null, this);
 
 
 
