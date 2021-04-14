@@ -107,7 +107,7 @@ export default class Lobby extends Phaser.Scene {
         const message = {
           message: chatBox.value,
           pName: thisScene.state.playerName,
-
+          roomKey: thisScene.state.roomKey
         };
         thisScene.socket.emit("chatMessage", message)
         chatBox.value = ""
@@ -115,7 +115,9 @@ export default class Lobby extends Phaser.Scene {
       }
     })
     
-    this.socket.on("message", (message)=>{
+    this.socket.on("message", (pName,message)=>{
+      
+      thisScene.chatMessages.push(`${pName}: => ${message}`)
       if(this.chatMessages.length > 20){
         this.chatMessages.shift();
       }
