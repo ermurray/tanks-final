@@ -3,7 +3,7 @@ import collidable from '../mixins/collidable';
 import ProjectilesGroup from '../attacks/ProjectilesGroup';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, socket) {
+  constructor(scene, x, y, socket, state) {
     super(scene, x, y);
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -11,6 +11,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     //Mixins to assign other objects to this context
     Object.assign(this, collidable);
     this.socket = socket;
+    this.state = state;
+    console.log("Initial State:", state);
+    console.log("Socket", socket);
     this.init();
     this.initEvents();
   }
@@ -49,7 +52,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(0)
         this.setTexture('tankLeft');
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
-        console.log('leftkey',this.socket);
       }
       else if (right.isDown || this.wasd.right.isDown) {
         console.log("right");
@@ -77,6 +79,28 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(0);
         this.setVelocityY(0);
       }
+
+      // emit player movement
+      let x = this.x;
+      let y = this.y;
+      if (
+        this.oldPosition &&
+        (x !== this.oldPosition.x ||
+          y !== this.oldPosition.y)
+      ) {
+        this.moving = true;
+        this.socket.emit("playerMovement", {
+          x: this.x,
+          y: this.y,
+          roomKey: this.state.roomKey,
+          socket: this.socket.id
+        });
+      }
+      // save old position data
+      this.oldPosition = {
+        x: this.x,
+        y: this.y,
+      };
   }
 
   

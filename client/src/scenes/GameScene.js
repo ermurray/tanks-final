@@ -14,6 +14,7 @@ export default class GameScene extends Scene {
             
   create () {
     this.socket = this.registry.get('socket');
+    this.state = this.registry.get('state');
     const player1 = this.createPlayer();
     player1.setTexture('tankRight');
     const map = this.createMap();
@@ -135,7 +136,7 @@ export default class GameScene extends Scene {
   }
 
   createPlayer() {
-    return new Player(this,100,100, this.socket);
+    return new Player(this,100,100, this.socket, this.state);
   }
   
   createOtherPlayer() {
