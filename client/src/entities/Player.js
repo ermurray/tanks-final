@@ -10,6 +10,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     
     //Mixins to assign other objects to this context
     Object.assign(this, collidable);
+    
     this.socket = socket;
     this.state = state;
     console.log("Initial State:", state);
@@ -104,5 +105,5 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       };
   }
 
-  
+
 }
