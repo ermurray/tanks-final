@@ -32,7 +32,10 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.traveledDistanceX += this.body.deltaAbsX();
     this.traveledDistanceY += this.body.deltaAbsY();
 
+
     // Destructible boxes don't currently work well with the if statements below
+    
+    /*
     if (this.traveledDistanceX >= this.maxDistanceX) {
       this.body.reset(0,0);
       this.setActive(false);
@@ -46,6 +49,8 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
       this.setVisible(false);
       this.traveledDistanceY = 0;
     }
+    */
+    
     
 
   }

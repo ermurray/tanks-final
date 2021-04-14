@@ -28,8 +28,17 @@ export default class GameScene extends Scene {
     const layers = this.createLayers(map);
     
     player1.addCollider(layers.wallLayer);
-    // player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
-    // this.physics.add.collider(player1.projectilesGroup, layers.wallLayer);
+    console.log(player1.projectilesGroup.children.entries);
+    /*
+    for (let i = 0; i < player1.projectilesGroup.children.entries.length; i++) {
+      player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
+    }
+    */
+
+    this.physics.add.collider(player1.projectilesGroup, layers.wallLayer, (projectile, wall) => {
+      projectile.setVisible(false);
+      projectile.setActive(false);
+    });
 
     // Destructible box logic, may need refactoring
     let boxes = this.physics.add.staticGroup();
@@ -38,8 +47,13 @@ export default class GameScene extends Scene {
     player1.addCollider(boxes);
     // this.physics.add.collider(player1.projectilesGroup, boxes, this.destroyBox);
     player1.projectilesGroup.addCollider(boxes, (box, projectile) => {
-      box.disableBody(true, true);
-      projectile.disableBody(true, true);
+      // box.disableBody(true, true);
+      box.destroy();
+      box.setActive(false);
+      // box.setVisible(false);
+      // projectile.body.reset(0,0);
+      projectile.setActive(false);
+      projectile.setVisible(false);
     });
 
 
