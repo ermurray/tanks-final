@@ -17,7 +17,7 @@ export default class Lobby extends Phaser.Scene {
 
 
     const thisScene = this;
-    this.otherPlayers = this.physics.add.group();
+    // this.otherPlayers = this.physics.add.group();
 
     this.socket = io('http://localhost:3000') //this will need to change on prod server
     this.socket.on('connect', function() {
@@ -41,20 +41,40 @@ export default class Lobby extends Phaser.Scene {
       const {roomKey, players, numPlayers } = state
       thisScene.state.roomKey = roomKey;
       thisScene.state.players = players;
-      thisScene.state.playerName = players[thisScene.socket.id].pName;
+      //-----------------------------------------
+      // assignment will need to be fixed here it is adding it to state object instead of inside the players object there are other locations that it is being called in the lobby that will break if not all changed.
+      thisScene.state.playerName = players[thisScene.socket.id].pName; 
+      //--------------------------------------
       thisScene.state.numPlayers = numPlayers;
+      console.log("setstate obj",state)
+      console.log("setState--->game state obj", thisScene.state)
+      thisScene.state.players[thisScene.socket.id].pNumber = players[thisScene.socket.id].pNumber;
       const roomtext = `GAME KEY: ${roomKey} \n PLAYERS: ${numPlayers}/4`
       roomInfoText.setText(roomtext);
       if(thisScene.chatMessages.length > 20){
         thisScene.chatMessages.shift();
       }
-      thisScene.chat.setText(this.chatMessages)
       thisScene.chatMessages.push(`Hi ${thisScene.state.playerName} Welcome to ${roomKey}`)
-      // console.log("setstate", thisScene.chatMessages)
       thisScene.chat.setText(thisScene.chatMessages)
-      console.log("--->",thisScene.state.playerName)
     });
     
+    this.socket.on("newPlayer", function(data){
+      const newPlayerId = data.playerInfo.playerId;
+      const newPName = data.playerInfo.pName;
+      console.log("new player", newPName);
+      thisScene.chatMessages.push(`---------------`,`A Rouge Operator: ${newPName}, has `,`joined the battle`, `---------------`,`Fire Away`);
+      if(thisScene.chatMessages.length >= 20){
+        thisScene.chatMessages.shift();
+      }
+      thisScene.chat.setText(thisScene.chatMessages)
+      console.log("current state on playerjoin", thisScene.state);
+      console.log("newplayer-->", newPlayerId);
+      thisScene.state.players[newPlayerId] = data.playerInfo;
+      thisScene.state.numPlayers = data.numPlayers;
+      const roomtext = `GAME KEY: ${thisScene.state.roomKey} \n PLAYERS: ${thisScene.state.numPlayers}/4`;
+      roomInfoText.setText(roomtext);
+      console.log("current state afterplayerJoin", thisScene.state);
+    });
     // PLAYERS
     // this.socket.on("currentPlayers", function (arg) {
     //   const { players, numPlayers } = arg;
@@ -83,8 +103,8 @@ export default class Lobby extends Phaser.Scene {
       padding: 10,
       fontStyle: 'bold',
     }) 
-    this.chat = this.add.text(850, 25, "",{
-      lineSpacing: 10,
+    this.chat = this.add.text(850, 30, "",{
+      lineSpacing: 5,
       backroundColor: '0xa9a9a9',
       color: '#26924F',
       padding: 10,
@@ -94,7 +114,7 @@ export default class Lobby extends Phaser.Scene {
       }
       
     });
-    thisScene.textInput = this.add.dom(875, 540).createFromCache('chat-form');  
+    thisScene.textInput = this.add.dom(855, 540).createFromCache('chat-form').setOrigin(0);  
     this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
     
     this.enterKey.on('down', e => {
@@ -122,20 +142,138 @@ export default class Lobby extends Phaser.Scene {
     });
 
    
-
-
-    this.strtSmall = this.add.sprite(600, 540, 'start-sm')
+    
+    
+    this.strtSmall = this.add.sprite(600, 540, 'start-sm');
     this.strtSmall.setInteractive();
-    this.strtSmall.on('pointerdown', this.onDown,this)
+    this.strtSmall.on('pointerdown', this.onDown,this);
+  
+    // player Number Selection
+  //----------------------------------------------------------------
+    this.p1Text = this.add.text(400, 150, "", {
+      fill: "#00ff00",
+      fontSize: "20px",
+      fontStyle: "bold"
+    });
+
+    this.p1Select = this.add.sprite(300,150,'tankBlue').setInteractive();
+    this.p1Select.on('pointerdown', (e) => {
+      thisScene.setPlayerText(thisScene.p1Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
+      
+      thisScene.state.players[thisScene.socket.id].pNumber = "p1";
+      thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
+    
+    });
+
+    
+
+    this.p2Select = this.add.sprite(300,250,'tankRed').setInteractive();
+    this.p2Select.on('pointerdown', (e) => {
+      thisScene.setPlayerText(thisScene.p2Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
+     
+      thisScene.state.players[thisScene.socket.id].pNumber = "p2";
+      thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
+  
+    });
+
+
+    this.p2Text = this.add.text(400, 250, "", {
+      fill: "#00ff00",
+      fontSize: "20px",
+      fontStyle: "bold"
+    })
+
+    this.p3Select = this.add.sprite(300,350,'tankGreen').setInteractive();
+    this.p3Select.on('pointerdown', (e) => {
+      
+      console.log("before emit setpNumber2",thisScene.state.pNumber)
+      thisScene.setPlayerText(thisScene.p3Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
+      thisScene.state.players[thisScene.socket.id].pNumber = "p3";
+      thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
+   
+    });
+
+    this.p3Text = this.add.text(400, 350, "", {
+      fill: "#00ff00",
+      fontSize: "20px",
+      fontStyle: "bold"
+    })
+
+
+    this.p4Select = this.add.sprite(300,450,'tankYellow').setInteractive();
+    this.p4Select.on('pointerdown', (e) => {
+      thisScene.setPlayerText(thisScene.p4Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
+      thisScene.state.players[thisScene.socket.id].pNumber = "p4";
+      console.log("set-pNumber",thisScene.state)
+      thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
+ 
+    });
+    this.p4Text = this.add.text(400, 450, "", {
+      fill: "#00ff00",
+      fontSize: "20px",
+      fontStyle: "bold"
+    });
+    
+    this.socket.on('player-selectedTank', (playerID, playerObj, playerName) => {
+      const oldTankSelected = thisScene.state.players[playerID].pNumber
+      thisScene.state.players[playerID] = playerObj
+      const tankSelected = playerObj.pNumber
+      switch(tankSelected){
+        case 'p1':
+          thisScene.setPlayerText(thisScene.p1Text, playerName, oldTankSelected)
+          break;
+        case 'p2':
+          thisScene.setPlayerText(thisScene.p2Text, playerName, oldTankSelected)
+          break;
+        case 'p3':
+          thisScene.setPlayerText(thisScene.p3Text, playerName, oldTankSelected )
+          break;
+        case 'p4':
+          thisScene.setPlayerText(thisScene.p4Text, playerName, oldTankSelected )    
+          break;
+
+      };
+      console.log("player-selectedTank playerID:", playerID);
+      console.log("player-selectedTank playerObj:", playerObj);
+      console.log("player-selectedTank playerName:", playerName);
+      console.log("state obj after player-selectedTank:",thisScene.state)
+    });
+//-----------------------------------------------------------------
+//endof player number selection
   }
 
   onDown() {
     this.scene.start ('scene-game')
-    // let data = "hello there from bootscene"
-    // this.socket.emit("test", data)
   }
 
   update(){
-    // console.log("state in lobby update method",this.state);
+  }
+
+  setPlayerNumber() {
+    //take in player info obj and position clicked as args
+    //assign pNumber in player info obj in state.
+    //display player id and name beside tank
+     
+  }
+  setPlayerText(textarea, playerName, oldPNumber){
+    if (oldPNumber !== ''){
+     switch (oldPNumber) {
+      case 'p1':
+       this.p1Text.setText('');
+        break;
+      case 'p2':
+       this.p2Text.setText('');
+        break;
+      case 'p3':
+        this.p3Text.setText('');    
+        break;
+      case 'p4':
+       this.p4Text.setText('');
+        break;
+     }
+     console.log("oldtextarea",)
+
+    }
+   textarea.setText(`Operator:${playerName} will be this tank`)
   }
 }

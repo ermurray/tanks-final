@@ -10,6 +10,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     
     //Mixins to assign other objects to this context
     Object.assign(this, collidable);
+    
     this.socket = socket;
     this.state = state;
     console.log("Initial State:", state);
@@ -20,10 +21,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   init() {
     this.playerSpeed = 100;
-    this.depth = this.y;
+    this.depth = 3;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
     this.projectilesGroup = new ProjectilesGroup(this.scene);
+    this.Health = 30;
   
     this.setCollideWorldBounds(true);
     this.scene.input.keyboard.on('keydown-SPACE', () => {
@@ -52,6 +54,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(0)
         this.setTexture('tankLeft');
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
+        console.log('left velo check', this.body.velocity)
       }
       else if (right.isDown || this.wasd.right.isDown) {
         console.log("right");
@@ -83,6 +86,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       // emit player movement
       let x = this.x;
       let y = this.y;
+    
       if (
         this.oldPosition &&
         (x !== this.oldPosition.x ||
@@ -92,6 +96,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.socket.emit("playerMovement", {
           x: this.x,
           y: this.y,
+          vector2: this.body.velocity,
           roomKey: this.state.roomKey,
           socket: this.socket.id
         });
@@ -103,5 +108,5 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       };
   }
 
-  
+
 }

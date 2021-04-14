@@ -6,11 +6,15 @@ import Lobby from './scenes/Lobby';
 
 
 //config constants
+const MAP_WIDTH = 1216;
+const MAP_HEIGHT = 640;
+// const WIDTH = document.body.offsetWidth
 const WIDTH = 1216
 const HEIGHT = 640
 
 //common configs between scenes
 const SHARED_CONFIG = {
+  mapOffset: MAP_WIDTH > WIDTH ? MAP_WIDTH - WIDTH : 0,
   width: WIDTH,
   height: HEIGHT,
 
@@ -24,7 +28,7 @@ const config = {
   type: Phaser.AUTO,
   ...SHARED_CONFIG,
   render: {
-    pixelArt: false,
+    pixelArt: true,
   },
   scale:{
     parent: 'game-container',
@@ -34,7 +38,7 @@ const config = {
       default: 'arcade',
       arcade: {
           gravity: { y: 0 },
-          debug: true
+          debug: false
       }
   },
   dom: {

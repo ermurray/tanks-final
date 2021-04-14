@@ -1,8 +1,6 @@
 import {Scene} from 'phaser';
 import io from 'socket.io-client';
 import Player from '../entities/Player';
-import unbreakableBlock from '../assets/platform.png';
-import box1 from '../assets/boxes/1.png'
 
 
 
@@ -22,18 +20,23 @@ export default class GameScene extends Scene {
   create () {
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
-    const player1 = this.createPlayer();
-    player1.setTexture('tankRight');
     const map = this.createMap();
     const layers = this.createLayers(map);
+    const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
-    player1.addCollider(layers.wallLayer);
-    console.log(player1.projectilesGroup.children.entries);
-    /*
-    for (let i = 0; i < player1.projectilesGroup.children.entries.length; i++) {
-      player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
-    }
-    */
+    const player1 = this.createPlayer(playerSpawnZones); 
+    console.log("layer--->",layers.spawnZone)
+    ///work around for player sprite render below tile map until move?
+    player1.setTexture('tankRight');
+    // ----------------------------------------------
+    // player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
+    // this.physics.add.collider(player1.projectilesGroup, layers.wallLayer);
+    this.createPlayerColliders(player1,{
+      colliders:{
+        wallLayer: layers.wallLayer
+      }
+    });
+  
 
     this.physics.add.collider(player1.projectilesGroup, layers.wallLayer, (projectile, wall) => {
       projectile.setVisible(false);
@@ -60,97 +63,11 @@ export default class GameScene extends Scene {
     }, null, this);
 
 
-
-
-    //SOCKETS
-    // let self = this;
-    // this.socket = io('http://localhost:3000') //this will need to change on prod server
-    // this.socket.on('connect', function() {
-    //   console.log(`User: ... has connected`);
-    // });
     this.socket.on('playerMoved', function (data) {
-      console.log("others players movement data:", data);
+      console.log("Enemy players movement data:", data);
     })
 
     
-
-    // this.socket.emit('test', "hello from GameScene");
-
-    // this.socket.on('currentPlayers', (players) => {
-    //   Object.keys(players).forEach((id) => {
-    //     if (players[id].playerId === self.socket.id) {
-    //       addPlayer(self, players[id]);
-    //     }
-    //   });
-    // });
-    // this.otherPlayers = this.physics.add.group();
-    // this.socket.on('currentPlayers', function (players) {
-    //   Object.keys(players).forEach(function (id) {
-    //     if (players[id].playerId === self.socket.id) {
-    //       addPlayer(self, players[id]);
-    //     } else {
-    //       addOtherPlayers(self, players[id]);
-    //     }
-    //   });
-    // });
-
-    // this.socket.on('newPlayer', function (playerInfo) {
-    //   addOtherPlayers(self, playerInfo);
-    // });
-
-    // this.socket.on('remove', function (playerId) {
-    //   self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-    //     if (playerId === otherPlayer.playerId) {
-    //       otherPlayer.destroy();
-    //     }
-    //   });
-    // });
-
-    // // Add players
-    // function addPlayer(self, playerInfo) {
-    //   self.tankP1 = self.physics.add.image(playerInfo.x, playerInfo.y, 'tankP1').setOrigin(0.5, 0.5).setDisplaySize(64, 64);
-    //   // if (playerInfo.team === 'blue') {
-    //   //   self.tankP1.setTint(0x0000ff);
-    //   // } else {
-    //   //   self.tankP1.setTint(0xff0000);
-    //   // }
-    //   self.tankP1.setDrag(100);
-    //   self.tankP1.setAngularDrag(100);
-    //   self.tankP1.setMaxVelocity(200);
-    // }
-
-    // function addOtherPlayers(self, playerInfo) {
-    //   const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'tankP2').setOrigin(0.5, 0.5).setDisplaySize(64, 64);
-    //   // if (playerInfo.team === 'blue') {
-    //   //   otherPlayer.setTint(0x0000ff);
-    //   // } else {
-    //   //   otherPlayer.setTint(0xff0000);
-    //   // }
-    //   otherPlayer.playerId = playerInfo.playerId;
-    //   self.otherPlayers.add(otherPlayer);
-    // }
-
-  //   // Input
-    
-
-  //   this.socket.on('playerMoved', function (playerInfo) {
-  //     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-  //       if (playerInfo.playerId === otherPlayer.playerId) {
-  //         otherPlayer.setRotation(playerInfo.rotation);
-  //         otherPlayer.setPosition(playerInfo.x, playerInfo.y);
-  //       }
-  //     });
-  //   });
-   
-
-  //   spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-  //   // Collisions
-  //   this.physics.add.collider(tankP1, unbreakable);
-  //   this.physics.add.overlap(p1Bullets, unbreakable, destroyBullet, null, this);
-
-    // bullets = this.physics.add.group();
-
   }
 
   /*
@@ -174,19 +91,35 @@ export default class GameScene extends Scene {
     const tilesetSand = map.getTileset('rpl_sand');
     const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand], 0, 0);
     const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
-    // const boxLayer = map.createLayer('boxlayer', )
-
+    const spawnZone = map.getObjectLayer('player_start');
+      //need to add collision specific layer to tile map independent of wall layer.
     wallLayer.setCollisionByExclusion([-1]);
     groundLayer.setDepth(-1);
-    return {groundLayer, wallLayer};
+    return {groundLayer, wallLayer, spawnZone};
 
   }
 
-  createPlayer() {
-    return new Player(this,100,100, this.socket, this.state);
+  createPlayer(playerSpawnZones) {
+    const { player1Spawn } = playerSpawnZones
+    return new Player(this, player1Spawn.x, player1Spawn.y, this.socket, this.state);
   }
-  
-  createOtherPlayer() {
+  createEnemyPlayer(){
+
+  }
+  createPlayerColliders(player, { colliders }){
+    player.addCollider(colliders.wallLayer);
+  }
+  getPlayerZones(spawnZoneLayer){
+    console.log("zones --->",spawnZoneLayer);
+    const playerSpawns = spawnZoneLayer.objects;
+    return {
+      player1Spawn: playerSpawns[0],
+      player2Spawn: playerSpawns[1],
+      player3Spawn: playerSpawns[2],
+      player4Spawn: playerSpawns[3]
+    }
+  }
+  createEnemyPlayer() {
     
   }
 }
