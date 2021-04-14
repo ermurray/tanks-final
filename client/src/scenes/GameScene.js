@@ -10,6 +10,12 @@ export default class GameScene extends Scene {
       super("scene-game");
       
   }
+
+  /*
+  preload () {
+    this.load.image('box1', '../assets/boxes/1.png');
+  }
+  */
             
   create () {
     this.socket = this.registry.get('socket');
@@ -30,6 +36,32 @@ export default class GameScene extends Scene {
         wallLayer: layers.wallLayer
       }
     });
+  
+
+    this.physics.add.collider(player1.projectilesGroup, layers.wallLayer, (projectile, wall) => {
+      projectile.setVisible(false);
+      projectile.setActive(false);
+    });
+
+    // Destructible box logic, may need refactoring
+    let boxes = this.physics.add.group();
+    boxes.create(600, 400, 'breakable').setScale(0.08);
+    boxes.create(800, 400, 'breakable').setScale(0.08);
+    boxes.children.each((box) => {
+      box.body.immovable = true;
+      box.body.moves = false;
+    })
+
+    player1.addCollider(boxes);
+
+    this.physics.add.overlap(player1.projectilesGroup, boxes, (projectile, box) => {
+      box.destroy();
+      projectile.body.reset(0,0);
+      // projectile.disableBody(true, true);
+      projectile.setActive(false);
+      projectile.setVisible(false);
+    }, null, this);
+
 
     this.socket.on('playerMoved', function (data) {
       console.log("Enemy players movement data:", data);
@@ -38,6 +70,13 @@ export default class GameScene extends Scene {
     
   }
 
+  /*
+  destroyBox(projectile, box) {
+    console.log("Destroying box");
+    box.disableBody(true, true);
+    projectile.disableBody(true, true);
+  }
+  */
   
   createMap() {
     const map = this.make.tilemap({key: 'map1'});
