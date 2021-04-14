@@ -24,7 +24,7 @@ const config = {
   type: Phaser.AUTO,
   ...SHARED_CONFIG,
   render: {
-    pixelArt: true,
+    pixelArt: false,
   },
   scale:{
     parent: 'game-container',

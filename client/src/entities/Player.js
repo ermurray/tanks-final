@@ -3,14 +3,14 @@ import collidable from '../mixins/collidable';
 import ProjectilesGroup from '../attacks/ProjectilesGroup';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y) {
+  constructor(scene, x, y, socket) {
     super(scene, x, y);
     scene.add.existing(this);
     scene.physics.add.existing(this);
     
     //Mixins to assign other objects to this context
     Object.assign(this, collidable);
-
+    this.socket = socket;
     this.init();
     this.initEvents();
   }
@@ -49,6 +49,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(0)
         this.setTexture('tankLeft');
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
+        console.log('leftkey',this.socket);
       }
       else if (right.isDown || this.wasd.right.isDown) {
         console.log("right");

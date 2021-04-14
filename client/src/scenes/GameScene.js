@@ -13,13 +13,14 @@ export default class GameScene extends Scene {
   }
             
   create () {
+    this.socket = this.registry.get('socket');
     const player1 = this.createPlayer();
     player1.setTexture('tankRight');
     const map = this.createMap();
     const layers = this.createLayers(map);
     
     player1.addCollider(layers.wallLayer);
-    player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
+    // player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
     // this.physics.add.collider(player1.projectilesGroup, layers.wallLayer);
 
 
@@ -134,7 +135,7 @@ export default class GameScene extends Scene {
   }
 
   createPlayer() {
-    return new Player(this,100,100,);
+    return new Player(this,100,100, this.socket);
   }
   
   createOtherPlayer() {
