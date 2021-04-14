@@ -22,9 +22,6 @@ export default class TestObject extends Phaser.Physics.Arcade.Sprite {
     this.projectilesGroup = new ProjectilesGroup(this.scene);
   
     this.setCollideWorldBounds(true);
-    
-
-    
 
   }
   initEvents() {
@@ -33,10 +30,6 @@ export default class TestObject extends Phaser.Physics.Arcade.Sprite {
   }
   update() {
     
-      // emit player movement
-      let x = this.x;
-      let y = this.y;
-
   }
 
   

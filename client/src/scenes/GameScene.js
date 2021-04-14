@@ -14,23 +14,49 @@ export default class GameScene extends Scene {
   }
             
   create () {
+
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
-    const player1 = this.createPlayer();
-    this.socket.on('playerMoved', function (data) {
-      console.log("others players movement data:", data);
-      const player2 = createOtherPlayer();
-    })
-    const player2 = this.createOtherPlayer(this, data.x, data.y)
+    const player1 = this.createPlayer(100, 100);
     player1.setTexture('tankRight');
     const map = this.createMap();
     const layers = this.createLayers(map);
-    
     player1.addCollider(layers.wallLayer);
+
+    const player2 = this.createOtherPlayer(500, 500);
+    player2.setTexture('tankLeft');
+    player2.addCollider(layers.wallLayer);
+
+    this.socket.on('playerMoved', function (data) {
+      console.log(data.pName, data.x, data.y)
+      player2.x = data.x;
+      player2.y = data.y;
+    })
+    
+
+    
+    // this.socket.on('playerMoved', function (data) {
+    //   // console.log("others players movement data:", data);
+    //   console.log(data.pName, data.x, data.y)
+    //   //const player2 = this.createPlayer(data.x, data.y)
+    //   // createOtherPlayer(data.x, data.y);
+    // })
+    //const player2 = this.createOtherPlayer(this, data.x, data.y)
+
+
+    
     // player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
     // this.physics.add.collider(player1.projectilesGroup, layers.wallLayer);
 
   } 
+
+  update () {
+    // this.socket.on('playerMoved', function (data) {
+    //   console.log(data.pName, data.x, data.y)
+    //   player2.x = data.x;
+    //   player2.y = data.y;
+    // })
+  }
   
   createMap() {
     const map = this.make.tilemap({key: 'map1'});
@@ -52,11 +78,11 @@ export default class GameScene extends Scene {
 
   }
 
-  createPlayer() {
-    return new Player(this,100,100, this.socket, this.state);
+  createPlayer(x,y) {
+    return new Player(this,x,y, this.socket, this.state);
   }
   
-  createOtherPlayer() {
+  createOtherPlayer(x,y) {
     return new TestObject(this, x, y);
   }
   
