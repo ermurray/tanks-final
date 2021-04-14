@@ -2,6 +2,7 @@ import {Scene} from 'phaser';
 import io from 'socket.io-client';
 import Player from '../entities/Player';
 import unbreakableBlock from '../assets/platform.png';
+import box1 from '../assets/boxes/1.png'
 
 
 
@@ -11,6 +12,12 @@ export default class GameScene extends Scene {
       super("scene-game");
       
   }
+
+  /*
+  preload () {
+    this.load.image('box1', '../assets/boxes/1.png');
+  }
+  */
             
   create () {
     const player1 = this.createPlayer();
@@ -21,6 +28,18 @@ export default class GameScene extends Scene {
     player1.addCollider(layers.wallLayer);
     player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
     // this.physics.add.collider(player1.projectilesGroup, layers.wallLayer);
+
+    // Destructible box logic, may need refactoring
+    let boxes = this.physics.add.staticGroup();
+    boxes.create(600, 400, 'breakable').setScale(0.08).refreshBody();
+    boxes.create(800, 400, 'breakable').setScale(0.08).refreshBody();
+    player1.addCollider(boxes);
+    // this.physics.add.collider(player1.projectilesGroup, boxes, this.destroyBox);
+    player1.projectilesGroup.addCollider(boxes, (box, projectile) => {
+      box.disableBody(true, true);
+      projectile.disableBody(true, true);
+    });
+
 
 
 
@@ -112,6 +131,13 @@ export default class GameScene extends Scene {
 
   }
 
+  /*
+  destroyBox(projectile, box) {
+    console.log("Destroying box");
+    box.disableBody(true, true);
+    projectile.disableBody(true, true);
+  }
+  */
   
   createMap() {
     const map = this.make.tilemap({key: 'map1'});
@@ -126,6 +152,7 @@ export default class GameScene extends Scene {
     const tilesetSand = map.getTileset('rpl_sand');
     const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand], 0, 0);
     const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
+    // const boxLayer = map.createLayer('boxlayer', )
 
     wallLayer.setCollisionByExclusion([-1]);
     groundLayer.setDepth(-1);
