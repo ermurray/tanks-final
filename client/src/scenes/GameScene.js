@@ -16,9 +16,9 @@ export default class GameScene extends Scene {
     this.state = this.registry.get('state');
     const map = this.createMap();
     const layers = this.createLayers(map);
-    const player1 = this.createPlayer();
-    console.log("layer--->",layers.spawnZone)
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
+    const player1 = this.createPlayer(playerSpawnZones);
+    console.log("layer--->",layers.spawnZone)
     player1.setTexture('tankRight');
     
     // player1.addCollider(layers.wallLayer);
@@ -55,8 +55,12 @@ export default class GameScene extends Scene {
 
   }
 
-  createPlayer() {
-    return new Player(this,100,100, this.socket, this.state);
+  createPlayer(playerSpawnZones) {
+    const { player1Spawn } = playerSpawnZones
+    return new Player(this, player1Spawn.x, player1Spawn.y, this.socket, this.state);
+  }
+  createEnemyPlayer(){
+
   }
   createPlayerColliders(player, { colliders }){
     player.addCollider(colliders.wallLayer);
