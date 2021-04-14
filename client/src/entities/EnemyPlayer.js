@@ -23,7 +23,7 @@ export default class EnemyPlayer extends Phaser.Physics.Arcade.Sprite {
     this.depth = 3;
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
     this.projectilesGroup = new ProjectilesGroup(this.scene);
-    this.playerHealth = 30;
+    this.Health = 30;
   
     this.setCollideWorldBounds(true);
    
@@ -33,7 +33,7 @@ export default class EnemyPlayer extends Phaser.Physics.Arcade.Sprite {
 
   }
   update() {
-    
+    console.log(this.socket.data)
   }
 
 

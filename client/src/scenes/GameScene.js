@@ -23,8 +23,6 @@ export default class GameScene extends Scene {
     ///work around for player sprite render below tile map until move?
     player1.setTexture('tankRight');
     // ----------------------------------------------
-    
-    // player1.addCollider(layers.wallLayer);
     // player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
     // this.physics.add.collider(player1.projectilesGroup, layers.wallLayer);
     this.createPlayerColliders(player1,{
@@ -34,7 +32,7 @@ export default class GameScene extends Scene {
     });
 
     this.socket.on('playerMoved', function (data) {
-      console.log("others players movement data:", data);
+      console.log("Enemy players movement data:", data);
     })
 
     
@@ -82,7 +80,7 @@ export default class GameScene extends Scene {
       player4Spawn: playerSpawns[3]
     }
   }
-  createOtherPlayer() {
+  createEnemyPlayer() {
     
   }
 }
