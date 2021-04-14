@@ -2,6 +2,7 @@ import {Scene} from 'phaser';
 import io from 'socket.io-client';
 import Player from '../entities/Player';
 import unbreakableBlock from '../assets/platform.png';
+import box1 from '../assets/boxes/1.png'
 
 
 
@@ -11,6 +12,12 @@ export default class GameScene extends Scene {
       super("scene-game");
       
   }
+
+  /*
+  preload () {
+    this.load.image('box1', '../assets/boxes/1.png');
+  }
+  */
             
   create () {
     this.socket = this.registry.get('socket');
@@ -21,8 +28,37 @@ export default class GameScene extends Scene {
     const layers = this.createLayers(map);
     
     player1.addCollider(layers.wallLayer);
-    // player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
-    // this.physics.add.collider(player1.projectilesGroup, layers.wallLayer);
+    console.log(player1.projectilesGroup.children.entries);
+    /*
+    for (let i = 0; i < player1.projectilesGroup.children.entries.length; i++) {
+      player1.projectilesGroup.addCollider(layers.wallLayer, player1.projectilesGroup.killAndHide);
+    }
+    */
+
+    this.physics.add.collider(player1.projectilesGroup, layers.wallLayer, (projectile, wall) => {
+      projectile.setVisible(false);
+      projectile.setActive(false);
+    });
+
+    // Destructible box logic, may need refactoring
+    let boxes = this.physics.add.group();
+    boxes.create(600, 400, 'breakable').setScale(0.08);
+    boxes.create(800, 400, 'breakable').setScale(0.08);
+    boxes.children.each((box) => {
+      box.body.immovable = true;
+      box.body.moves = false;
+    })
+
+    player1.addCollider(boxes);
+
+    this.physics.add.overlap(player1.projectilesGroup, boxes, (projectile, box) => {
+      box.destroy();
+      projectile.body.reset(0,0);
+      // projectile.disableBody(true, true);
+      projectile.setActive(false);
+      projectile.setVisible(false);
+    }, null, this);
+
 
 
 
@@ -117,6 +153,13 @@ export default class GameScene extends Scene {
 
   }
 
+  /*
+  destroyBox(projectile, box) {
+    console.log("Destroying box");
+    box.disableBody(true, true);
+    projectile.disableBody(true, true);
+  }
+  */
   
   createMap() {
     const map = this.make.tilemap({key: 'map1'});
@@ -131,6 +174,7 @@ export default class GameScene extends Scene {
     const tilesetSand = map.getTileset('rpl_sand');
     const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand], 0, 0);
     const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
+    // const boxLayer = map.createLayer('boxlayer', )
 
     wallLayer.setCollisionByExclusion([-1]);
     groundLayer.setDepth(-1);
