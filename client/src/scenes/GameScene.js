@@ -32,6 +32,9 @@ export default class GameScene extends Scene {
     // this.socket.on('connect', function() {
     //   console.log(`User: ... has connected`);
     // });
+    this.socket.on('playerMoved', function (data) {
+      console.log("others players movement data:", data);
+    })
 
     
 
