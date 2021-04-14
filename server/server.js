@@ -27,13 +27,15 @@ const spawnPoints = [
 
 const gameRooms = {
   // [roomKey]: {
-  // users: [],
-  // randomTasks: [],
-  // scores: [],
-  // gameScore: 0,
-  // players: {},
-  // numPlayers: 0,
-  // chatMessages: []
+      // users: [],
+      // randomTasks: [],
+      // scores: [],
+      // gameScore: 0,
+      // players: {},  //will hold each player object
+      // numPlayers: 0,
+      // chatMessages: []  //will hold room chat messages
+      //roomfull: false  //use to check room is full
+      
   // }
 };
 
@@ -71,7 +73,8 @@ io.on("connection", (socket) => {
       y: 300,
       playerId: socket.id,
       pName: playerName,
-      chatMessages:[]
+      pNumber:'',
+      chatMessages:[]  //will hold players sent chat messages
     };
 
     // update number of players

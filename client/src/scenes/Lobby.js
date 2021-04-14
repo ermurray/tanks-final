@@ -17,7 +17,7 @@ export default class Lobby extends Phaser.Scene {
 
 
     const thisScene = this;
-    this.otherPlayers = this.physics.add.group();
+    // this.otherPlayers = this.physics.add.group();
 
     this.socket = io('http://localhost:3000') //this will need to change on prod server
     this.socket.on('connect', function() {
@@ -43,6 +43,7 @@ export default class Lobby extends Phaser.Scene {
       thisScene.state.players = players;
       thisScene.state.playerName = players[thisScene.socket.id].pName;
       thisScene.state.numPlayers = numPlayers;
+      // thisScene.state.pNumber = players[thisScene.socket.id].pNumber
       const roomtext = `GAME KEY: ${roomKey} \n PLAYERS: ${numPlayers}/4`
       roomInfoText.setText(roomtext);
       if(thisScene.chatMessages.length > 20){
@@ -57,8 +58,8 @@ export default class Lobby extends Phaser.Scene {
       const newPlayerId = data.playerInfo.playerId;
       const newPName = data.playerInfo.pName;
       console.log("new player", newPName);
-      thisScene.chatMessages.push(`---------------\nA Rouge Operator: ${newPName} has joined the battle \n---------------\nFire Away`);
-      if(thisScene.chatMessages.length > 20){
+      thisScene.chatMessages.push(`---------------`,`A Rouge Operator: ${newPName}, has`,` joined the battle`, `---------------`,`Fire Away`);
+      if(thisScene.chatMessages.length >= 20){
         thisScene.chatMessages.shift();
       }
       thisScene.chat.setText(thisScene.chatMessages)
@@ -98,7 +99,7 @@ export default class Lobby extends Phaser.Scene {
       padding: 10,
       fontStyle: 'bold',
     }) 
-    this.chat = this.add.text(850, 25, "",{
+    this.chat = this.add.text(850, 30, "",{
       lineSpacing: 5,
       backroundColor: '0xa9a9a9',
       color: '#26924F',
@@ -152,5 +153,13 @@ export default class Lobby extends Phaser.Scene {
 
   update(){
     // console.log("state in lobby update method",this.state);
+  }
+
+  setPlayerNumber() {
+    //take in player info obj and position clicked as args
+    //assign pNumber in player info obj in state.
+    //display player id and name beside tank
+  
+     
   }
 }
