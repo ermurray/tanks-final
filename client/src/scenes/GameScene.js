@@ -23,6 +23,8 @@ export default class GameScene extends Scene {
     this.state = this.registry.get('state');
     const map = this.createMap();
     const layers = this.createLayers(map);
+    console.log(layers.wallLayer.layer.data);
+    const layerData = layers.wallLayer.layer.data;
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
@@ -51,8 +53,36 @@ export default class GameScene extends Scene {
 
     // Destructible box logic, may need refactoring
     let boxes = this.physics.add.group();
-    boxes.create(600, 400, 'breakable').setScale(0.08);
-    boxes.create(800, 400, 'breakable').setScale(0.08);
+    for (let i = 0; i < layerData.length; i++) {
+      for (let j = 0; j < layerData[i].length; j++) {
+        if (layerData[i][j].index === -1) {
+          let random = Math.random();
+          if (random < 0.5) {
+            // Couldn't use a loop here because boxes would overlap 3-4 times on each tile
+            if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
+            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
+            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
+            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[0].y - 64)) || 
+            /*P2*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[1].x + 64)) && 
+            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[1].x - 64)) && 
+            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[1].y + 64)) && 
+            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[1].y - 64)) || 
+            /*P3*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[2].x + 64)) && 
+            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[2].x - 64)) && 
+            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[2].y + 64)) && 
+            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[2].y - 64)) || 
+            /*P4*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[3].x + 64)) && 
+            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
+            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
+            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
+              boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
+            }
+          }
+        }
+      }
+    }
+    // boxes.create(600, 400, 'breakable').setScale(0.08);
+    // boxes.create(800, 400, 'breakable').setScale(0.08);
     boxes.children.each((box) => {
       box.body.immovable = true;
       box.body.moves = false;
