@@ -39,8 +39,7 @@ export default class GameScene extends Scene {
   
 
     this.physics.add.collider(player1.projectilesGroup, layers.wallLayer, (projectile, wall) => {
-      projectile.setVisible(false);
-      projectile.setActive(false);
+      projectile.resetProjectile();
     });
 
     // Destructible box logic, may need refactoring
@@ -56,10 +55,8 @@ export default class GameScene extends Scene {
 
     this.physics.add.overlap(player1.projectilesGroup, boxes, (projectile, box) => {
       box.destroy();
-      projectile.body.reset(0,0);
-      // projectile.disableBody(true, true);
-      projectile.setActive(false);
-      projectile.setVisible(false);
+      projectile.resetProjectile();
+
     }, null, this);
 
 
