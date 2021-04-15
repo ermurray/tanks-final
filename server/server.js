@@ -108,18 +108,16 @@ io.on("connection", (socket) => {
 
   // when a player shoots, update the player data
   socket.on("playerShoot", function (data) {
-    if(players[socket.id] == undefined) return;
-
-    let new_bullet = data;
+    let newBullet = data;
     data.owner_id = socket.id; // Attach id of the player to the bullet 
-    bullet_array.push(new_bullet);
+    bulletArray.push(newBullet);
 
-    console.log('playerShoot:', data)
+    console.log('bullet object:', data)
     const { x, y, roomKey } = data;
     // emit a message to all players about the player that shot a bullet
     socket
       .to(roomKey)
-      .emit("playerHasShot", gameRooms[roomKey].players[socket.id]);
+      .emit("playerHasShot", newBullet);
   });
 
 

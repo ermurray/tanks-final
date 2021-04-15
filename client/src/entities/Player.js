@@ -26,6 +26,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
     this.projectilesGroup = new ProjectilesGroup(this.scene);
     this.Health = 30;
+    this.direction;
   
     this.setCollideWorldBounds(true);
     this.scene.input.keyboard.on('keydown-SPACE', () => {
@@ -35,7 +36,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.socket.emit("playerShoot", {
         x: this.x,
         y: this.y,
-        shoot: "yes",
+        direction: this.direction,
         roomKey: this.state.roomKey,
         socket: this.socket.id
       });
@@ -61,6 +62,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(-this.playerSpeed);
         this.setVelocityY(0)
         this.setTexture('tankLeft');
+        this.direction = "left"
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
         console.log('left velo check', this.body.velocity)
       }
@@ -69,6 +71,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(this.playerSpeed);
         this.setVelocityY(0)
         this.setTexture('tankRight');
+        this.direction = "right"
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
       }
       else if (up.isDown || this.wasd.up.isDown) {
@@ -76,6 +79,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(-this.playerSpeed);
         this.setVelocityX(0)
         this.setTexture('tankUp');
+        this.direction = "up"
         this.lastDirection = Phaser.Physics.Arcade.FACING_UP;
       }
       else if (down.isDown || this.wasd.down.isDown) {
@@ -83,6 +87,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(this.playerSpeed);
         this.setVelocityX(0)
         this.setTexture('tankDown');
+        this.direction = "down"
         this.lastDirection = Phaser.Physics.Arcade.FACING_DOWN;
       }
       else
