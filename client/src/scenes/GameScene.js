@@ -26,14 +26,17 @@ export default class GameScene extends Scene {
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
-    console.log("layer--->",layers.spawnZone)
+    // console.log("layer--->",layers.spawnZone)
   
     this.createPlayerColliders(localPlayer,{
       colliders:{
-        wallLayer: layers.wallLayer
+        wallLayer: layers.wallLayer,
+      
       }
     });
     //----------------------need to creat logic to create multiple enemy base on state.players obj for each player....
+
+
     const enemyPlayer = this.createEnemyPlayer(playerSpawnZones);
 
     this.createEnemyPlayerColliders(enemyPlayer, {
@@ -96,10 +99,30 @@ export default class GameScene extends Scene {
   }
 
   createPlayer(playerSpawnZones) {
+    //const pNumber = this.state.players[this.socket.id].pNumber;
+    console.log("player creation game scene:",this.state.players)
+    console.log("player creation game scene:",this.state.players[this.socket.id].pNumber)
     const { player1Spawn, player2Spawn, player3Spawn, player4Spawn } = playerSpawnZones
-    return new Player(this, player1Spawn.x, player1Spawn.y, this.socket, this.state);
-  }
+    const playerNum = this.state.players[this.socket.id].pNumber;
+    let selectedSpawn;
+    switch(playerNum){
+      case 'p1':
+        selectedSpawn = player1Spawn;
+        break;
+      case 'p2':
+        selectedSpawn = player2Spawn;
+        break;
+      case 'p3':
+        selectedSpawn = player3Spawn;
+        break;
+      case 'p4':
+        selectedSpawn = player4Spawn;
+        break;
+    }
 
+    return new Player(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state);
+  }
+  
   createEnemyPlayer(playerSpawnZones){
     const { player1Spawn, player2Spawn, player3Spawn, player4Spawn } = playerSpawnZones
     return new EnemyPlayer(this, player2Spawn.x, player1Spawn.y, this.socket, this.state);
@@ -110,14 +133,15 @@ export default class GameScene extends Scene {
     enemyPlayer.y = data.y;
   }
   createEnemyPlayerColliders(player, { colliders }){
-    player.addCollider(colliders.wallLayer);
+    player
+        .addCollider(colliders.wallLayer);
   }
 
   createPlayerColliders(player, { colliders }){
-    player.addCollider(colliders.wallLayer);
+    player
+        .addCollider(colliders.wallLayer);
   }
   getPlayerZones(spawnZoneLayer){
-    console.log("zones --->",spawnZoneLayer);
     const playerSpawns = spawnZoneLayer.objects;
     return {
       player1Spawn: playerSpawns[0],
