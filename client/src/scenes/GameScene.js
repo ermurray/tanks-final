@@ -1,6 +1,8 @@
 import {Scene} from 'phaser';
 import io from 'socket.io-client';
 import Player from '../entities/Player';
+import TestObject from '../entities/TestObject'
+import unbreakableBlock from '../assets/platform.png';
 
 
 
@@ -18,6 +20,7 @@ export default class GameScene extends Scene {
   */
             
   create () {
+
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
     const map = this.createMap();
@@ -25,6 +28,7 @@ export default class GameScene extends Scene {
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const player1 = this.createPlayer(playerSpawnZones); 
+    const player2 = this.createEnemyPlayer(playerSpawnZones);
     console.log("layer--->",layers.spawnZone)
     ///work around for player sprite render below tile map until move?
     player1.setTexture('tankRight');
@@ -61,20 +65,15 @@ export default class GameScene extends Scene {
 
 
     this.socket.on('playerMoved', function (data) {
-      console.log("Enemy players movement data:", data);
+      console.log(data.pName, data.x, data.y)
+      //enemyUpdate(data);
+      // player2.x = data.x;
+      // player2.y = data.y;
     })
 
-    
-  }
+  } 
 
-  /*
-  destroyBox(projectile, box) {
-    console.log("Destroying box");
-    box.disableBody(true, true);
-    projectile.disableBody(true, true);
-  }
-  */
-  
+
   createMap() {
     const map = this.make.tilemap({key: 'map1'});
     map.addTilesetImage('rpl_grass', 'tilesGrass', 32, 32);
@@ -95,17 +94,27 @@ export default class GameScene extends Scene {
     return {groundLayer, wallLayer, spawnZone};
 
   }
-
+  
   createPlayer(playerSpawnZones) {
     const { player1Spawn } = playerSpawnZones
     return new Player(this, player1Spawn.x, player1Spawn.y, this.socket, this.state);
   }
-  createEnemyPlayer(){
 
+  createEnemyPlayer(playerSpawnZones){
+    const { player2spawn } = playerSpawnZones
+    
+    //return new TestObject(this, player2spawn.x, player2spawn.y)
   }
+
+  enemyUpdate(data) {
+    // player2.x = data.x;
+    // player2.y = data.y;
+  }
+
   createPlayerColliders(player, { colliders }){
     player.addCollider(colliders.wallLayer);
   }
+
   getPlayerZones(spawnZoneLayer){
     console.log("zones --->",spawnZoneLayer);
     const playerSpawns = spawnZoneLayer.objects;
@@ -116,7 +125,9 @@ export default class GameScene extends Scene {
       player4Spawn: playerSpawns[3]
     }
   }
-  createEnemyPlayer() {
-    
-  }
+
+  
+
+
+
 }
