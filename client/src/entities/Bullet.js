@@ -18,10 +18,16 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
   init() {
     switch(this.direction) {
       case "left":
-        this.setVelocityX(-100);
+        this.setVelocityX(-300);
         break;
       case "right":
-        this.setVelocityX(100);
+        this.setVelocityX(300);
+        break;
+      case "up":
+        this.setVelocityY(300);
+        break;
+      case "down":
+        this.setVelocityY(-300);
     }
     
     this.projectilesGroup = new ProjectilesGroup(this.scene);
