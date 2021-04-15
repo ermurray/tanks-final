@@ -51,6 +51,31 @@ export default class Lobby extends Phaser.Scene {
       thisScene.state.players[thisScene.socket.id].pNumber = players[thisScene.socket.id].pNumber;
       const roomtext = `GAME KEY: ${roomKey} \n PLAYERS: ${numPlayers}/4`
       roomInfoText.setText(roomtext);
+      //---------------------------------------
+      // for(const player in thisScene.state.players){
+      //   thisScene.setTankSelection(player.id, player, player.pName)
+      // }
+      //---------------------- refactor below with above but currently seTankSelection is broken
+      for(const player in thisScene.state.players) {
+          const tankSelected = thisScene.state.players[player].pNumber;
+          console.log("player inside for loop--------->",thisScene.state.players[player]);
+          const playerName = thisScene.state.players[player].pName;
+        switch(tankSelected){
+          case 'p1':
+            thisScene.setPlayerText(thisScene.p1Text, playerName)
+            break;
+          case 'p2':
+            thisScene.setPlayerText(thisScene.p2Text, playerName)
+            break;
+          case 'p3':
+            thisScene.setPlayerText(thisScene.p3Text, playerName)
+            break;
+          case 'p4':
+            thisScene.setPlayerText(thisScene.p4Text, playerName)    
+            break;
+  
+        };
+      }
       if(thisScene.chatMessages.length > 20){
         thisScene.chatMessages.shift();
       }
@@ -67,6 +92,7 @@ export default class Lobby extends Phaser.Scene {
         thisScene.chatMessages.shift();
       }
       thisScene.chat.setText(thisScene.chatMessages)
+
       console.log("current state on playerjoin", thisScene.state);
       console.log("newplayer-->", newPlayerId);
       thisScene.state.players[newPlayerId] = data.playerInfo;
@@ -75,27 +101,8 @@ export default class Lobby extends Phaser.Scene {
       roomInfoText.setText(roomtext);
       console.log("current state afterplayerJoin", thisScene.state);
     });
-    // PLAYERS
-    // this.socket.on("currentPlayers", function (arg) {
-    //   const { players, numPlayers } = arg;
-    //   thisScene.state.numPlayers = numPlayers;
-    //   Object.keys(players).forEach(function (id) {
-    //     if (players[id].playerId === thisScene.socket.id) {
-    //       thisScene.addPlayer(thisScene, players[id]);
-    //     } else {
-    //       scene.addOtherPlayers(thisScene, players[id]);
-    //     }
-    //   });
-    // });
-
-
-
-
-    // this.socket.on("newPlayer", function (arg) {
-    //   const { playerInfo, numPlayers } = arg;
-    //   thisScene.addOtherPlayers(thisScene, playerInfo);
-    //   thisScene.state.numPlayers = numPlayers;
-    // });
+   
+    
     this.chatheader = this.add.text(850, 10, "TANK CHAT",{
       lineSpacing: 10,
       backroundColor: '0xa9a9a9',
@@ -255,7 +262,28 @@ export default class Lobby extends Phaser.Scene {
     //display player id and name beside tank
      
   }
-  setPlayerText(textarea, playerName, oldPNumber){
+
+  // setTankSelection(playerID, playerObj, playerName){
+  //   const oldTankSelected = thisScene.state.players[playerID].pNumber
+  //     thisScene.state.players[playerID] = playerObj
+  //     const tankSelected = playerObj.pNumber
+  //     switch(tankSelected){
+  //       case 'p1':
+  //         thisScene.setPlayerText(thisScene.p1Text, playerName, oldTankSelected)
+  //         break;
+  //       case 'p2':
+  //         thisScene.setPlayerText(thisScene.p2Text, playerName, oldTankSelected)
+  //         break;
+  //       case 'p3':
+  //         thisScene.setPlayerText(thisScene.p3Text, playerName, oldTankSelected )
+  //         break;
+  //       case 'p4':
+  //         thisScene.setPlayerText(thisScene.p4Text, playerName, oldTankSelected )    
+  //         break;
+
+  //     };
+  // }
+  setPlayerText(textarea, playerName, oldPNumber = ''){
     if (oldPNumber !== ''){
      switch (oldPNumber) {
       case 'p1':

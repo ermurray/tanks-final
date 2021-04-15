@@ -4,7 +4,7 @@ import ProjectilesGroup from '../attacks/ProjectilesGroup';
 
 export default class EnemyPlayer extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, socket, state) {
-    super(scene, x, y, 'EnemyPlayers');
+    super(scene, x, y, 'enemyPlayers');
     scene.add.existing(this);
     scene.physics.add.existing(this);
     
