@@ -73,8 +73,8 @@ export default class GameScene extends Scene {
       thisScene.updateEnemyPlayer(enemyPlayer, data);
     })
 
-    
-  }
+  } 
+
 
   
   createMap() {
@@ -97,7 +97,7 @@ export default class GameScene extends Scene {
     return {groundLayer, wallLayer, spawnZone};
 
   }
-
+  
   createPlayer(playerSpawnZones) {
     //const pNumber = this.state.players[this.socket.id].pNumber;
     console.log("player creation game scene:",this.state.players)
@@ -141,6 +141,7 @@ export default class GameScene extends Scene {
     player
         .addCollider(colliders.wallLayer);
   }
+
   getPlayerZones(spawnZoneLayer){
     const playerSpawns = spawnZoneLayer.objects;
     return {
