@@ -18,6 +18,7 @@ export default class GameScene extends Scene {
   */
             
   create () {
+    const thisScene = this;
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
     const map = this.createMap();
@@ -62,9 +63,11 @@ export default class GameScene extends Scene {
 
     }, null, this);
 
-
+    
     this.socket.on('playerMoved', function (data) {
       console.log("Enemy players movement data:", data);
+      
+      thisScene.updateEnemyPlayer(enemyPlayer, data);
     })
 
     
@@ -100,6 +103,11 @@ export default class GameScene extends Scene {
   createEnemyPlayer(playerSpawnZones){
     const { player1Spawn, player2Spawn, player3Spawn, player4Spawn } = playerSpawnZones
     return new EnemyPlayer(this, player2Spawn.x, player1Spawn.y, this.socket, this.state);
+  }
+  updateEnemyPlayer(enemyPlayer, data){
+    //console.log("this.enemyplayer------>>>>>>",this)
+    enemyPlayer.x = data.x;
+    enemyPlayer.y = data.y;
   }
   createEnemyPlayerColliders(player, { colliders }){
     player.addCollider(colliders.wallLayer);
