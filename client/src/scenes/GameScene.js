@@ -40,7 +40,7 @@ export default class GameScene extends Scene {
         wallLayer: layers.wallLayer
       }
     })
-
+    
     this.physics.add.collider(localPlayer.projectilesGroup, layers.wallLayer, (projectile, wall) => {
       projectile.resetProjectile();
     });
