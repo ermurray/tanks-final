@@ -73,6 +73,10 @@ export default class GameScene extends Scene {
       thisScene.updateEnemyPlayer(enemyPlayer, data);
     })
 
+    this.socket.on('playerHasShot', function (data) {
+      console.log(data);
+    })
+
   } 
 
 

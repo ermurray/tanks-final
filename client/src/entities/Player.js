@@ -31,6 +31,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.input.keyboard.on('keydown-SPACE', () => {
       console.log('Shoot');
       this.projectilesGroup.fireProjectile(this);
+      //Emit bullet data
+      this.socket.emit("playerShoot", {
+        x: this.x,
+        y: this.y,
+        shoot: "yes",
+        roomKey: this.state.roomKey,
+        socket: this.socket.id
+      });
     });
 
     this.wasd = {

@@ -108,7 +108,19 @@ io.on("connection", (socket) => {
     socket
       .to(roomKey)
       .emit("playerMoved", gameRooms[roomKey].players[socket.id]);
+  }); 
+
+  // when a player shoots, update the player data
+  socket.on("playerShoot", function (data) {
+    console.log('playerShoot:', data)
+    const { x, y, roomKey } = data;
+    // emit a message to all players about the player that shot a bullet
+    socket
+      .to(roomKey)
+      .emit("playerHasShot", gameRooms[roomKey].players[socket.id]);
   });
+
+
 
   // when a player disconnects, remove them from our players object
   socket.on("disconnect", function () {
