@@ -57,6 +57,7 @@ export default class GameScene extends Scene {
         if (layerData[i][j].index === -1) {
           let random = Math.random();
           if (random < 0.5) {
+            // Couldn't use a loop here because boxes would start overlapping 3-4 times on each tile
             if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
             ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
             ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
