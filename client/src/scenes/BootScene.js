@@ -17,7 +17,7 @@ export default class BootScene extends Scene {
     this.load.image('tankDown','src/assets/tank_dwn32px.png');
     this.load.image('tankLeft', 'src/assets/tank_lft32px.png');
     this.load.image('tankRight', 'src/assets/tank_rht32px.png');
-    this.load.image('player', 'src/assets/tank_rht32px.png');
+    this.load.image('localPlayer', 'src/assets/tank_rht32px.png');
     this.load.image('tilesGrass', 'src/assets/maps/rpl_grass.png');
     this.load.image('tilePaths', 'src/assets/maps/rpl_paths-export.png')
     this.load.image('tilesSand', 'src/assets/maps/rpl_sand.png');
@@ -31,8 +31,8 @@ export default class BootScene extends Scene {
     this.load.image('tankRed', 'src/assets/tank-green.png');
     this.load.image('tankGreen', 'src/assets/tank-red.png');
     this.load.image('tankYellow', 'src/assets/tank-yellow.png');
-    
     this.load.image('breakable', '../src/assets/boxes/1.png');
+    this.load.image('enemyPlayers', 'src/assets/tank_lft32px.png')
   }
 
   create() {
