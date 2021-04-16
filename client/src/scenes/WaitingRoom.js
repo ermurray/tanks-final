@@ -25,12 +25,8 @@ export default class WaitingRoom extends Phaser.Scene {
     const thisScene = this;
 
 
-    //SOCKETS
-    
-    
-
-    
-    
+  
+  
     thisScene.popUp = thisScene.add.graphics();
     thisScene.boxes = thisScene.add.graphics();
 
@@ -44,20 +40,20 @@ export default class WaitingRoom extends Phaser.Scene {
 
     // popup window
     
-    thisScene.popUp.strokeRect(100, 25, 750, 500);
-    thisScene.popUp.fillRect(100, 25, 750, 500);
+    thisScene.popUp.strokeRect(230, 25, 750, 500);
+    thisScene.popUp.fillRect(230, 25, 750, 500);
 
     //title
-    thisScene.title = thisScene.add.text(100, 75, "Tank Multiplayer", {
+    thisScene.title = thisScene.add.text(305, 75, "Tank Multiplayer", {
       fill: "#add8e6",
       fontSize: "66px",
       fontStyle: "bold",
     });
 
     //left popup
-    thisScene.boxes.strokeRect(125, 200, 275, 100);
-    thisScene.boxes.fillRect(125, 200, 275, 100);
-    thisScene.requestButton = thisScene.add.text(140, 215, "CREATE NEW GAME", {
+    thisScene.boxes.strokeRect(310, 200, 275, 100);
+    thisScene.boxes.fillRect(310, 200, 275, 100);
+    thisScene.requestButton = thisScene.add.text(320, 215, "CREATE NEW GAME", {
       fill: "#000000",
       fontSize: "20px",
       fontStyle: "bold",
@@ -65,12 +61,12 @@ export default class WaitingRoom extends Phaser.Scene {
 
     
     //right popup
-    thisScene.boxes.strokeRect(450, 200, 275, 100);
-    thisScene.boxes.fillRect(450, 200, 275, 100);
+    thisScene.boxes.strokeRect(625, 200, 275, 100);
+    thisScene.boxes.fillRect(625, 200, 275, 100);
 
     
 //prevent form default action on enter key
-    thisScene.inputElement = thisScene.add.dom(562.5, 250).createFromCache('key-form');
+    thisScene.inputElement = thisScene.add.dom(675, 250).createFromCache('key-form');
     thisScene.input.keyboard.on('keydown_ENTER', e => {
       e.preventDefault();
     })
@@ -107,12 +103,12 @@ export default class WaitingRoom extends Phaser.Scene {
       thisScene.socket.emit("getRoomCode");
     });
 
-    thisScene.notValidText = thisScene.add.text(670, 295, "", {
+    thisScene.notValidText = thisScene.add.text(670, 170, "", {
       fill: "#ff0000",
       fontSize: "15px",
     });
 
-    thisScene.roomKeyText = thisScene.add.text(210, 250, "", {
+    thisScene.roomKeyText = thisScene.add.text(370, 250, "", {
       fill: "#00ff00",
       fontSize: "20px",
       fontStyle: "bold",
