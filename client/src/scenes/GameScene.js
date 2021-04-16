@@ -31,11 +31,11 @@ export default class GameScene extends Scene {
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
-    // console.log("layer--->",layers.spawnZone)
+   
     this.createPlayerColliders(localPlayer,{
       colliders:{
         wallLayer: layers.wallLayer,
-        
+        boxes
       }
     });
     //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
@@ -47,16 +47,17 @@ export default class GameScene extends Scene {
   }
   
   
-  
+  as
   
   const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
   
   console.log("inside create------------->",enemyPlayers)
-    // this.createEnemyPlayerColliders(enemyPlayer, {
-    //   colliders:{
-    //     wallLayer: layers.wallLayer
-    //   }
-    // })
+    this.createEnemyPlayerColliders(enemyPlayers, {
+      colliders:{
+        wallLayer: layers.wallLayer,
+        localPlayer
+      }
+    })
 
   
     
@@ -107,6 +108,9 @@ export default class GameScene extends Scene {
     })
 
     localPlayer.addCollider(boxes);
+    enemyPlayers.forEach((enemyPlayer) =>{
+      enemyPlayer.addCollider(boxes);
+    });
 
     this.physics.add.overlap(localPlayer.projectilesGroup, boxes, (projectile, box) => {
       box.destroy();
@@ -209,14 +213,20 @@ export default class GameScene extends Scene {
       }  
     });
   }
-  createEnemyPlayerColliders(player, { colliders }){
-    player
-        .addCollider(colliders.wallLayer);
+  createEnemyPlayerColliders(enemyPlayers, { colliders }){
+    enemyPlayers.forEach((enemyPlayer)=>{
+      enemyPlayer
+                .addCollider(colliders.wallLayer)
+                .addCollider(colliders.localPlayer);
+
+    })
+      
   }
 
   createPlayerColliders(player, { colliders }){
     player
-        .addCollider(colliders.wallLayer);
+        .addCollider(colliders.wallLayer)
+        .addCollider(colliders.boxes);
   }
 
   getPlayerZones(spawnZoneLayer){

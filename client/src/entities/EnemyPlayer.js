@@ -25,7 +25,7 @@ export default class EnemyPlayer extends Phaser.Physics.Arcade.Sprite {
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
     this.projectilesGroup = new ProjectilesGroup(this.scene);
     this.Health = 30;
-  
+    this.setImmovable(true);
     this.setCollideWorldBounds(true);
 
     let enemyPlayer = this;
