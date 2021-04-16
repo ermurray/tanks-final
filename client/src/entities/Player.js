@@ -21,18 +21,27 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   init() {
     this.playerSpeed = 100;
-    // this.setBodySize(28, 28).setOffset(1, -1);
-    this.setScale(0.9);
+    this.setBodySize(24, 24).setOffset(4, 4);
+    // this.setScale(0.9);
     this.depth = 3;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
     this.projectilesGroup = new ProjectilesGroup(this.scene);
     this.Health = 30;
+    this.direction;
   
     this.setCollideWorldBounds(true);
     this.scene.input.keyboard.on('keydown-SPACE', () => {
       console.log('Shoot');
       this.projectilesGroup.fireProjectile(this);
+      //Emit bullet data
+      this.socket.emit("playerShoot", {
+        x: this.x,
+        y: this.y,
+        direction: this.direction,
+        roomKey: this.state.roomKey,
+        socket: this.socket.id
+      });
     });
 
     this.wasd = {
@@ -55,6 +64,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(-this.playerSpeed);
         this.setVelocityY(0)
         this.setTexture('tankLeft');
+        this.direction = "left"
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
         console.log('left velo check', this.body.velocity)
       }
@@ -63,6 +73,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(this.playerSpeed);
         this.setVelocityY(0)
         this.setTexture('tankRight');
+        this.direction = "right"
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
       }
       else if (up.isDown || this.wasd.up.isDown) {
@@ -70,6 +81,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(-this.playerSpeed);
         this.setVelocityX(0)
         this.setTexture('tankUp');
+        this.direction = "up"
         this.lastDirection = Phaser.Physics.Arcade.FACING_UP;
       }
       else if (down.isDown || this.wasd.down.isDown) {
@@ -77,6 +89,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(this.playerSpeed);
         this.setVelocityX(0)
         this.setTexture('tankDown');
+        this.direction = "down"
         this.lastDirection = Phaser.Physics.Arcade.FACING_DOWN;
       }
       else

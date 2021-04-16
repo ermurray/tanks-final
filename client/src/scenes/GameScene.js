@@ -1,6 +1,7 @@
 import {Scene} from 'phaser';
 import io from 'socket.io-client';
 import Player from '../entities/Player';
+import Bullet from '../entities/Bullet';
 import EnemyPlayer from '../entities/EnemyPlayer';
 
 
@@ -85,7 +86,12 @@ export default class GameScene extends Scene {
             ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
             ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
             ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
-              boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
+              let randomBox = Math.random();
+              if (randomBox < 0.5) {
+                boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
+              } else {
+                boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable3').setScale(0.0625).setOrigin(0.5);
+              }
             }
           }
         }
@@ -112,6 +118,12 @@ export default class GameScene extends Scene {
       thisScene.updateEnemyPlayer(enemyPlayers, data);
     })
     
+
+    this.socket.on('playerHasShot', function (data) {
+      //console.log(data);
+      thisScene.renderBullet(data);
+    })
+
   } 
 
 //----------------end of create method of game scene------------------------------
@@ -199,9 +211,11 @@ export default class GameScene extends Scene {
       if (enemyPlayer.pNum === data.pNumber){
         enemyPlayer.x = data.x;
         enemyPlayer.y = data.y;
-      }
-      
-    })
+      }  
+    });
+  }
+  renderBullet(data){
+    return new Bullet(this, data.x, data.y, data.direction);
   }
   createEnemyPlayerColliders(player, { colliders }){
     player
