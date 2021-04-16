@@ -41,6 +41,7 @@ export default class Lobby extends Phaser.Scene {
       const {roomKey, players, numPlayers } = state
       thisScene.state.roomKey = roomKey;
       thisScene.state.players = players;
+      console.log(players);
       //-----------------------------------------
       // assignment will need to be fixed here it is adding it to state object instead of inside the players object there are other locations that it is being called in the lobby that will break if not all changed.
       thisScene.state.playerName = players[thisScene.socket.id].pName; 
@@ -87,7 +88,7 @@ export default class Lobby extends Phaser.Scene {
       const newPlayerId = data.playerInfo.playerId;
       const newPName = data.playerInfo.pName;
       console.log("new player", newPName);
-      thisScene.chatMessages.push(`---------------`,`A Rouge Operator: ${newPName}, has `,`joined the battle`, `---------------`,`Fire Away`);
+      thisScene.chatMessages.push(`---------------`,`A Rogue Operator: ${newPName}, has `,`joined the battle`, `---------------`,`Fire Away`);
       if(thisScene.chatMessages.length >= 20){
         thisScene.chatMessages.shift();
       }
@@ -103,14 +104,19 @@ export default class Lobby extends Phaser.Scene {
     });
    
     
-    this.chatheader = this.add.text(850, 10, "TANK CHAT",{
+    this.chatheader = this.add.text(850, -100, "TANK CHAT",{
       lineSpacing: 10,
       backroundColor: '0xa9a9a9',
       color: '#26924F',
       padding: 10,
       fontStyle: 'bold',
     }) 
-    this.chat = this.add.text(850, 30, "",{
+
+    
+   
+
+
+    this.chat = this.add.text(850, -80, "",{
       lineSpacing: 5,
       backroundColor: '0xa9a9a9',
       color: '#26924F',
@@ -121,7 +127,21 @@ export default class Lobby extends Phaser.Scene {
       }
       
     });
-    thisScene.textInput = this.add.dom(855, 540).createFromCache('chat-form').setOrigin(0);  
+
+    this.tweens.add({
+      targets: this.chatheader,
+      y: 10,
+      duration:3000,
+      ease: 'Power3'
+    })
+    this.tweens.add({
+      targets: this.chat,
+      y: 30,
+      duration:3000,
+      ease: 'Power3'
+    })
+
+    thisScene.textInput = this.add.dom(855, 640).createFromCache('chat-form').setOrigin(0);  
     this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
     
     this.enterKey.on('down', e => {
@@ -138,7 +158,12 @@ export default class Lobby extends Phaser.Scene {
       }
       // }
     })
-    
+    this.tweens.add({
+      targets: thisScene.textInput,
+      y:540,
+      duration:3000,
+      ease: 'Power3'
+    })
     this.socket.on("message", (pName,message)=>{
 
       thisScene.chatMessages.push(`${pName}: ${message}`)
@@ -155,6 +180,9 @@ export default class Lobby extends Phaser.Scene {
     // this.strtSmall.setInteractive();
  
   
+    // this.strtSmall.setInteractive();
+    // this.strtSmall.on('pointerdown', this.onDown,this);
+    
     // player Number Selection
   //----------------------------------------------------------------
     this.p1Text = this.add.text(400, 150, "", {
@@ -163,26 +191,26 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     });
 
-    let p1Active = false;
-    this.p1Select = this.add.sprite(300,150,'tankBlue').setInteractive();
+    let readyPlayers = [0, 0, 0, 0]
+    this.p1Select = this.add.sprite(-100,150,'tankBlue').setInteractive();
     this.p1Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p1Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       
       thisScene.state.players[thisScene.socket.id].pNumber = "p1";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
-      p1Active = true;
+      readyPlayers[0] = true;
     
     });
 
     
-    let p2Active = false;
-    this.p2Select = this.add.sprite(300,250,'tankRed').setInteractive();
+
+    this.p2Select = this.add.sprite(-100,250,'tankRed').setInteractive();
     this.p2Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p2Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
      
       thisScene.state.players[thisScene.socket.id].pNumber = "p2";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
-      p2Active = true;
+      readyPlayers[1] = true;
     });
 
 
@@ -192,15 +220,14 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     });
 
-    let p3Active = false;
-    this.p3Select = this.add.sprite(300,350,'tankGreen').setInteractive();
+    this.p3Select = this.add.sprite(-100,350,'tankGreen').setInteractive();
     this.p3Select.on('pointerdown', (e) => {
       
       console.log("before emit setpNumber2",thisScene.state.pNumber)
       thisScene.setPlayerText(thisScene.p3Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p3";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
-      p3Active = true;
+      readyPlayers[2] = true;
     });
 
     this.p3Text = this.add.text(400, 350, "", {
@@ -209,15 +236,16 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     })
 
-    let p4Active = false;
-    this.p4Select = this.add.sprite(300,450,'tankYellow').setInteractive();
+
+    this.p4Select = this.add.sprite(-100,450,'tankYellow').setInteractive();
     this.p4Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p4Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p4";
       console.log("set-pNumber",thisScene.state)
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
-      p4Active = true;
+      readyPlayers[3] = true;
     });
+
     this.p4Text = this.add.text(400, 450, "", {
       fill: "#00ff00",
       fontSize: "20px",
@@ -228,18 +256,67 @@ export default class Lobby extends Phaser.Scene {
       const oldTankSelected = thisScene.state.players[playerID].pNumber
       thisScene.state.players[playerID] = playerObj
       const tankSelected = playerObj.pNumber
+      let blankCount = 0;
       switch(tankSelected){
         case 'p1':
-          thisScene.setPlayerText(thisScene.p1Text, playerName, oldTankSelected)
+          thisScene.setPlayerText(thisScene.p1Text, playerName, oldTankSelected);
+          for(const player in thisScene.state.players) {
+            console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
+            if (!thisScene.state.players[player].pNumber) {
+              blankCount += 1;
+            } else {
+              blankCount += 0;
+            }
+          }
+          if (blankCount === 0) {
+            this.strtSmall.setInteractive();
+            this.strtSmall.on('pointerdown', this.onDown,this);
+          }
           break;
         case 'p2':
-          thisScene.setPlayerText(thisScene.p2Text, playerName, oldTankSelected)
+          thisScene.setPlayerText(thisScene.p2Text, playerName, oldTankSelected);
+          for(const player in thisScene.state.players) {
+            console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
+            if (!thisScene.state.players[player].pNumber) {
+              blankCount += 1;
+            } else {
+              blankCount += 0;
+            }
+          }
+          if (blankCount === 0) {
+            this.strtSmall.setInteractive();
+            this.strtSmall.on('pointerdown', this.onDown,this);
+          }
           break;
         case 'p3':
-          thisScene.setPlayerText(thisScene.p3Text, playerName, oldTankSelected )
+          thisScene.setPlayerText(thisScene.p3Text, playerName, oldTankSelected );
+          for(const player in thisScene.state.players) {
+            console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
+            if (!thisScene.state.players[player].pNumber) {
+              blankCount += 1;
+            } else {
+              blankCount += 0;
+            }
+          }
+          if (blankCount === 0) {
+            this.strtSmall.setInteractive();
+            this.strtSmall.on('pointerdown', this.onDown,this);
+          }
           break;
         case 'p4':
-          thisScene.setPlayerText(thisScene.p4Text, playerName, oldTankSelected )    
+          thisScene.setPlayerText(thisScene.p4Text, playerName, oldTankSelected );
+          for(const player in thisScene.state.players) {
+            console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
+            if (!thisScene.state.players[player].pNumber) {
+              blankCount += 1;
+            } else {
+              blankCount += 0;
+            }
+          }
+          if (blankCount === 0) {
+            this.strtSmall.setInteractive();
+            this.strtSmall.on('pointerdown', this.onDown,this);
+          } 
           break;
 
       };
@@ -248,13 +325,34 @@ export default class Lobby extends Phaser.Scene {
       console.log("player-selectedTank playerName:", playerName);
       console.log("state obj after player-selectedTank:",thisScene.state);
 
-      if (p1Active === true) {
+      /*
+      let blankCount = 0;
+      for(const player in thisScene.state.players) {
+        console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
+        if (!thisScene.state.players[player].pNumber) {
+          blankCount += 1;
+        } else {
+          blankCount += 0;
+        }
+      }
+
+      if (thisScene.state.players[player].pNumber) {
         this.strtSmall.setInteractive();
         this.strtSmall.on('pointerdown', this.onDown,this);
       }
+      */
+
     });
 //-----------------------------------------------------------------
 //endof player number selection
+    this.tankSelectorsGroup = thisScene.add.group()
+    
+    this.tweens.add({
+      targets: [this.p1Select, this.p2Select, this.p3Select, this.p4Select],
+      x:300,
+      duration:3000,
+      ease: 'Power3'
+    })
   }
 
   

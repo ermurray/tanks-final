@@ -3,6 +3,8 @@ import io from 'socket.io-client';
 import Player from '../entities/Player';
 import Bullet from '../entities/Bullet';
 import EnemyPlayer from '../entities/EnemyPlayer';
+import ProjectilesGroup from '../attacks/ProjectilesGroup';
+import Projectile from '../attacks/Projectile'
 
 
 export default class GameScene extends Scene {
@@ -117,13 +119,6 @@ export default class GameScene extends Scene {
       console.log("Enemy players movement data:", data);
       thisScene.updateEnemyPlayer(enemyPlayers, data);
     })
-    
-
-    this.socket.on('playerHasShot', function (data) {
-      //console.log(data);
-      thisScene.renderBullet(data);
-    })
-
   } 
 
 //----------------end of create method of game scene------------------------------
@@ -213,9 +208,6 @@ export default class GameScene extends Scene {
         enemyPlayer.y = data.y;
       }  
     });
-  }
-  renderBullet(data){
-    return new Bullet(this, data.x, data.y, data.direction);
   }
   createEnemyPlayerColliders(player, { colliders }){
     player
