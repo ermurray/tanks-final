@@ -27,7 +27,15 @@ export default class EnemyPlayer extends Phaser.Physics.Arcade.Sprite {
     this.Health = 30;
   
     this.setCollideWorldBounds(true);
-   
+
+    let enemyPlayer = this;
+    this.socket.on('playerHasShot', function (data) {
+      console.log(this)
+      console.log(enemyPlayer);
+      //console.log(enemyPlayers.projectilesGroup);
+      enemyPlayer.projectilesGroup.fireProjectile(enemyPlayer);
+    })
+
   }
   initEvents() {
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this)
