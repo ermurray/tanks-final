@@ -1,11 +1,12 @@
 import Phaser from 'phaser';
 import Tank from './Tank';
-import collidable from '../mixins/collidable';
+
 
 
 export default class Player extends Tank {
-  constructor(scene, x, y, key, socket, state) {
+  constructor(scene, x, y, key, socket, state, pNum) {
     super(scene, x, y, key);
+    this.pNum = pNum
     this.socket = socket;
     this.state = state;
     console.log("Initial State:", state);
@@ -17,10 +18,31 @@ export default class Player extends Tank {
   init() {
     
     this.cursors = this.scene.input.keyboard.createCursorKeys();
- 
-    
+    this.lastDirection;
+    this.direction;
+    switch(this.pNum){
+      case 'p1':
+        this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
+        this.direction = 'right'
+        this.setTexture('tankRight')
+        break;
+      case 'p2':
+        this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
+        this.direction = 'left'
+        this.setTexture('tankLeft')
+      case 'p3':
+        this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
+        this.direction = 'right'
+        this.setTexture('tankRight')
+        break;
+      case 'p4':  
+        this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
+        this.direction = 'left'
+        this.setTexture('tankLeft')
+        break;
+    }
    
-  
+   
    
     this.scene.input.keyboard.on('keydown-SPACE', () => {
       console.log('Shoot');

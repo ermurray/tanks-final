@@ -19,7 +19,8 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
   
     this.projectilesGroup = new ProjectilesGroup(this.scene);
     this.Health = 30;
-    this.direction;
+
+    
     this.setCollideWorldBounds(true);
     
   }
