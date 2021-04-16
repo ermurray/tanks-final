@@ -88,7 +88,7 @@ module.exports = (io) => {
     socket.on("isKeyValid", function (input) {
       Object.keys(gameRooms).includes(input)
         ? socket.emit("keyIsValid", input)
-        : socket.emit("keyNotValid");
+        : socket.emit("keyNotValid")
     });
     // get a random code for the room
     socket.on("getRoomCode", async function () {

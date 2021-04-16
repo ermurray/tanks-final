@@ -79,7 +79,7 @@ export default class Lobby extends Phaser.Scene {
       if(thisScene.chatMessages.length > 20){
         thisScene.chatMessages.shift();
       }
-      thisScene.chatMessages.push(`Hi ${thisScene.state.playerName} Welcome to ${roomKey}`)
+      thisScene.chatMessages.push(`Hi ${thisScene.state.playerName} Welcome to ${roomKey}, please select a tank`)
       thisScene.chat.setText(thisScene.chatMessages)
     });
     
@@ -152,8 +152,8 @@ export default class Lobby extends Phaser.Scene {
     
     
     this.strtSmall = this.add.sprite(600, 540, 'start-sm');
-    this.strtSmall.setInteractive();
-    this.strtSmall.on('pointerdown', this.onDown,this);
+    // this.strtSmall.setInteractive();
+ 
   
     // player Number Selection
   //----------------------------------------------------------------
@@ -163,24 +163,26 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     });
 
+    let p1Active = false;
     this.p1Select = this.add.sprite(300,150,'tankBlue').setInteractive();
     this.p1Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p1Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       
       thisScene.state.players[thisScene.socket.id].pNumber = "p1";
-      thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
+      thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
+      p1Active = true;
     
     });
 
     
-
+    let p2Active = false;
     this.p2Select = this.add.sprite(300,250,'tankRed').setInteractive();
     this.p2Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p2Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
      
       thisScene.state.players[thisScene.socket.id].pNumber = "p2";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
-  
+      p2Active = true;
     });
 
 
@@ -188,8 +190,9 @@ export default class Lobby extends Phaser.Scene {
       fill: "#00ff00",
       fontSize: "20px",
       fontStyle: "bold"
-    })
+    });
 
+    let p3Active = false;
     this.p3Select = this.add.sprite(300,350,'tankGreen').setInteractive();
     this.p3Select.on('pointerdown', (e) => {
       
@@ -197,7 +200,7 @@ export default class Lobby extends Phaser.Scene {
       thisScene.setPlayerText(thisScene.p3Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p3";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
-   
+      p3Active = true;
     });
 
     this.p3Text = this.add.text(400, 350, "", {
@@ -206,14 +209,14 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     })
 
-
+    let p4Active = false;
     this.p4Select = this.add.sprite(300,450,'tankYellow').setInteractive();
     this.p4Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p4Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p4";
       console.log("set-pNumber",thisScene.state)
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
- 
+      p4Active = true;
     });
     this.p4Text = this.add.text(400, 450, "", {
       fill: "#00ff00",
@@ -243,14 +246,21 @@ export default class Lobby extends Phaser.Scene {
       console.log("player-selectedTank playerID:", playerID);
       console.log("player-selectedTank playerObj:", playerObj);
       console.log("player-selectedTank playerName:", playerName);
-      console.log("state obj after player-selectedTank:",thisScene.state)
+      console.log("state obj after player-selectedTank:",thisScene.state);
+
+      if (p1Active === true) {
+        this.strtSmall.setInteractive();
+        this.strtSmall.on('pointerdown', this.onDown,this);
+      }
     });
 //-----------------------------------------------------------------
 //endof player number selection
   }
 
+  
   onDown() {
-    this.scene.start ('scene-game')
+    // If there are enough players
+    this.scene.start ('scene-game');
   }
 
   update(){

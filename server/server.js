@@ -151,6 +151,8 @@ io.on("connection", (socket) => {
   socket.on("isKeyValid", function (input, playerName) {
     if(!Object.keys(gameRooms).includes(input)){
       socket.emit("keyNotValid");
+    } else if (gameRooms[input].numPlayers >= 4) {
+      socket.emit("gameIsFull", input, playerName);
     } else {
       socket.emit("keyIsValid", input, playerName);
       console.log("---->",gameRooms[input].numPlayers)
