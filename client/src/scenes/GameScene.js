@@ -1,6 +1,7 @@
 import {Scene} from 'phaser';
 import io from 'socket.io-client';
 import Player from '../entities/Player';
+import Bullet from '../entities/Bullet';
 import EnemyPlayer from '../entities/EnemyPlayer';
 
 
@@ -103,9 +104,14 @@ export default class GameScene extends Scene {
 
     
     this.socket.on('playerMoved', function (data) {
-      console.log("Enemy players movement data:", data);
+      //console.log("Enemy players movement data:", data);
       
       thisScene.updateEnemyPlayer(enemyPlayer, data);
+    })
+
+    this.socket.on('playerHasShot', function (data) {
+      //console.log(data);
+      thisScene.renderBullet(data);
     })
 
   } 
@@ -166,6 +172,10 @@ export default class GameScene extends Scene {
     //console.log("this.enemyplayer------>>>>>>",this)
     enemyPlayer.x = data.x;
     enemyPlayer.y = data.y;
+    //enemyPlayer.setVelocity(data.vector2)
+  }
+  renderBullet(data){
+    return new Bullet(this, data.x, data.y, data.direction);
   }
   createEnemyPlayerColliders(player, { colliders }){
     player
