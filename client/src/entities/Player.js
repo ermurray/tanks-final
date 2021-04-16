@@ -1,36 +1,27 @@
 import Phaser from 'phaser';
+import Tank from './Tank';
 import collidable from '../mixins/collidable';
-import ProjectilesGroup from '../attacks/ProjectilesGroup';
 
-export default class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, socket, state) {
-    super(scene, x, y, 'localPlayer');
-    scene.add.existing(this);
-    scene.physics.add.existing(this);
-    
-    //Mixins to assign other objects to this context
-    Object.assign(this, collidable);
-    
+
+export default class Player extends Tank {
+  constructor(scene, x, y, key, socket, state) {
+    super(scene, x, y, key);
     this.socket = socket;
     this.state = state;
     console.log("Initial State:", state);
     console.log("Socket", socket);
-    this.init();
-    this.initEvents();
+      this.init();
+      this.initEvents()
   }
 
   init() {
-    this.playerSpeed = 100;
-    this.setBodySize(24, 24).setOffset(4, 4);
-    // this.setScale(0.9);
-    this.depth = 3;
+    
     this.cursors = this.scene.input.keyboard.createCursorKeys();
-    this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
-    this.projectilesGroup = new ProjectilesGroup(this.scene);
-    this.Health = 30;
-    this.direction;
+ 
+    
+   
   
-    this.setCollideWorldBounds(true);
+   
     this.scene.input.keyboard.on('keydown-SPACE', () => {
       console.log('Shoot');
       this.projectilesGroup.fireProjectile(this);

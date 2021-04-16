@@ -156,7 +156,7 @@ export default class GameScene extends Scene {
 
   }
   
-  createPlayer(playerSpawnZones) {
+  createPlayer(playerSpawnZones,) {
     //const pNumber = this.state.players[this.socket.id].pNumber;
     console.log("player creation game scene:",this.state.players)
     console.log("player creation game scene:",this.state.players[this.socket.id].pNumber)
@@ -178,7 +178,7 @@ export default class GameScene extends Scene {
         break;
     }
 
-    return new Player(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state);
+    return new Player(this, selectedSpawn.x, selectedSpawn.y, 'localPlayer', this.socket, this.state);
   }
   createEnemyPlayers(playerSpawnZones, enemyPlayersArray){
     
@@ -196,22 +196,22 @@ export default class GameScene extends Scene {
     switch(playerNum){
       case 'p1':
         selectedSpawn = player1Spawn;
-        playerColor = ''
+        playerColor = 'tankBlue'
         break;
       case 'p2':
         selectedSpawn = player2Spawn;
-        playerColor = ''
+        playerColor = 'tankRed'
         break;
       case 'p3':
         selectedSpawn = player3Spawn;
-        playerColor = ''
+        playerColor = 'tankGreen'
         break;
       case 'p4':
         selectedSpawn = player4Spawn;
-        playerColor = ''
+        playerColor = 'tankYellow'
         break;
     }
-    return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state, playerNum, plaeryColor);
+    return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state, playerNum, playerColor);
   }
   updateEnemyPlayer(enemyPlayers, data){
     //console.log("this.enemyplayer------>>>>>>",this)
