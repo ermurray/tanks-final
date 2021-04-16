@@ -30,23 +30,33 @@ export default class GameScene extends Scene {
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
     // console.log("layer--->",layers.spawnZone)
-  
     this.createPlayerColliders(localPlayer,{
       colliders:{
         wallLayer: layers.wallLayer,
-      
+        
       }
     });
-    //----------------------need to creat logic to create multiple enemy base on state.players obj for each player....
+    //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
+    const enemyPlayersArray = [];
+    for(const player in thisScene.state.players ){
+    if(player !== thisScene.socket.id){
+      enemyPlayersArray.push(thisScene.state.players[player])
+    }
+  }
+  
+  
+  
+  
+  const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
+  
+  console.log("inside create------------->",enemyPlayers)
+    // this.createEnemyPlayerColliders(enemyPlayer, {
+    //   colliders:{
+    //     wallLayer: layers.wallLayer
+    //   }
+    // })
 
-
-    const enemyPlayer = this.createEnemyPlayer(playerSpawnZones);
-
-    this.createEnemyPlayerColliders(enemyPlayer, {
-      colliders:{
-        wallLayer: layers.wallLayer
-      }
-    })
+  
     
     this.physics.add.collider(localPlayer.projectilesGroup, layers.wallLayer, (projectile, wall) => {
       projectile.resetProjectile();
@@ -104,10 +114,10 @@ export default class GameScene extends Scene {
 
     
     this.socket.on('playerMoved', function (data) {
-      //console.log("Enemy players movement data:", data);
-      
-      thisScene.updateEnemyPlayer(enemyPlayer, data);
+      console.log("Enemy players movement data:", data);
+      thisScene.updateEnemyPlayer(enemyPlayers, data);
     })
+    
 
     this.socket.on('playerHasShot', function (data) {
       //console.log(data);
@@ -116,7 +126,7 @@ export default class GameScene extends Scene {
 
   } 
 
-
+//----------------end of create method of game scene------------------------------
   
   createMap() {
     const map = this.make.tilemap({key: 'map1'});
@@ -125,7 +135,7 @@ export default class GameScene extends Scene {
    
     return map;
   }
-
+  
   createLayers(map) {
     const tilesetGrass = map.getTileset('rpl_grass');
     const tilesetSand = map.getTileset('rpl_sand');
@@ -163,16 +173,46 @@ export default class GameScene extends Scene {
 
     return new Player(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state);
   }
-  
-  createEnemyPlayer(playerSpawnZones){
-    const { player1Spawn, player2Spawn, player3Spawn, player4Spawn } = playerSpawnZones
-    return new EnemyPlayer(this, player2Spawn.x, player1Spawn.y, this.socket, this.state);
+  createEnemyPlayers(playerSpawnZones, enemyPlayersArray){
+    
+    return enemyPlayersArray.map(enemyPlayer => {
+      return this.createEnemyPlayer(playerSpawnZones, enemyPlayer)
+      
+    });
+
   }
-  updateEnemyPlayer(enemyPlayer, data){
+  createEnemyPlayer(playerSpawnZones, enemyPlayer){
+    const { player1Spawn, player2Spawn, player3Spawn, player4Spawn } = playerSpawnZones
+    const playerNum = enemyPlayer.pNumber;
+    let selectedSpawn;
+    switch(playerNum){
+      case 'p1':
+        selectedSpawn = player1Spawn;
+        break;
+      case 'p2':
+        selectedSpawn = player2Spawn;
+        break;
+      case 'p3':
+        selectedSpawn = player3Spawn;
+        break;
+      case 'p4':
+        selectedSpawn = player4Spawn;
+        break;
+    }
+    return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state, playerNum);
+  }
+  updateEnemyPlayer(enemyPlayers, data){
     //console.log("this.enemyplayer------>>>>>>",this)
-    enemyPlayer.x = data.x;
-    enemyPlayer.y = data.y;
-    //enemyPlayer.setVelocity(data.vector2)
+    console.log('enemyPlayers-------------------------->\n', enemyPlayers)
+    console.log('enemyplayers data---------->', data.pNum)
+    enemyPlayers.forEach((enemyPlayer)=>{
+      console.log('enemyplayer  players in for loop',enemyPlayer.pNum)
+      console.log('datain for loop', data.playerId)
+      if (enemyPlayer.pNum === data.pNumber){
+        enemyPlayer.x = data.x;
+        enemyPlayer.y = data.y;
+      }  
+    });
   }
   renderBullet(data){
     return new Bullet(this, data.x, data.y, data.direction);
