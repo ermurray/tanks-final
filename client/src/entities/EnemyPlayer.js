@@ -21,17 +21,23 @@ export default class EnemyPlayer extends Tank {
       case 'p1':
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
         this.direction = 'right'
+        this.setAngle(0)
         break;
       case 'p2':
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
         this.direction = 'left'
+        this.setAngle(180)
+        break;
       case 'p3':
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
         this.direction = 'right'
+        this.setAngle(0)
         break;
       case 'p4':  
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
         this.direction = 'left'
+        this.setAndle(180)
+        break;
         
     }
     this.setImmovable(true);

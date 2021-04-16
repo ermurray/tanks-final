@@ -167,19 +167,19 @@ export default class GameScene extends Scene {
     switch(playerNum){
       case 'p1':
         selectedSpawn = player1Spawn;
-        playerColor = 'tankRight'
+        playerColor = 'localPlayer'
         break;
       case 'p2':
         selectedSpawn = player2Spawn;
-        playerColor = 'tankLeft'
+        playerColor = 'localPlayer'
         break;
       case 'p3':
         selectedSpawn = player3Spawn;
-        playerColor = 'tankRight'
+        playerColor = 'localPlayer'
         break;
       case 'p4':
         selectedSpawn = player4Spawn;
-        playerColor = 'tankLeft'
+        playerColor = 'localPlayer'
         break;
     }
 

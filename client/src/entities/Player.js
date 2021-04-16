@@ -24,21 +24,22 @@ export default class Player extends Tank {
       case 'p1':
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
         this.direction = 'right'
-        this.setTexture('tankRight')
+        this.setAngle(0)
         break;
       case 'p2':
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
         this.direction = 'left'
-        this.setTexture('tankLeft')
+        this.setAngle(180)
+        break;
       case 'p3':
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
         this.direction = 'right'
-        this.setTexture('tankRight')
+        this.setAngle(0)
         break;
       case 'p4':  
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
         this.direction = 'left'
-        this.setTexture('tankLeft')
+        this.setAngle(180)
         break;
     }
    
@@ -75,8 +76,8 @@ export default class Player extends Tank {
       if (left.isDown || this.wasd.left.isDown) {
         console.log("left");
         this.setVelocityX(-this.playerSpeed);
-        this.setVelocityY(0)
-        this.setTexture('tankLeft');
+        this.setVelocityY(0);
+        this.setAngle(180);
         this.direction = "left"
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
         console.log('left velo check', this.body.velocity)
@@ -85,7 +86,7 @@ export default class Player extends Tank {
         console.log("right");
         this.setVelocityX(this.playerSpeed);
         this.setVelocityY(0)
-        this.setTexture('tankRight');
+        this.setAngle(0);    
         this.direction = "right"
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
       }
@@ -93,7 +94,7 @@ export default class Player extends Tank {
         console.log("up");
         this.setVelocityY(-this.playerSpeed);
         this.setVelocityX(0)
-        this.setTexture('tankUp');
+        this.setAngle(-90) 
         this.direction = "up"
         this.lastDirection = Phaser.Physics.Arcade.FACING_UP;
       }
@@ -101,7 +102,7 @@ export default class Player extends Tank {
         console.log("down");
         this.setVelocityY(this.playerSpeed);
         this.setVelocityX(0)
-        this.setTexture('tankDown');
+        this.setAngle(90)   
         this.direction = "down"
         this.lastDirection = Phaser.Physics.Arcade.FACING_DOWN;
       }
