@@ -33,6 +33,7 @@ export default class BootScene extends Scene {
     this.load.image('tankYellow', 'src/assets/tank-yellow.png');
     this.load.image('breakable', '../src/assets/boxes/1.png');
     this.load.image('breakable2', '../src/assets/boxes/2.png');
+    this.load.image('breakable3', '../src/assets/boxes/3.png');
     this.load.image('enemyPlayers', 'src/assets/tank_lft32px.png')
   }
 
