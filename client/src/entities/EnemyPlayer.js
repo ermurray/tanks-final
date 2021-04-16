@@ -3,7 +3,7 @@ import collidable from '../mixins/collidable';
 import ProjectilesGroup from '../attacks/ProjectilesGroup';
 
 export default class EnemyPlayer extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, socket, state) {
+  constructor(scene, x, y, socket, state, pNum) {
     super(scene, x, y, 'enemyPlayers');
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -13,6 +13,7 @@ export default class EnemyPlayer extends Phaser.Physics.Arcade.Sprite {
     
     this.socket = socket;
     this.state = state;
+    this.pNum = pNum;
     console.log("Initial State:", state);
     console.log("Socket", socket);
     this.init();

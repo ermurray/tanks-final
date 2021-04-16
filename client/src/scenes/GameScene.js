@@ -40,14 +40,15 @@ export default class GameScene extends Scene {
     for(const player in thisScene.state.players ){
     if(player !== thisScene.socket.id){
       enemyPlayersArray.push(thisScene.state.players[player])
-     }
     }
-    
-    
-
-    
-    const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
-
+  }
+  
+  
+  
+  
+  const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
+  
+  console.log("inside create------------->",enemyPlayers)
     // this.createEnemyPlayerColliders(enemyPlayer, {
     //   colliders:{
     //     wallLayer: layers.wallLayer
@@ -108,13 +109,12 @@ export default class GameScene extends Scene {
     
     this.socket.on('playerMoved', function (data) {
       console.log("Enemy players movement data:", data);
-      
       thisScene.updateEnemyPlayer(enemyPlayers, data);
     })
-
+    
   } 
 
-
+//----------------end of create method of game scene------------------------------
   
   createMap() {
     const map = this.make.tilemap({key: 'map1'});
@@ -163,7 +163,7 @@ export default class GameScene extends Scene {
   }
   createEnemyPlayers(playerSpawnZones, enemyPlayersArray){
     
-    return enemyPlayersArray.forEach(enemyPlayer => {
+    return enemyPlayersArray.map(enemyPlayer => {
       return this.createEnemyPlayer(playerSpawnZones, enemyPlayer)
       
     });
@@ -187,16 +187,21 @@ export default class GameScene extends Scene {
         selectedSpawn = player4Spawn;
         break;
     }
-    return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state);
+    return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state, playerNum);
   }
   updateEnemyPlayer(enemyPlayers, data){
     //console.log("this.enemyplayer------>>>>>>",this)
-    console.log('')
-    // enemyPlayers.forEach((enemyPlayer)=>{
-    //   enemyPlayer.x = data.x;
-    //   enemyPlayer.y = data.y;
+    console.log('enemyPlayers-------------------------->\n', enemyPlayers)
+    console.log('enemyplayers data---------->', data.pNum)
+    enemyPlayers.forEach((enemyPlayer)=>{
+      console.log('enemyplayer  players in for loop',enemyPlayer.pNum)
+      console.log('datain for loop', data.playerId)
+      if (enemyPlayer.pNum === data.pNumber){
+        enemyPlayer.x = data.x;
+        enemyPlayer.y = data.y;
+      }
       
-    // })
+    })
   }
   createEnemyPlayerColliders(player, { colliders }){
     player
