@@ -192,21 +192,26 @@ export default class GameScene extends Scene {
     const { player1Spawn, player2Spawn, player3Spawn, player4Spawn } = playerSpawnZones
     const playerNum = enemyPlayer.pNumber;
     let selectedSpawn;
+    let playerColor;
     switch(playerNum){
       case 'p1':
         selectedSpawn = player1Spawn;
+        playerColor = ''
         break;
       case 'p2':
         selectedSpawn = player2Spawn;
+        playerColor = ''
         break;
       case 'p3':
         selectedSpawn = player3Spawn;
+        playerColor = ''
         break;
       case 'p4':
         selectedSpawn = player4Spawn;
+        playerColor = ''
         break;
     }
-    return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state, playerNum);
+    return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state, playerNum, plaeryColor);
   }
   updateEnemyPlayer(enemyPlayers, data){
     //console.log("this.enemyplayer------>>>>>>",this)
