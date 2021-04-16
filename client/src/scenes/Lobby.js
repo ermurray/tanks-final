@@ -103,14 +103,19 @@ export default class Lobby extends Phaser.Scene {
     });
    
     
-    this.chatheader = this.add.text(850, 10, "TANK CHAT",{
+    this.chatheader = this.add.text(850, -100, "TANK CHAT",{
       lineSpacing: 10,
       backroundColor: '0xa9a9a9',
       color: '#26924F',
       padding: 10,
       fontStyle: 'bold',
     }) 
-    this.chat = this.add.text(850, 30, "",{
+
+    
+   
+
+
+    this.chat = this.add.text(850, -80, "",{
       lineSpacing: 5,
       backroundColor: '0xa9a9a9',
       color: '#26924F',
@@ -121,7 +126,21 @@ export default class Lobby extends Phaser.Scene {
       }
       
     });
-    thisScene.textInput = this.add.dom(855, 540).createFromCache('chat-form').setOrigin(0);  
+
+    this.tweens.add({
+      targets: this.chatheader,
+      y: 10,
+      duration:3000,
+      ease: 'Power3'
+    })
+    this.tweens.add({
+      targets: this.chat,
+      y: 30,
+      duration:3000,
+      ease: 'Power3'
+    })
+
+    thisScene.textInput = this.add.dom(855, 640).createFromCache('chat-form').setOrigin(0);  
     this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
     
     this.enterKey.on('down', e => {
@@ -138,7 +157,12 @@ export default class Lobby extends Phaser.Scene {
       }
       // }
     })
-    
+    this.tweens.add({
+      targets: thisScene.textInput,
+      y:540,
+      duration:3000,
+      ease: 'Power3'
+    })
     this.socket.on("message", (pName,message)=>{
 
       thisScene.chatMessages.push(`${pName}: ${message}`)
@@ -154,7 +178,7 @@ export default class Lobby extends Phaser.Scene {
     this.strtSmall = this.add.sprite(600, 540, 'start-sm');
     this.strtSmall.setInteractive();
     this.strtSmall.on('pointerdown', this.onDown,this);
-  
+    
     // player Number Selection
   //----------------------------------------------------------------
     this.p1Text = this.add.text(400, 150, "", {
@@ -163,7 +187,7 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     });
 
-    this.p1Select = this.add.sprite(300,150,'tankBlue').setInteractive();
+    this.p1Select = this.add.sprite(-100,150,'tankBlue').setInteractive();
     this.p1Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p1Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       
@@ -174,7 +198,7 @@ export default class Lobby extends Phaser.Scene {
 
     
 
-    this.p2Select = this.add.sprite(300,250,'tankRed').setInteractive();
+    this.p2Select = this.add.sprite(-100,250,'tankRed').setInteractive();
     this.p2Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p2Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
      
@@ -190,7 +214,7 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     })
 
-    this.p3Select = this.add.sprite(300,350,'tankGreen').setInteractive();
+    this.p3Select = this.add.sprite(-100,350,'tankGreen').setInteractive();
     this.p3Select.on('pointerdown', (e) => {
       
       console.log("before emit setpNumber2",thisScene.state.pNumber)
@@ -207,7 +231,7 @@ export default class Lobby extends Phaser.Scene {
     })
 
 
-    this.p4Select = this.add.sprite(300,450,'tankYellow').setInteractive();
+    this.p4Select = this.add.sprite(-100,450,'tankYellow').setInteractive();
     this.p4Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p4Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p4";
@@ -247,6 +271,14 @@ export default class Lobby extends Phaser.Scene {
     });
 //-----------------------------------------------------------------
 //endof player number selection
+    this.tankSelectorsGroup = thisScene.add.group()
+    
+    this.tweens.add({
+      targets: [this.p1Select, this.p2Select, this.p3Select, this.p4Select],
+      x:300,
+      duration:3000,
+      ease: 'Power3'
+    })
   }
 
   onDown() {
