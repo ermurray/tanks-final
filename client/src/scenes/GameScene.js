@@ -5,6 +5,7 @@ import Bullet from '../entities/Bullet';
 import EnemyPlayer from '../entities/EnemyPlayer';
 import ProjectilesGroup from '../attacks/ProjectilesGroup';
 import Projectile from '../attacks/Projectile'
+import EnemyPlayersGroup from '../entities/EnemyPlayer';
 
 
 export default class GameScene extends Scene {
@@ -32,12 +33,7 @@ export default class GameScene extends Scene {
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
    
-    this.createPlayerColliders(localPlayer,{
-      colliders:{
-        wallLayer: layers.wallLayer,
-        boxes
-      }
-    });
+    
     //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
     const enemyPlayersArray = [];
     for(const player in thisScene.state.players ){
@@ -47,19 +43,13 @@ export default class GameScene extends Scene {
   }
   
   
-  as
+ 
   
   const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
   
   console.log("inside create------------->",enemyPlayers)
-    this.createEnemyPlayerColliders(enemyPlayers, {
-      colliders:{
-        wallLayer: layers.wallLayer,
-        localPlayer
-      }
-    })
-
-  
+    
+    
     
     this.physics.add.collider(localPlayer.projectilesGroup, layers.wallLayer, (projectile, wall) => {
       projectile.resetProjectile();
@@ -107,10 +97,10 @@ export default class GameScene extends Scene {
       box.body.moves = false;
     })
 
-    localPlayer.addCollider(boxes);
-    enemyPlayers.forEach((enemyPlayer) =>{
-      enemyPlayer.addCollider(boxes);
-    });
+    // localPlayer.addCollider(boxes);
+    // enemyPlayers.forEach((enemyPlayer) =>{
+    //   enemyPlayer.addCollider(boxes);
+    // });
 
     this.physics.add.overlap(localPlayer.projectilesGroup, boxes, (projectile, box) => {
       box.destroy();
@@ -118,11 +108,29 @@ export default class GameScene extends Scene {
 
     }, null, this);
 
+    this.createPlayerColliders(localPlayer,{
+      colliders:{
+        wallLayer: layers.wallLayer,
+        boxes
+      }
+    });
+
+    this.createEnemyPlayersColliders(enemyPlayers, {
+      colliders:{
+        wallLayer: layers.wallLayer,
+        localPlayer,
+        boxes
+      }
+    })
+
     
     this.socket.on('playerMoved', function (data) {
       console.log("Enemy players movement data:", data);
       thisScene.updateEnemyPlayer(enemyPlayers, data);
     })
+
+   
+
   } 
 
 //----------------end of create method of game scene------------------------------
@@ -213,11 +221,12 @@ export default class GameScene extends Scene {
       }  
     });
   }
-  createEnemyPlayerColliders(enemyPlayers, { colliders }){
+  createEnemyPlayersColliders(enemyPlayers, { colliders }){
     enemyPlayers.forEach((enemyPlayer)=>{
       enemyPlayer
                 .addCollider(colliders.wallLayer)
-                .addCollider(colliders.localPlayer);
+                .addCollider(colliders.localPlayer)
+                .addCollider(colliders.boxes);
 
     })
       
