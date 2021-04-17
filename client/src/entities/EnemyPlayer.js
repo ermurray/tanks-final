@@ -34,7 +34,7 @@ export default class EnemyPlayer extends Tank {
       case 'p4':  
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
       
-        this.setAndle(180)
+        this.setAngle(180)
         break;
         
     }
