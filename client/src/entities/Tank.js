@@ -13,6 +13,7 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
     
    
     this.playerSpeed = 100;
+    this.enemySpeed =100;
     this.setBodySize(24, 24).setOffset(4, 4);
     // this.setScale(0.9);
     this.depth = 3;
