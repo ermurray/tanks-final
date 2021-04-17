@@ -17,16 +17,15 @@ export default class Lobby extends Phaser.Scene {
 
 
     const thisScene = this;
-    // this.otherPlayers = this.physics.add.group();
+   
 
     this.socket = io('http://localhost:3000') //this will need to change on prod server
     this.socket.on('connect', function() {
-      console.log(`You have connected`);
+      console.log('you have connected to the server')
     });
     
     this.registry.set('socket', this.socket);
     this.registry.set('state', this.state);
-    console.log("--->state in lobby",this.state);
     this.scene.launch("scene-waitingRoom", {Socket: this.scene.socket})
     this.add.image(0,0, 'bckgrnd').setOrigin(0).setScale(0.5);
     
@@ -47,8 +46,7 @@ export default class Lobby extends Phaser.Scene {
       thisScene.state.playerName = players[thisScene.socket.id].pName; 
       //--------------------------------------
       thisScene.state.numPlayers = numPlayers;
-      console.log("setstate obj",state)
-      console.log("setState--->game state obj", thisScene.state)
+  
       thisScene.state.players[thisScene.socket.id].pNumber = players[thisScene.socket.id].pNumber;
       const roomtext = `GAME KEY: ${roomKey} \n PLAYERS: ${numPlayers}/4`
       roomInfoText.setText(roomtext);
@@ -59,7 +57,7 @@ export default class Lobby extends Phaser.Scene {
       //---------------------- refactor below with above but currently seTankSelection is broken
       for(const player in thisScene.state.players) {
           const tankSelected = thisScene.state.players[player].pNumber;
-          console.log("player inside for loop--------->",thisScene.state.players[player]);
+         
           const playerName = thisScene.state.players[player].pName;
         switch(tankSelected){
           case 'p1':
@@ -87,20 +85,18 @@ export default class Lobby extends Phaser.Scene {
     this.socket.on("newPlayer", function(data){
       const newPlayerId = data.playerInfo.playerId;
       const newPName = data.playerInfo.pName;
-      console.log("new player", newPName);
       thisScene.chatMessages.push(`---------------`,`A Rogue Operator: ${newPName}, has `,`joined the battle`, `---------------`,`Fire Away`);
       if(thisScene.chatMessages.length >= 20){
         thisScene.chatMessages.shift();
       }
       thisScene.chat.setText(thisScene.chatMessages)
 
-      console.log("current state on playerjoin", thisScene.state);
-      console.log("newplayer-->", newPlayerId);
+      
       thisScene.state.players[newPlayerId] = data.playerInfo;
       thisScene.state.numPlayers = data.numPlayers;
       const roomtext = `GAME KEY: ${thisScene.state.roomKey} \n PLAYERS: ${thisScene.state.numPlayers}/4`;
       roomInfoText.setText(roomtext);
-      console.log("current state afterplayerJoin", thisScene.state);
+     
     });
    
     
@@ -147,7 +143,7 @@ export default class Lobby extends Phaser.Scene {
     this.enterKey.on('down', e => {
       const chatBox = thisScene.textInput.getChildByName("chat-form");
       if (chatBox.value !== "") {
-        console.log(chatBox.value);
+        
         const message = {
           message: chatBox.value,
           pName: thisScene.state.playerName,
@@ -223,7 +219,7 @@ export default class Lobby extends Phaser.Scene {
     this.p3Select = this.add.sprite(-100,350,'tankGreen').setInteractive();
     this.p3Select.on('pointerdown', (e) => {
       
-      console.log("before emit setpNumber2",thisScene.state.pNumber)
+     
       thisScene.setPlayerText(thisScene.p3Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p3";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
@@ -241,7 +237,7 @@ export default class Lobby extends Phaser.Scene {
     this.p4Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p4Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p4";
-      console.log("set-pNumber",thisScene.state)
+      
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
       readyPlayers[3] = true;
     });
@@ -360,28 +356,7 @@ export default class Lobby extends Phaser.Scene {
           break;
 
       };
-      console.log("player-selectedTank playerID:", playerID);
-      console.log("player-selectedTank playerObj:", playerObj);
-      console.log("player-selectedTank playerName:", playerName);
-      console.log("state obj after player-selectedTank:",thisScene.state);
-
-      /*
-      let blankCount = 0;
-      for(const player in thisScene.state.players) {
-        console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
-        if (!thisScene.state.players[player].pNumber) {
-          blankCount += 1;
-        } else {
-          blankCount += 0;
-        }
-      }
-
-      if (thisScene.state.players[player].pNumber) {
-        this.strtSmall.setInteractive();
-        this.strtSmall.on('pointerdown', this.onDown,this);
-      }
-      */
-
+     
     });
 //-----------------------------------------------------------------
 //endof player number selection

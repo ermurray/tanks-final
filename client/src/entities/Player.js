@@ -1,36 +1,50 @@
 import Phaser from 'phaser';
-import collidable from '../mixins/collidable';
-import ProjectilesGroup from '../attacks/ProjectilesGroup';
+import Tank from './Tank';
 
-export default class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, socket, state) {
-    super(scene, x, y, 'localPlayer');
-    scene.add.existing(this);
-    scene.physics.add.existing(this);
-    
-    //Mixins to assign other objects to this context
-    Object.assign(this, collidable);
-    
+
+
+export default class Player extends Tank {
+  constructor(scene, x, y, key, socket, state, pNum) {
+    super(scene, x, y, key);
+    this.pNum = pNum
     this.socket = socket;
     this.state = state;
     console.log("Initial State:", state);
     console.log("Socket", socket);
-    this.init();
-    this.initEvents();
+      this.init();
+      this.initEvents()
   }
 
   init() {
-    this.playerSpeed = 100;
-    this.setBodySize(24, 24).setOffset(4, 4);
-    // this.setScale(0.9);
-    this.depth = 3;
+    
     this.cursors = this.scene.input.keyboard.createCursorKeys();
-    this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
-    this.projectilesGroup = new ProjectilesGroup(this.scene);
-    this.Health = 30;
+    this.lastDirection;
     this.direction;
-  
-    this.setCollideWorldBounds(true);
+    switch(this.pNum){
+      case 'p1':
+        this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
+        
+        this.setAngle(0)
+        break;
+      case 'p2':
+        this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
+       
+        this.setAngle(180)
+        break;
+      case 'p3':
+        this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
+       
+        this.setAngle(0)
+        break;
+      case 'p4':  
+        this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
+
+        this.setAngle(180)
+        break;
+    }
+   
+   
+   
     this.scene.input.keyboard.on('keydown-SPACE', () => {
       console.log('Shoot');
       this.projectilesGroup.fireProjectile(this);
@@ -60,35 +74,35 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     const { left, right , up, down, space} = this.cursors;
     
       if (left.isDown || this.wasd.left.isDown) {
-        console.log("left");
+     
         this.setVelocityX(-this.playerSpeed);
-        this.setVelocityY(0)
-        this.setTexture('tankLeft');
+        this.setVelocityY(0);
+        this.setAngle(180);
         this.direction = "left"
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
-        console.log('left velo check', this.body.velocity)
+       
       }
       else if (right.isDown || this.wasd.right.isDown) {
-        console.log("right");
+      
         this.setVelocityX(this.playerSpeed);
         this.setVelocityY(0)
-        this.setTexture('tankRight');
+        this.setAngle(0);    
         this.direction = "right"
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
       }
       else if (up.isDown || this.wasd.up.isDown) {
-        console.log("up");
+    
         this.setVelocityY(-this.playerSpeed);
         this.setVelocityX(0)
-        this.setTexture('tankUp');
+        this.setAngle(-90) 
         this.direction = "up"
         this.lastDirection = Phaser.Physics.Arcade.FACING_UP;
       }
       else if (down.isDown || this.wasd.down.isDown) {
-        console.log("down");
+     
         this.setVelocityY(this.playerSpeed);
         this.setVelocityX(0)
-        this.setTexture('tankDown');
+        this.setAngle(90)   
         this.direction = "down"
         this.lastDirection = Phaser.Physics.Arcade.FACING_DOWN;
       }
@@ -96,31 +110,42 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       {
         this.setVelocityX(0);
         this.setVelocityY(0);
+    
       }
 
       // emit player movement
-      let x = this.x;
-      let y = this.y;
-    
-      if (
-        this.oldPosition &&
-        (x !== this.oldPosition.x ||
-          y !== this.oldPosition.y)
-      ) {
-        this.moving = true;
-        this.socket.emit("playerMovement", {
+      
+      let currentDirection = this.direction;
+      let currentVelocity = this.body.velocity;
+      const movementData = {
+        direction: currentDirection,
           x: this.x,
           y: this.y,
-          vector2: this.body.velocity,
+          vector2: currentVelocity,
           roomKey: this.state.roomKey,
           socket: this.socket.id
-        });
       }
+
+      let checkVelocityZero = this.body.velocity.equals({x:0, y:0})
+      if (this.body.velocity.equals({x:0, y:0})){
+        this.direction = null
+        this.socket.emit("playerMovement",movementData)
+      }
+    
+      if (!checkVelocityZero&&
+        (this.oldDirection !== currentDirection)
+      ) {    
+        this.moving = true;
+        this.socket.emit("playerMovement", movementData);
+      }
+      
       // save old position data
-      this.oldPosition = {
-        x: this.x,
-        y: this.y,
-      };
+      // this.oldPosition = {
+      //   x: this.x,
+      //   y: this.y,
+      // };
+      this.oldDirection = this.direction
+      this.oldVelocity = this.body.velocity
   }
 
 

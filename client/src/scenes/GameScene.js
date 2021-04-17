@@ -5,6 +5,7 @@ import Bullet from '../entities/Bullet';
 import EnemyPlayer from '../entities/EnemyPlayer';
 import ProjectilesGroup from '../attacks/ProjectilesGroup';
 import Projectile from '../attacks/Projectile'
+import EnemyPlayersGroup from '../entities/EnemyPlayer';
 
 
 export default class GameScene extends Scene {
@@ -31,13 +32,8 @@ export default class GameScene extends Scene {
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
-    // console.log("layer--->",layers.spawnZone)
-    this.createPlayerColliders(localPlayer,{
-      colliders:{
-        wallLayer: layers.wallLayer,
-        
-      }
-    });
+   
+    
     //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
     const enemyPlayersArray = [];
     for(const player in thisScene.state.players ){
@@ -47,18 +43,13 @@ export default class GameScene extends Scene {
   }
   
   
-  
+ 
   
   const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
   
   console.log("inside create------------->",enemyPlayers)
-    // this.createEnemyPlayerColliders(enemyPlayer, {
-    //   colliders:{
-    //     wallLayer: layers.wallLayer
-    //   }
-    // })
-
-  
+    
+    
     
     this.physics.add.collider(localPlayer.projectilesGroup, layers.wallLayer, (projectile, wall) => {
       projectile.resetProjectile();
@@ -106,7 +97,10 @@ export default class GameScene extends Scene {
       box.body.moves = false;
     })
 
-    localPlayer.addCollider(boxes);
+    // localPlayer.addCollider(boxes);
+    // enemyPlayers.forEach((enemyPlayer) =>{
+    //   enemyPlayer.addCollider(boxes);
+    // });
 
     this.physics.add.overlap(localPlayer.projectilesGroup, boxes, (projectile, box) => {
       box.destroy();
@@ -114,11 +108,29 @@ export default class GameScene extends Scene {
 
     }, null, this);
 
+    this.createPlayerColliders(localPlayer,{
+      colliders:{
+        wallLayer: layers.wallLayer,
+        boxes
+      }
+    });
+
+    this.createEnemyPlayersColliders(enemyPlayers, {
+      colliders:{
+        wallLayer: layers.wallLayer,
+        localPlayer,
+        boxes
+      }
+    })
+
     
     this.socket.on('playerMoved', function (data) {
       console.log("Enemy players movement data:", data);
       thisScene.updateEnemyPlayer(enemyPlayers, data);
     })
+
+   
+
   } 
 
 //----------------end of create method of game scene------------------------------
@@ -144,29 +156,33 @@ export default class GameScene extends Scene {
 
   }
   
-  createPlayer(playerSpawnZones) {
+  createPlayer(playerSpawnZones,) {
     //const pNumber = this.state.players[this.socket.id].pNumber;
-    console.log("player creation game scene:",this.state.players)
-    console.log("player creation game scene:",this.state.players[this.socket.id].pNumber)
+    
     const { player1Spawn, player2Spawn, player3Spawn, player4Spawn } = playerSpawnZones
     const playerNum = this.state.players[this.socket.id].pNumber;
     let selectedSpawn;
+    let playerColor;
     switch(playerNum){
       case 'p1':
         selectedSpawn = player1Spawn;
+        playerColor = 'localPlayer'
         break;
       case 'p2':
         selectedSpawn = player2Spawn;
+        playerColor = 'localPlayer'
         break;
       case 'p3':
         selectedSpawn = player3Spawn;
+        playerColor = 'localPlayer'
         break;
       case 'p4':
         selectedSpawn = player4Spawn;
+        playerColor = 'localPlayer'
         break;
     }
 
-    return new Player(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state);
+    return new Player(this, selectedSpawn.x, selectedSpawn.y, playerColor, this.socket, this.state, playerNum);
   }
   createEnemyPlayers(playerSpawnZones, enemyPlayersArray){
     
@@ -180,43 +196,57 @@ export default class GameScene extends Scene {
     const { player1Spawn, player2Spawn, player3Spawn, player4Spawn } = playerSpawnZones
     const playerNum = enemyPlayer.pNumber;
     let selectedSpawn;
+    let playerColor;
     switch(playerNum){
       case 'p1':
         selectedSpawn = player1Spawn;
+        playerColor = 'tankBlue'
         break;
       case 'p2':
         selectedSpawn = player2Spawn;
+        playerColor = 'tankRed'
         break;
       case 'p3':
         selectedSpawn = player3Spawn;
+        playerColor = 'tankGreen'
         break;
       case 'p4':
         selectedSpawn = player4Spawn;
+        playerColor = 'tankYellow'
         break;
     }
-    return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, this.socket, this.state, playerNum);
+    return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, playerColor, this.socket, this.state, playerNum);
   }
   updateEnemyPlayer(enemyPlayers, data){
     //console.log("this.enemyplayer------>>>>>>",this)
-    console.log('enemyPlayers-------------------------->\n', enemyPlayers)
-    console.log('enemyplayers data---------->', data.pNum)
+    
     enemyPlayers.forEach((enemyPlayer)=>{
-      console.log('enemyplayer  players in for loop',enemyPlayer.pNum)
-      console.log('datain for loop', data.playerId)
+      const {x, y} = data.vector2
+      
       if (enemyPlayer.pNum === data.pNumber){
-        enemyPlayer.x = data.x;
-        enemyPlayer.y = data.y;
+        // enemyPlayer.x = data.x;
+        // enemyPlayer.y = data.y;
+
+        enemyPlayer.setVelocityX(x)
+        enemyPlayer.setVelocityY(y)
       }  
     });
   }
-  createEnemyPlayerColliders(player, { colliders }){
-    player
-        .addCollider(colliders.wallLayer);
+  createEnemyPlayersColliders(enemyPlayers, { colliders }){
+    enemyPlayers.forEach((enemyPlayer)=>{
+      enemyPlayer
+                .addCollider(colliders.wallLayer)
+                .addCollider(colliders.localPlayer)
+                .addCollider(colliders.boxes);
+
+    })
+      
   }
 
   createPlayerColliders(player, { colliders }){
     player
-        .addCollider(colliders.wallLayer);
+        .addCollider(colliders.wallLayer)
+        .addCollider(colliders.boxes);
   }
 
   getPlayerZones(spawnZoneLayer){
