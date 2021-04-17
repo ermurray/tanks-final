@@ -124,13 +124,7 @@ export default class GameScene extends Scene {
     })
 
     
-    // this.socket.on('playerMoved', function (data) {
-      
-    //   thisScene.updateEnemyPlayer(enemyPlayers, data);
-    // })
-
    
-
   } 
 
 //----------------end of create method of game scene------------------------------
@@ -217,21 +211,7 @@ export default class GameScene extends Scene {
     }
     return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, playerColor, this.socket, this.state, playerNum);
   }
-  // updateEnemyPlayer(enemyPlayers, data){
-  //   //console.log("this.enemyplayer------>>>>>>",this)
-    
-  //   enemyPlayers.forEach((enemyPlayer)=>{
-  //     const {x, y} = data.vector2
-      
-  //     if (enemyPlayer.pNum === data.pNumber){
-  //       // enemyPlayer.x = data.x;
-  //       // enemyPlayer.y = data.y;
-
-  //       enemyPlayer.setVelocityX(x)
-  //       enemyPlayer.setVelocityY(y)
-  //     }  
-  //   });
-  // }
+  
   createEnemyPlayersColliders(enemyPlayers, { colliders }){
     enemyPlayers.forEach((enemyPlayer)=>{
       enemyPlayer
