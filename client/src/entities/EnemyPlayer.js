@@ -41,7 +41,7 @@ export default class EnemyPlayer extends Tank {
         break;
         
     }
-    this.setImmovable(true);
+    // this.setImmovable(true);
     this.setCollideWorldBounds(true);
 
     let enemyPlayer = this;
