@@ -91,23 +91,31 @@ export default class GameScene extends Scene {
         }
       }
     }
-    // boxes.create(600, 400, 'breakable').setScale(0.08);
-    // boxes.create(800, 400, 'breakable').setScale(0.08);
+    boxes.create(600, 400, 'breakable').setScale(0.08);
+    boxes.create(800, 400, 'breakable').setScale(0.08);
     boxes.children.each((box) => {
       box.body.immovable = true;
       box.body.moves = false;
+
     })
 
     // localPlayer.addCollider(boxes);
     // enemyPlayers.forEach((enemyPlayer) =>{
     //   enemyPlayer.addCollider(boxes);
     // });
+    this.createLocalProjectileBoxCollisions(boxes, localPlayer.projectilesGroup);
+    this.createEnemyProjectileBoxCollisions(boxes, enemyPlayers);
+    // this.physics.add.overlap(localPlayer.projectilesGroup, boxes, (projectile, box) => {
+    //   box.destroy();
+    //   projectile.resetProjectile();
 
-    this.physics.add.overlap(localPlayer.projectilesGroup, boxes, (projectile, box) => {
-      box.destroy();
-      projectile.resetProjectile();
+    // }, null, this);
+    
+    // this.physics.add.overlap(enemyPlayer.projectilesGroup, boxes, (projectile, box) => {
+    //   box.destroy();
+    //   projectile.resetProjectile();
 
-    }, null, this);
+    // }, null, this);
 
     this.createPlayerColliders(localPlayer,{
       colliders:{
@@ -224,6 +232,24 @@ export default class GameScene extends Scene {
     })
       
   }
+  createEnemyProjectileBoxCollisions(boxes, enemyPlayers){
+    enemyPlayers.forEach((enemyPlayer) =>{
+      this.physics.add.overlap(enemyPlayer.projectilesGroup, boxes, (projectile, box) => {
+        box.destroy();
+        projectile.resetProjectile();
+  
+      }, null, this);
+    })
+
+  }
+  createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
+    this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
+      box.destroy();
+      projectile.resetProjectile();
+
+    }, null, this);
+  }
+
 
   createPlayerColliders(player, { colliders }){
     player
