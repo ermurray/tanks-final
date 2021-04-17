@@ -124,10 +124,10 @@ export default class GameScene extends Scene {
     })
 
     
-    this.socket.on('playerMoved', function (data) {
-      console.log("Enemy players movement data:", data);
-      thisScene.updateEnemyPlayer(enemyPlayers, data);
-    })
+    // this.socket.on('playerMoved', function (data) {
+      
+    //   thisScene.updateEnemyPlayer(enemyPlayers, data);
+    // })
 
    
 
@@ -194,7 +194,7 @@ export default class GameScene extends Scene {
   }
   createEnemyPlayer(playerSpawnZones, enemyPlayer){
     const { player1Spawn, player2Spawn, player3Spawn, player4Spawn } = playerSpawnZones
-    const playerNum = enemyPlayer.pNumber;
+    let playerNum = enemyPlayer.pNumber;
     let selectedSpawn;
     let playerColor;
     switch(playerNum){
@@ -217,21 +217,21 @@ export default class GameScene extends Scene {
     }
     return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, playerColor, this.socket, this.state, playerNum);
   }
-  updateEnemyPlayer(enemyPlayers, data){
-    //console.log("this.enemyplayer------>>>>>>",this)
+  // updateEnemyPlayer(enemyPlayers, data){
+  //   //console.log("this.enemyplayer------>>>>>>",this)
     
-    enemyPlayers.forEach((enemyPlayer)=>{
-      const {x, y} = data.vector2
+  //   enemyPlayers.forEach((enemyPlayer)=>{
+  //     const {x, y} = data.vector2
       
-      if (enemyPlayer.pNum === data.pNumber){
-        // enemyPlayer.x = data.x;
-        // enemyPlayer.y = data.y;
+  //     if (enemyPlayer.pNum === data.pNumber){
+  //       // enemyPlayer.x = data.x;
+  //       // enemyPlayer.y = data.y;
 
-        enemyPlayer.setVelocityX(x)
-        enemyPlayer.setVelocityY(y)
-      }  
-    });
-  }
+  //       enemyPlayer.setVelocityX(x)
+  //       enemyPlayer.setVelocityY(y)
+  //     }  
+  //   });
+  // }
   createEnemyPlayersColliders(enemyPlayers, { colliders }){
     enemyPlayers.forEach((enemyPlayer)=>{
       enemyPlayer

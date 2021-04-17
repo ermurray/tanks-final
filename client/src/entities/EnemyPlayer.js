@@ -12,6 +12,8 @@ export default class EnemyPlayer extends Tank {
     console.log("Initial State:", state);
     console.log("Socket", socket);
     this.init();
+    this.initEvents();
+
   }
 
   init() {
@@ -33,8 +35,7 @@ export default class EnemyPlayer extends Tank {
         break;
       case 'p4':  
         this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
-      
-        this.setAndle(180)
+        this.setAngle(180)
         break;
         
     }
@@ -42,12 +43,70 @@ export default class EnemyPlayer extends Tank {
     this.setCollideWorldBounds(true);
 
     let enemyPlayer = this;
+    let thisPlayer = this.pNum
     this.socket.on('playerHasShot', function (data) {
-      console.log(this)
+      console.log(this);
       console.log(enemyPlayer);
+      console.log(data);
+      if(data.pNum === thisPlayer){
+        enemyPlayer.projectilesGroup.fireProjectile(enemyPlayer);
+
+      }
       //console.log(enemyPlayers.projectilesGroup);
-      enemyPlayer.projectilesGroup.fireProjectile(enemyPlayer);
     })
+    // this.remoteDirection;
+    this.socket.on('playerMoved', function (data) {
+    
+      // console.log('enemy Moved', data)
+      console.log("pmoved", data.pNumber)
+      console.log('pdirection:', data.direction)
+      console.log('thispNum', thisPlayer)
+      if(data.pNumber === thisPlayer){
+        this.remoteDirection = data.direction
+        console.log("this player",data.direction)
+        if (this.remoteDirection === 'left') {
+              console.log("remoteleft");
+              enemyPlayer.setVelocityX(-enemyPlayer.enemySpeed);
+              enemyPlayer.setVelocityY(0);
+              enemyPlayer.setAngle(180);
+              enemyPlayer.direction = "left"
+              enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
+    
+        } else if (this.remoteDirection === 'right') {
+              console.log("remoteright");
+              enemyPlayer.setVelocityX(enemyPlayer.enemySpeed);
+              enemyPlayer.setVelocityY(0)
+              enemyPlayer.setAngle(0);    
+              enemyPlayer.direction = "right"
+              enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
+        }else if (this.remoteDirection === 'up') {
+              console.log("up");
+              enemyPlayer.setVelocityY(-enemyPlayer.enemySpeed);
+              enemyPlayer.setVelocityX(0)
+              enemyPlayer.setAngle(-90) 
+              enemyPlayer.direction = "up"
+              enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_UP;
+            }
+            else if (this.remoteDirection === 'down') {
+              console.log("down");
+              enemyPlayer.setVelocityY(enemyPlayer.enemySpeed);
+              enemyPlayer.setVelocityX(0)
+              enemyPlayer.setAngle(90)   
+              enemyPlayer.direction = "down"
+              enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_DOWN;
+            }
+            else
+            {
+              enemyPlayer.setVelocityX(0);
+              enemyPlayer.setVelocityY(0);
+            }
+      }
+    });
+    
+     
+   
+  
+    
 
   }
   initEvents() {
@@ -55,47 +114,49 @@ export default class EnemyPlayer extends Tank {
     
   }
   update() {
-    
-
-    // if (left.isDown || this.wasd.left.isDown) {
-    //   console.log("left");
-    //   this.setVelocityX(-this.playerSpeed);
-    //   this.setVelocityY(0);
-    //   this.setAngle(180);
-    //   this.direction = "left"
-    //   this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
-    //   console.log('left velo check', this.body.velocity)
+    // if(this.remoteDirection){
+    //   console.log("i am going left", this.remoteDirection)
     // }
-    // else if (right.isDown || this.wasd.right.isDown) {
-    //   console.log("right");
-    //   this.setVelocityX(this.playerSpeed);
-    //   this.setVelocityY(0)
-    //   this.setAngle(0);    
-    //   this.direction = "right"
-    //   this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
-    // }
-    // else if (up.isDown || this.wasd.up.isDown) {
-    //   console.log("up");
-    //   this.setVelocityY(-this.playerSpeed);
-    //   this.setVelocityX(0)
-    //   this.setAngle(-90) 
-    //   this.direction = "up"
-    //   this.lastDirection = Phaser.Physics.Arcade.FACING_UP;
-    // }
-    // else if (down.isDown || this.wasd.down.isDown) {
-    //   console.log("down");
-    //   this.setVelocityY(this.playerSpeed);
-    //   this.setVelocityX(0)
-    //   this.setAngle(90)   
-    //   this.direction = "down"
-    //   this.lastDirection = Phaser.Physics.Arcade.FACING_DOWN;
-    // }
-    // else
-    // {
-    //   this.setVelocityX(0);
-    //   this.setVelocityY(0);
-    // }
+    // console.log("remote", this.remoteDirection)
+    // if (enemyPlayer.remoteDirection === 'left') {
+    //     console.log("left");
+    //     enemyPlayer.setVelocityX(-100);
+    //     enemyPlayer.setVelocityY(0);
+    //     enemyPlayer.setAngle(180);
+    //     enemyPlayer.direction = "left"
+    //     enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
+       
+    //   }
+    //   else if (enemyPlayer.remoteDirection === 'right') {
+    //     console.log("right");
+    //     enemyPlayer.setVelocityX(100);
+    //     enemyPlayer.setVelocityY(0)
+    //     enemyPlayer.setAngle(0);    
+    //     enemyPlayer.direction = "right"
+    //     enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
+    //   }
+    //   else if (enemyPlayer.remoteDirection === 'up') {
+    //     console.log("up");
+    //     enemyPlayer.setVelocityY(-100);
+    //     enemyPlayer.setVelocityX(0)
+    //     enemyPlayer.setAngle(-90) 
+    //     enemyPlayer.direction = "up"
+    //     enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_UP;
+    //   }
+    //   else if (enemyPlayer.remoteDirection === 'down') {
+    //     console.log("down");
+    //     enemyPlayer.setVelocityY(this.playerSpeed);
+    //     enemyPlayer.setVelocityX(0)
+    //     enemyPlayer.setAngle(90)   
+    //     enemyPlayer.direction = "down"
+    //     enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_DOWN;
+    //   }
+    //   else
+    //   {
+    //     enemyPlayer.setVelocityX(0);
+    //     enemyPlayer.setVelocityY(0);
+    //   }
+   
   }
-
 
 }

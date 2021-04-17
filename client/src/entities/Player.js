@@ -10,7 +10,7 @@ export default class Player extends Tank {
     this.socket = socket;
     this.state = state;
     console.log("Initial State:", state);
-    console.log("Socket", socket);
+    console.log("Socket", socket)
       this.init();
       this.initEvents()
   }
@@ -44,7 +44,7 @@ export default class Player extends Tank {
     }
    
    
-   
+    
     this.scene.input.keyboard.on('keydown-SPACE', () => {
       console.log('Shoot');
       this.projectilesGroup.fireProjectile(this);
@@ -54,7 +54,8 @@ export default class Player extends Tank {
         y: this.y,
         direction: this.direction,
         roomKey: this.state.roomKey,
-        socket: this.socket.id
+        socket: this.socket.id,
+        pNum: this.pNum
       });
     });
 
@@ -114,23 +115,43 @@ export default class Player extends Tank {
       }
 
       // emit player movement
-      
+      let x = this.x;
+      let y = this.y;
+      let checkVelocityZero = this.body.velocity.equals({x:0, y:0}) 
       let currentDirection = this.direction;
       let currentVelocity = this.body.velocity;
       const movementData = {
-        direction: currentDirection,
+          direction: currentDirection,
           x: this.x,
           y: this.y,
           vector2: currentVelocity,
           roomKey: this.state.roomKey,
-          socket: this.socket.id
+          socket: this.socket.id,
+          player: this.pNum
       }
-
-      let checkVelocityZero = this.body.velocity.equals({x:0, y:0})
+    
+      if (
+        this.oldPosition &&
+        (x !== this.oldPosition.x ||
+          y !== this.oldPosition.y)
+      ) {
+        this.moving = true;
       if (this.body.velocity.equals({x:0, y:0})){
         this.direction = null
         this.socket.emit("playerMovement",movementData)
       }
+      
+      }
+      // save old position data
+      this.oldPosition = {
+        x: this.x,
+        y: this.y,
+      };
+  
+      
+     
+
+      
     
       if (!checkVelocityZero&&
         (this.oldDirection !== currentDirection)
