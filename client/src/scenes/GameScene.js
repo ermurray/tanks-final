@@ -29,6 +29,7 @@ export default class GameScene extends Scene {
     const layers = this.createLayers(map);
     console.log(layers.wallLayer.layer.data);
     const layerData = layers.wallLayer.layer.data;
+    console.log("layerData:",layerData)
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
