@@ -10,7 +10,8 @@ export default class Player extends Tank {
     this.socket = socket;
     this.state = state;
     console.log("Initial State:", state);
-    console.log("Socket", socket)
+    console.log("Socket", socket);
+
       this.init();
       this.initEvents()
   }
@@ -111,7 +112,7 @@ export default class Player extends Tank {
       {
         this.setVelocityX(0);
         this.setVelocityY(0);
-    
+        
       }
 
       // emit player movement
@@ -130,28 +131,20 @@ export default class Player extends Tank {
           player: this.pNum
       }
     
-      if (
-        this.oldPosition &&
-        (x !== this.oldPosition.x ||
-          y !== this.oldPosition.y)
-      ) {
-        this.moving = true;
+      // if (
+      //   this.oldPosition &&
+      //   (x !== this.oldPosition.x ||
+      //     y !== this.oldPosition.y)
+      // ) {
+      //   this.moving = true;
       if (this.body.velocity.equals({x:0, y:0})){
         this.direction = null
+
         this.socket.emit("playerMovement",movementData)
       }
       
-      }
-      // save old position data
-      this.oldPosition = {
-        x: this.x,
-        y: this.y,
-      };
-  
-      
-     
-
-      
+      // }
+       
     
       if (!checkVelocityZero&&
         (this.oldDirection !== currentDirection)

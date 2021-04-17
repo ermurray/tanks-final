@@ -111,6 +111,7 @@ export default class GameScene extends Scene {
     this.createPlayerColliders(localPlayer,{
       colliders:{
         wallLayer: layers.wallLayer,
+        enemyPlayers,
         boxes
       }
     });
@@ -226,6 +227,7 @@ export default class GameScene extends Scene {
   createPlayerColliders(player, { colliders }){
     player
         .addCollider(colliders.wallLayer)
+        .addCollider(colliders.enemyPlayers)
         .addCollider(colliders.boxes);
   }
 

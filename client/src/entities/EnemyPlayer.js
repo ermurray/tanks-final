@@ -19,6 +19,8 @@ export default class EnemyPlayer extends Tank {
   init() {
     this.lastDirection;
     this.direction;
+    this.positionX;
+    this.positionY;
     switch(this.pNum){
       case 'p1':
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
@@ -74,6 +76,7 @@ export default class EnemyPlayer extends Tank {
     
         } else if (this.remoteDirection === 'right') {
               console.log("remoteright");
+            
               enemyPlayer.setVelocityX(enemyPlayer.enemySpeed);
               enemyPlayer.setVelocityY(0)
               enemyPlayer.setAngle(0);    
@@ -81,6 +84,7 @@ export default class EnemyPlayer extends Tank {
               enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
         }else if (this.remoteDirection === 'up') {
               console.log("up");
+       
               enemyPlayer.setVelocityY(-enemyPlayer.enemySpeed);
               enemyPlayer.setVelocityX(0)
               enemyPlayer.setAngle(-90) 
@@ -88,6 +92,7 @@ export default class EnemyPlayer extends Tank {
               enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_UP;
             }
             else if (this.remoteDirection === 'down') {
+         
               console.log("down");
               enemyPlayer.setVelocityY(enemyPlayer.enemySpeed);
               enemyPlayer.setVelocityX(0)
