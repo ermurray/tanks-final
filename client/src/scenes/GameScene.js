@@ -158,8 +158,7 @@ export default class GameScene extends Scene {
   
   createPlayer(playerSpawnZones,) {
     //const pNumber = this.state.players[this.socket.id].pNumber;
-    console.log("player creation game scene:",this.state.players)
-    console.log("player creation game scene:",this.state.players[this.socket.id].pNumber)
+    
     const { player1Spawn, player2Spawn, player3Spawn, player4Spawn } = playerSpawnZones
     const playerNum = this.state.players[this.socket.id].pNumber;
     let selectedSpawn;
@@ -220,14 +219,16 @@ export default class GameScene extends Scene {
   }
   updateEnemyPlayer(enemyPlayers, data){
     //console.log("this.enemyplayer------>>>>>>",this)
-    console.log('enemyPlayers-------------------------->\n', enemyPlayers)
-    console.log('enemyplayers data---------->', data.pNum)
+    
     enemyPlayers.forEach((enemyPlayer)=>{
-      console.log('enemyplayer  players in for loop',enemyPlayer.pNum)
-      console.log('datain for loop', data.playerId)
+      const {x, y} = data.vector2
+      
       if (enemyPlayer.pNum === data.pNumber){
-        enemyPlayer.x = data.x;
-        enemyPlayer.y = data.y;
+        // enemyPlayer.x = data.x;
+        // enemyPlayer.y = data.y;
+
+        enemyPlayer.setVelocityX(x)
+        enemyPlayer.setVelocityY(y)
       }  
     });
   }
