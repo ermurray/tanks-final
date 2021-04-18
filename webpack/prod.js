@@ -1,11 +1,14 @@
 const merge = require("webpack-merge");
 const path = require("path");
 const base = require("./base");
+const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = merge(base, {
   mode: "production",
   output: {
+    path: path.resolve(__dirname, "../public"),
+    publicPath:"../public/",
     filename: "bundle.min.js"
   },
   devtool: false,
@@ -23,5 +26,14 @@ module.exports = merge(base, {
         }
       })
     ]
-  }
+  },
+  plugins: [
+    new CopyPlugin({
+      patterns:[
+        {from: './public/assets', to: 'assets'},
+        {from: './public/html', to: 'html'},
+        {from: './public/styles', to: 'styles'}
+      ]
+    })
+  ]
 });

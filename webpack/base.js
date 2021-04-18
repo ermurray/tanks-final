@@ -2,7 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-
+require('dotenv').config();
 module.exports = {
   mode: "development",
   devtool: "eval-source-map",
@@ -30,14 +30,14 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin({
-      root: path.resolve(__dirname, "../")
+      root: path.resolve(__dirname, "./public")
     }),
     new webpack.DefinePlugin({
       CANVAS_RENDERER: JSON.stringify(true),
       WEBGL_RENDERER: JSON.stringify(true)
     }),
     new HtmlWebpackPlugin({
-      template: "./index.html",
+      template: "./public/index.html",
     })
   ]
 };

@@ -1,5 +1,6 @@
 require('dotenv').config();
-const app = require('express')();
+const express = require('express');
+const app   = express();
 const path = require('path');
 const compression = require("compression");
 const cors   = require('cors');
@@ -11,7 +12,7 @@ app.use(cors());
 
 app.use(morgan("dev"));
 
-
+app.use(express.json());
 
 const io = require('socket.io')(http, {
   cors: {
@@ -25,7 +26,7 @@ const io = require('socket.io')(http, {
 app.use(compression());
 
 // static file-serving middleware
-// app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname,"/public")));
 
 // any remaining requests with an extension (.js, .css, etc.) send 404
 app.use((req, res, next) => {
@@ -122,7 +123,7 @@ io.on("connection", (socket) => {
 
   // when a player moves, update the player data
   socket.on("playerMovement", function (data) {
-   console.log('playerMovement data:', data)
+  //  console.log('playerMovement data:', data)
     const { direction,vector2, x, y, roomKey } = data;
     gameRooms[roomKey].players[socket.id].x = x;
     gameRooms[roomKey].players[socket.id].y = y;
