@@ -1,7 +1,10 @@
 const app = require('express')();
+const path = require('path');
 const cors   = require('cors');
 const http   = require('http').createServer(app);
 const morgan = require('morgan');
+const ORIGIN = process.env.ORIGIN || 'http://localhost:8080'
+const PORT = proces.env.PORT || 3000
 app.use(cors());
 
 app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
@@ -13,6 +16,10 @@ const io = require('socket.io')(http, {
   }
 });
 const port = 3000
+
+app.get("/", (req, res) => {
+  res.render("index");
+});
 
 const MAX_PLAYERS = 4;
 // const players = {};
