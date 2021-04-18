@@ -9,8 +9,8 @@ export default class Player extends Tank {
     this.pNum = pNum
     this.socket = socket;
     this.state = state;
-    console.log("Initial State:", state);
-    console.log("Socket", socket);
+    // console.log("Initial State:", state);
+    // console.log("Socket", socket);
 
       this.init();
       this.initEvents()
@@ -47,7 +47,7 @@ export default class Player extends Tank {
    
     
     this.scene.input.keyboard.on('keydown-SPACE', () => {
-      console.log('Shoot');
+      // console.log('Shoot');
       this.projectilesGroup.fireProjectile(this);
       //Emit bullet data
       this.socket.emit("playerShoot", {

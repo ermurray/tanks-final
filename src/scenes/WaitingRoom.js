@@ -78,9 +78,9 @@ export default class WaitingRoom extends Phaser.Scene {
 // form input in waiting room
         const input = thisScene.inputElement.getChildByName("code-form");
         const playerName = thisScene.inputElement.getChildByName('pname-form');
-        console.log(thisScene.inputElement.getChildByName("pname-form").value);
-        console.log("this is the player name:", playerName.value);
-        console.log("this is the key code:", input.value);
+        // console.log(thisScene.inputElement.getChildByName("pname-form").value);
+        // console.log("this is the player name:", playerName.value);
+        // console.log("this is the key code:", input.value);
         thisScene.socket.emit("isKeyValid", input.value, playerName.value);
       }
     });

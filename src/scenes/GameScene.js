@@ -27,9 +27,9 @@ export default class GameScene extends Scene {
     this.state = this.registry.get('state');
     const map = this.createMap();
     const layers = this.createLayers(map);
-    console.log(layers.wallLayer.layer.data);
+    // console.log(layers.wallLayer.layer.data);
     const layerData = layers.wallLayer.layer.data;
-    console.log("layerData:",layerData)
+    // console.log("layerData:",layerData)
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
@@ -48,7 +48,7 @@ export default class GameScene extends Scene {
   
   const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
   
-  console.log("inside create------------->",enemyPlayers)
+  // console.log("inside create------------->",enemyPlayers)
     
     
     
@@ -96,8 +96,33 @@ export default class GameScene extends Scene {
     //     }
     //   }
     // }
-    boxes.create(600, 400, 'breakable').setScale(0.08);
-    boxes.create(800, 400, 'breakable').setScale(0.08);
+
+    for (let i = 0; i < layerData.length; i += 2) {
+      for (let j = 0; j < layerData[i].length; j += 1) {
+        if (layerData[i][j].index === -1) {
+          if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
+            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
+            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
+            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[0].y - 64)) || 
+            /*P2*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[1].x + 64)) && 
+            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[1].x - 64)) && 
+            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[1].y + 64)) && 
+            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[1].y - 64)) || 
+            /*P3*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[2].x + 64)) && 
+            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[2].x - 64)) && 
+            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[2].y + 64)) && 
+            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[2].y - 64)) || 
+            /*P4*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[3].x + 64)) && 
+            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
+            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
+            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
+              boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
+            }
+          }
+        }
+      }
+    // boxes.create(600, 400, 'breakable').setScale(0.08);
+    // boxes.create(800, 400, 'breakable').setScale(0.08);
     boxes.children.each((box) => {
       box.body.immovable = true;
       box.body.moves = false;
