@@ -12,7 +12,7 @@ app.use(cors());
 
 app.use(morgan("dev"));
 
-
+app.use(express.json());
 
 const io = require('socket.io')(http, {
   cors: {
@@ -26,7 +26,7 @@ const io = require('socket.io')(http, {
 app.use(compression());
 
 // static file-serving middleware
-app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static(path.join(__dirname,"/public")));
 
 // any remaining requests with an extension (.js, .css, etc.) send 404
 app.use((req, res, next) => {
