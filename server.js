@@ -11,11 +11,10 @@ app.use(morgan(':method :url :status :response-time ms - :res[content-length]'))
 
 const io = require('socket.io')(http, {
   cors: {
-  origin: "http://localhost:8080",
+  origin: ORIGIN,
   methods: ["GET", "POST"],
   }
 });
-const port = 3000
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -240,6 +239,6 @@ io.on("connection", (socket) => {
 // setInterval(ServerGameLoop, 16); 
 
 
-http.listen(port, function() {
-  console.log(`Server started and listening on port: ${port}`)
+http.listen(PORT, function() {
+  console.log(`Server started and listening on port: ${PORT}`)
 });
