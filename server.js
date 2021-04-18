@@ -4,7 +4,7 @@ const cors   = require('cors');
 const http   = require('http').createServer(app);
 const morgan = require('morgan');
 const ORIGIN = process.env.ORIGIN || 'http://localhost:8080'
-const PORT = proces.env.PORT || 3000
+const PORT = process.env.PORT || 3000
 app.use(cors());
 
 app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
