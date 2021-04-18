@@ -1,14 +1,17 @@
 require('dotenv').config();
 const app = require('express')();
 const path = require('path');
+const compression = require("compression");
 const cors   = require('cors');
 const http   = require('http').createServer(app);
 const morgan = require('morgan');
-const ORIGIN = process.env.ORIGIN 
-const PORT = process.env.PORT 
+const ORIGIN = process.env.ORIGIN || "http://localhost:8080"
+const PORT = process.env.PORT || 3000
 app.use(cors());
 
-app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
+app.use(morgan("dev"));
+
+
 
 const io = require('socket.io')(http, {
   cors: {
@@ -17,9 +20,29 @@ const io = require('socket.io')(http, {
   }
 });
 
-app.get("/", (req, res) => {
-  res.render("./index.html");
+
+// compression middleware
+app.use(compression());
+
+// static file-serving middleware
+// app.use(express.static(path.join(__dirname)));
+
+// any remaining requests with an extension (.js, .css, etc.) send 404
+app.use((req, res, next) => {
+  if (path.extname(req.path).length) {
+    const err = new Error("Not found");
+    err.status = 404;
+    next(err);
+  } else {
+    next();
+  }
 });
+
+// sends index.html
+app.use("*", (req, res) => {
+  res.sendFile(path.join(__dirname,  "/index.html"));
+});
+
 
 const MAX_PLAYERS = 4;
 // const players = {};
