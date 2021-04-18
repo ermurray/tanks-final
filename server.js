@@ -122,7 +122,7 @@ io.on("connection", (socket) => {
 
   // when a player moves, update the player data
   socket.on("playerMovement", function (data) {
-   console.log('playerMovement data:', data)
+  //  console.log('playerMovement data:', data)
     const { direction,vector2, x, y, roomKey } = data;
     gameRooms[roomKey].players[socket.id].x = x;
     gameRooms[roomKey].players[socket.id].y = y;

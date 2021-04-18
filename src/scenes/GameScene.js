@@ -55,6 +55,11 @@ export default class GameScene extends Scene {
     this.physics.add.collider(localPlayer.projectilesGroup, layers.wallLayer, (projectile, wall) => {
       projectile.resetProjectile();
     });
+    
+  
+
+
+
 
     // Destructible box logic, may need refactoring
     let boxes = this.physics.add.group();
@@ -91,8 +96,8 @@ export default class GameScene extends Scene {
         }
       }
     }
-    boxes.create(600, 400, 'breakable').setScale(0.08);
-    boxes.create(800, 400, 'breakable').setScale(0.08);
+    // boxes.create(600, 400, 'breakable').setScale(0.08);
+    // boxes.create(800, 400, 'breakable').setScale(0.08);
     boxes.children.each((box) => {
       box.body.immovable = true;
       box.body.moves = false;
@@ -105,17 +110,7 @@ export default class GameScene extends Scene {
     // });
     this.createLocalProjectileBoxCollisions(boxes, localPlayer.projectilesGroup);
     this.createEnemyProjectileBoxCollisions(boxes, enemyPlayers);
-    // this.physics.add.overlap(localPlayer.projectilesGroup, boxes, (projectile, box) => {
-    //   box.destroy();
-    //   projectile.resetProjectile();
-
-    // }, null, this);
     
-    // this.physics.add.overlap(enemyPlayer.projectilesGroup, boxes, (projectile, box) => {
-    //   box.destroy();
-    //   projectile.resetProjectile();
-
-    // }, null, this);
 
     this.createPlayerColliders(localPlayer,{
       colliders:{
@@ -250,6 +245,7 @@ export default class GameScene extends Scene {
     }, null, this);
   }
 
+  
 
   createPlayerColliders(player, { colliders }){
     player

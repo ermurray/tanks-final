@@ -20,6 +20,7 @@ export default class EnemyPlayer extends Tank {
     this.direction;
     this.positionX;
     this.positionY;
+   
     switch(this.pNum){
       case 'p1':
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
@@ -49,7 +50,7 @@ export default class EnemyPlayer extends Tank {
       
       if(data.pNum === thisPlayer){
         enemyPlayer.projectilesGroup.fireProjectile(enemyPlayer);
-
+      
       }
       //console.log(enemyPlayers.projectilesGroup);
     })
@@ -97,6 +98,7 @@ export default class EnemyPlayer extends Tank {
             }
             else
             {
+              enemyPlayer.setPosition(data.x,data.y)
               enemyPlayer.setVelocityX(0);
               enemyPlayer.setVelocityY(0);
             }
@@ -114,6 +116,7 @@ export default class EnemyPlayer extends Tank {
     
   }
   update() {
+    
     // if(this.remoteDirection){
     //   console.log("i am going left", this.remoteDirection)
     // }
