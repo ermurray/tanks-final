@@ -149,6 +149,14 @@ io.on("connection", (socket) => {
       .emit("playerHasShot", newBullet);
   });
 
+  socket.on('playerHit', (data) => {
+    console.log("------------------PLAYER HIT -----------");
+    console.log(data)
+    socket
+      .in(data.roomKey)
+      .emit("playerHasBeenHit", data.socket);
+  })
+
 
 
   // when a player disconnects, remove them from our players object
