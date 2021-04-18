@@ -55,42 +55,47 @@ export default class GameScene extends Scene {
     this.physics.add.collider(localPlayer.projectilesGroup, layers.wallLayer, (projectile, wall) => {
       projectile.resetProjectile();
     });
+    
+  
+
+
+
 
     // Destructible box logic, may need refactoring
     let boxes = this.physics.add.group();
-    for (let i = 0; i < layerData.length; i++) {
-      for (let j = 0; j < layerData[i].length; j++) {
-        if (layerData[i][j].index === -1) {
-          let random = Math.random();
-          if (random < 0.5) {
-            // Couldn't use a loop here because boxes would overlap 3-4 times on each tile
-            if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[0].y - 64)) || 
-            /*P2*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[1].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[1].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[1].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[1].y - 64)) || 
-            /*P3*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[2].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[2].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[2].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[2].y - 64)) || 
-            /*P4*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[3].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
-              let randomBox = Math.random();
-              if (randomBox < 0.5) {
-                boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
-              } else {
-                boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable3').setScale(0.0625).setOrigin(0.5);
-              }
-            }
-          }
-        }
-      }
-    }
+    // for (let i = 0; i < layerData.length; i++) {
+    //   for (let j = 0; j < layerData[i].length; j++) {
+    //     if (layerData[i][j].index === -1) {
+    //       let random = Math.random();
+    //       if (random < 0.5) {
+    //         // Couldn't use a loop here because boxes would overlap 3-4 times on each tile
+    //         if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
+    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[0].y - 64)) || 
+    //         /*P2*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[1].x + 64)) && 
+    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[1].x - 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[1].y + 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[1].y - 64)) || 
+    //         /*P3*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[2].x + 64)) && 
+    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[2].x - 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[2].y + 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[2].y - 64)) || 
+    //         /*P4*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[3].x + 64)) && 
+    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
+    //           let randomBox = Math.random();
+    //           if (randomBox < 0.5) {
+    //             boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
+    //           } else {
+    //             boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable3').setScale(0.0625).setOrigin(0.5);
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
     boxes.create(600, 400, 'breakable').setScale(0.08);
     boxes.create(800, 400, 'breakable').setScale(0.08);
     boxes.children.each((box) => {
@@ -105,17 +110,7 @@ export default class GameScene extends Scene {
     // });
     this.createLocalProjectileBoxCollisions(boxes, localPlayer.projectilesGroup);
     this.createEnemyProjectileBoxCollisions(boxes, enemyPlayers);
-    // this.physics.add.overlap(localPlayer.projectilesGroup, boxes, (projectile, box) => {
-    //   box.destroy();
-    //   projectile.resetProjectile();
-
-    // }, null, this);
     
-    // this.physics.add.overlap(enemyPlayer.projectilesGroup, boxes, (projectile, box) => {
-    //   box.destroy();
-    //   projectile.resetProjectile();
-
-    // }, null, this);
 
     this.createPlayerColliders(localPlayer,{
       colliders:{
@@ -250,6 +245,7 @@ export default class GameScene extends Scene {
     }, null, this);
   }
 
+  
 
   createPlayerColliders(player, { colliders }){
     player

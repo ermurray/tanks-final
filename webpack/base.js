@@ -30,14 +30,14 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin({
-      root: path.resolve(__dirname, "../")
+      root: path.resolve(__dirname, "./public")
     }),
     new webpack.DefinePlugin({
       CANVAS_RENDERER: JSON.stringify(true),
       WEBGL_RENDERER: JSON.stringify(true)
     }),
     new HtmlWebpackPlugin({
-      template: "./index.html",
+      template: "./public/index.html",
     })
   ]
 };

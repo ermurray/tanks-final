@@ -139,7 +139,7 @@ export default class Player extends Tank {
       //   this.moving = true;
       if (this.body.velocity.equals({x:0, y:0})){
         this.direction = null
-
+        
         this.socket.emit("playerMovement",movementData)
       }
       
