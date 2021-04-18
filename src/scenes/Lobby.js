@@ -1,7 +1,8 @@
-
+// import dotenv from 'dotenv';
 import Phaser from 'phaser';
 import io from 'socket.io-client';
 
+// dotenv.config({SOCKET: process.env.SOCKET});
 
 
 export default class Lobby extends Phaser.Scene {
@@ -21,7 +22,7 @@ export default class Lobby extends Phaser.Scene {
     const thisScene = this;
    
 
-    this.socket = io('http://localhost:3000') //this will need to change on prod server
+    this.socket = io('https://lhltanks.herokuapp.com/') //this will need to change on prod server
     this.socket.on('connect', function() {
       console.log('you have connected to the server')
     });
