@@ -1,5 +1,6 @@
 require('dotenv').config();
-const app = require('express')();
+const express = require('express');
+const app   = express();
 const path = require('path');
 const compression = require("compression");
 const cors   = require('cors');
@@ -25,7 +26,7 @@ const io = require('socket.io')(http, {
 app.use(compression());
 
 // static file-serving middleware
-// app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname,".","/dist")));
 
 // any remaining requests with an extension (.js, .css, etc.) send 404
 app.use((req, res, next) => {
