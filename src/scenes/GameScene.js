@@ -135,6 +135,7 @@ export default class GameScene extends Scene {
     // });
     this.createLocalProjectileBoxCollisions(boxes, localPlayer.projectilesGroup);
     this.createEnemyProjectileBoxCollisions(boxes, enemyPlayers);
+    this.createEnemyProjectilePlayerCollisions(localPlayer, enemyPlayers);
     
 
     this.createPlayerColliders(localPlayer,{
@@ -262,6 +263,17 @@ export default class GameScene extends Scene {
     })
 
   }
+
+  createEnemyProjectilePlayerCollisions(player, enemyPlayers){
+    enemyPlayers.forEach((enemyPlayer) => {
+      this.physics.add.overlap(enemyPlayer.projectilesGroup, player, (projectile, player) => {
+        console.log("enemy projectile has collided with local player");
+      }, null, this);
+    })
+
+  }
+  
+
   createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
       box.destroy();
