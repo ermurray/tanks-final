@@ -147,8 +147,7 @@ export default class GameScene extends Scene {
     this.createEnemyProjectileBoxCollisions(boxes, enemyPlayers);
     this.createEnemyProjectileWallCollisions(layers.wallLayer, enemyPlayers);
     
-    this.createEnemyProjectilePlayerCollisions(localPlayer, enemyPlayers);
-    
+    this.createEnemyProjectilePlayerCollisions(enemyPlayers, localPlayer);
 
     this.createPlayerColliders(localPlayer,{
       colliders:{
@@ -283,20 +282,18 @@ export default class GameScene extends Scene {
       }, null, this);
     })
   }
-  createEnemyProjectilePlayerCollisions(player, enemyPlayers){
+  createEnemyProjectilePlayerCollisions(enemyPlayers, player){
     enemyPlayers.forEach((enemyPlayer) => {
-      this.physics.add.overlap(enemyPlayer.projectilesGroup, player, (projectile, player) => {
-        //projectile.resetProjectile();
+      this.physics.add.collider(player, enemyPlayer.projectilesGroup, (player, projectile) => {
+        projectile.resetProjectile();
         console.log("enemy projectile has collided with local player");
         let data = {
           socket: this.socket.id,
           roomKey: this.state.roomKey
         }
         this.socket.emit('playerHit', data)
-        //projectile.resetProjectile();
       }, null, this);
     })
-
   }
   
 
