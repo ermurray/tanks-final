@@ -22,8 +22,12 @@ export default class GameScene extends Scene {
   */
             
   create () {
-
     const thisScene = this;
+    this.timerText = this.add.text(608,320,"Ready",{
+      fill: "#00ff00",
+      fontSize: "80px",
+      fontStyle: "bold"
+    })
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
     const map = this.createMap();
@@ -34,22 +38,23 @@ export default class GameScene extends Scene {
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
-   
+    
     this.socket.on('playerHasBeenHit', (data)=>{
       console.log(`player at socket ${data} has been hit`)
     })
     //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
     const enemyPlayersArray = [];
     for(const player in thisScene.state.players ){
-    if(player !== thisScene.socket.id){
-      enemyPlayersArray.push(thisScene.state.players[player])
+      if(player !== thisScene.socket.id){
+        enemyPlayersArray.push(thisScene.state.players[player])
+      }
     }
-  }
-  
-  
- 
-  
-  const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
+    
+    
+    
+    
+    const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
+   
   
   // console.log("inside create------------->",enemyPlayers)
     
@@ -102,40 +107,40 @@ export default class GameScene extends Scene {
     //   }
     // }
 
-    for (let i = 0; i < layerData.length; i += 2) {
-      for (let j = 0; j < layerData[i].length; j += 1) {
-        if (layerData[i][j].index === -1) {
-          if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[0].y - 64)) || 
-            /*P2*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[1].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[1].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[1].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[1].y - 64)) || 
-            /*P3*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[2].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[2].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[2].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[2].y - 64)) || 
-            /*P4*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[3].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
-              boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
-          }
-        }
-      }
-    }
+    // for (let i = 0; i < layerData.length; i += 2) {
+    //   for (let j = 0; j < layerData[i].length; j += 1) {
+    //     if (layerData[i][j].index === -1) {
+    //       if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
+    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[0].y - 64)) || 
+    //         /*P2*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[1].x + 64)) && 
+    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[1].x - 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[1].y + 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[1].y - 64)) || 
+    //         /*P3*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[2].x + 64)) && 
+    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[2].x - 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[2].y + 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[2].y - 64)) || 
+    //         /*P4*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[3].x + 64)) && 
+    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
+    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
+    //           boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
+    //       }
+    //     }
+    //   }
+    // }
       
-    // boxes.create(600, 400, 'breakable').setScale(0.08);
-    // boxes.create(800, 400, 'breakable').setScale(0.08);
-    // boxes.create(500, 300, 'breakable').setScale(0.08);
-    // boxes.create(300, 200, 'breakable').setScale(0.08);
-    // boxes.create(700, 400, 'breakable').setScale(0.08);
-    // boxes.create(200, 500, 'breakable').setScale(0.08);
-    // boxes.create(200, 300, 'breakable').setScale(0.08);
-    // boxes.create(600, 300, 'breakable').setScale(0.08);
-    // boxes.create(400, 200, 'breakable').setScale(0.08);
+    boxes.create(600, 400, 'breakable').setScale(0.08);
+    boxes.create(800, 400, 'breakable').setScale(0.08);
+    boxes.create(500, 300, 'breakable').setScale(0.08);
+    boxes.create(300, 200, 'breakable').setScale(0.08);
+    boxes.create(700, 400, 'breakable').setScale(0.08);
+    boxes.create(200, 500, 'breakable').setScale(0.08);
+    boxes.create(200, 300, 'breakable').setScale(0.08);
+    boxes.create(600, 300, 'breakable').setScale(0.08);
+    boxes.create(400, 200, 'breakable').setScale(0.08);
     boxes.children.each((box) => {
       box.body.immovable = true;
       box.body.moves = false;
@@ -165,8 +170,8 @@ export default class GameScene extends Scene {
       }
     })
 
-    
-   this.setupFollowCameraOn(localPlayer);
+    this.countDown(this.timerText, localPlayer);
+   
   } 
 
 //----------------end of create method of game scene------------------------------
@@ -285,6 +290,7 @@ export default class GameScene extends Scene {
   createEnemyProjectilePlayerCollisions(enemyPlayers, player){
     enemyPlayers.forEach((enemyPlayer) => {
       this.physics.add.collider(player, enemyPlayer.projectilesGroup, (player, projectile) => {
+        
         projectile.resetProjectile();
         console.log("enemy projectile has collided with local player");
         let data = {
@@ -329,5 +335,22 @@ export default class GameScene extends Scene {
     this.cameras.main.setBounds(0,0, width, height)
     this.cameras.main.startFollow(player).setZoom(zoomfactor);
 
+  }
+
+  countDown(text, localPlayer){
+    let count = 4;
+    let counter = setInterval(()=>{
+
+      count -= 1;
+      
+      text.setText(`${count}...`)
+      if(count < 1){
+        this.scene.resume('scene-game');
+        clearInterval(counter);
+        text.destroy();
+        this.setupFollowCameraOn(localPlayer);
+      } 
+
+    },1000)
   }
 }

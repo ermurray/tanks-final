@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import Tank from './Tank';
-
+import ProjectilesGroup from '../attacks/ProjectilesGroup';
 
 
 export default class Player extends Tank {
@@ -17,7 +17,7 @@ export default class Player extends Tank {
   }
 
   init() {
-    
+    this.projectilesGroup = new ProjectilesGroup(this.scene, 'bullet');
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.lastDirection;
     this.direction;
