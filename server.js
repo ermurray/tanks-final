@@ -245,41 +245,15 @@ io.on("connection", (socket) => {
     },500)
 
   })
+  
+  socket.on('in-game',(data)=>{
+    console.log('player', socket.id)
 
+  })
 
 });
 //=========================end of socket connection=======================
 ////=======================================================================
-// function ServerGameLoop(){
-//   for(var i=0;i<bullet_array.length;i++){
-//     let bullet = bullet_array[i];
-//     bullet.x += bullet.speed_x; 
-//     bullet.y += bullet.speed_y; 
-    
-//     // Check if this bullet is close enough to hit any player 
-//     for(let id in players){
-//       if(bullet.owner_id != id){
-//         // And your own bullet shouldn't kill you
-//         var dx = players[id].x - bullet.x; 
-//         var dy = players[id].y - bullet.y;
-//         var dist = Math.sqrt(dx * dx + dy * dy);
-//         if(dist < 70){
-//           io.emit('player-hit',id); // Tell everyone this player got hit
-//         }
-//       }
-//     }
-    
-//     // Remove if it goes too far off screen 
-//     if(bullet.x < -10 || bullet.x > 1000 || bullet.y < -10 || bullet.y > 1000){
-//         bullet_array.splice(i,1);
-//         i--;
-//     }
-        
-//   }
-//   // Tell everyone where all the bullets are by sending the whole array
-//   io.emit("bullets-update",bullet_array);
-// }
-// setInterval(ServerGameLoop, 16); 
 
 
 http.listen(PORT, function() {

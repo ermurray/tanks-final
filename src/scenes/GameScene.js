@@ -22,14 +22,15 @@ export default class GameScene extends Scene {
   */
             
   create () {
+    this.socket = this.registry.get('socket');
+    this.state = this.registry.get('state');
+    this.socket.emit('in-game',this.state);
     const thisScene = this;
     this.timerText = this.add.text(608,320,"Ready",{
       fill: "#00ff00",
       fontSize: "80px",
       fontStyle: "bold"
     })
-    this.socket = this.registry.get('socket');
-    this.state = this.registry.get('state');
     const map = this.createMap();
     const layers = this.createLayers(map);
     // console.log(layers.wallLayer.layer.data);
