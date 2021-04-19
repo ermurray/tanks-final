@@ -3,6 +3,7 @@ import BootScene from './scenes/BootScene';
 import GameScene from './scenes/GameScene';
 import WaitingRoom from './scenes/WaitingRoom';
 import Lobby from './scenes/Lobby';
+import GameOver from './scenes/GameOver'
 
 
 //config constants
@@ -20,7 +21,7 @@ const SHARED_CONFIG = {
   zoomfactor: 1.25
 }
 
-const Scenes = [BootScene, WaitingRoom, GameScene, Lobby];
+const Scenes = [BootScene, WaitingRoom, GameScene, Lobby, GameOver];
 const createScene = Scene => new Scene(SHARED_CONFIG)
 const initScenes = () => Scenes.map(createScene)
 
