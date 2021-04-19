@@ -173,17 +173,23 @@ export default class Lobby extends Phaser.Scene {
     });
 
    
-    
+    this.timerText = this.add.text(400,800,"waiting for other players",{
+      fill: "#00ff00",
+      fontSize: "40px",
+      fontStyle: "bold"
+    });
     
     this.strtSmall = this.add.sprite(600, 540, 'start-sm');
     // this.strtSmall.setInteractive();
- 
+    
+
   
     this.strtSmall.setInteractive();
     this.strtSmall.on('pointerdown', this.onDown,this);
     
     // player Number Selection
   //----------------------------------------------------------------
+  
     this.p1Text = this.add.text(400, 150, "", {
       fill: "#00ff00",
       fontSize: "20px",
@@ -259,103 +265,19 @@ export default class Lobby extends Phaser.Scene {
       switch(tankSelected){
         case 'p1':
           thisScene.setPlayerText(thisScene.p1Text, playerName, oldTankSelected);
-          /*
-          for(const player in thisScene.state.players) {
-            // console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
-            if (!thisScene.state.players[player].pNumber) {
-              blankCount += 1;
-            } else {
-              blankCount -= 1;
-            }
-          }
-          if (blankCount < 1) {
-            let ready = true;
-            for(const player in thisScene.state.players) {
-              if (!thisScene.state.players[player].pNumber) {
-                ready = false;
-              }
-            }
-            if (ready === true) {
-              this.strtSmall.setInteractive();
-              this.strtSmall.on('pointerdown', this.onDown,this);
-            }
-          }
-          */
+     
           break;
         case 'p2':
           thisScene.setPlayerText(thisScene.p2Text, playerName, oldTankSelected);
-          /*
-          for(const player in thisScene.state.players) {
-            // console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
-            if (!thisScene.state.players[player].pNumber) {
-              blankCount += 1;
-            } else {
-              blankCount -= 1;
-            }
-          }
-          if (blankCount < 1) {
-            let ready = true;
-            for(const player in thisScene.state.players) {
-              if (!thisScene.state.players[player].pNumber) {
-                ready = false;
-              }
-            }
-            if (ready === true) {
-              this.strtSmall.setInteractive();
-              this.strtSmall.on('pointerdown', this.onDown,this);
-            }
-          }
-          */
+         
           break;
         case 'p3':
           thisScene.setPlayerText(thisScene.p3Text, playerName, oldTankSelected );
-          /*
-          for(const player in thisScene.state.players) {
-            // console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
-            if (!thisScene.state.players[player].pNumber) {
-              blankCount += 1;
-            } else {
-              blankCount -= 1;
-            }
-          }
-          if (blankCount < 1) {
-            let ready = true;
-            for(const player in thisScene.state.players) {
-              if (!thisScene.state.players[player].pNumber) {
-                ready = false;
-              }
-            }
-            if (ready === true) {
-              this.strtSmall.setInteractive();
-              this.strtSmall.on('pointerdown', this.onDown,this);
-            }
-          }
-          */
+        
           break;
         case 'p4':
           thisScene.setPlayerText(thisScene.p4Text, playerName, oldTankSelected );
-          /*
-          for(const player in thisScene.state.players) {
-            // console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
-            if (!thisScene.state.players[player].pNumber) {
-              blankCount += 1;
-            } else {
-              blankCount -= 1;
-            }
-          }
-          if (blankCount < 1) {
-            let ready = true;
-            for(const player in thisScene.state.players) {
-              if (!thisScene.state.players[player].pNumber) {
-                ready = false;
-              }
-            }
-            if (ready === true) {
-              this.strtSmall.setInteractive();
-              this.strtSmall.on('pointerdown', this.onDown,this);
-            }
-          }
-          */
+        
           break;
 
       };
@@ -363,16 +285,21 @@ export default class Lobby extends Phaser.Scene {
     });
 //-----------------------------------------------------------------
 //endof player number selection
-    this.tankSelectorsGroup = thisScene.add.group()
     
+      
     this.tweens.add({
       targets: [this.p1Select, this.p2Select, this.p3Select, this.p4Select],
       x:300,
       duration:3000,
       ease: 'Power3'
     })
-  }
 
+    
+    
+
+  }
+//-----------------------------------------------------------------
+//endof scene create method
   
   onDown() {
     // If there are enough players
@@ -380,11 +307,42 @@ export default class Lobby extends Phaser.Scene {
     for (const player in this.state.players) {
       if (!this.state.players[player].pNumber) {
         ready = false;
+        this.tweens.add({
+          targets: this.timerText,
+          y:280,
+          duration:3000,
+          ease: 'Power3'
+        })
+        this.tweens.add({
+          targets: this.timerText,
+          alpha: 0,
+          duration:6000,
+          ease: 'Power3'
+        })
+
       }
     }
     if (ready === true) {
-      this.scene.start('scene-game');
-      this.scene.pause('scene-game');
+      // let data = this.state.
+      console.log(this.state);
+      this.socket.emit('players-lobbyready', this.state)
+      this.socket.on('transToGame', (data)=>{
+        this.state.currentRoom = data
+        this.countDown(this.timerText)
+      this.tweens.add({
+        targets: this.timerText,
+        alpha: 1,
+        duration:6000,
+        ease: 'Power3'
+      })
+      this.tweens.add({
+        targets: this.timerText,
+        y:280,
+        duration:3000,
+        ease: 'Power3'
+      })
+      })
+      
     } else {
       return;
     }
@@ -393,33 +351,8 @@ export default class Lobby extends Phaser.Scene {
   update(){
   }
 
-  setPlayerNumber() {
-    //take in player info obj and position clicked as args
-    //assign pNumber in player info obj in state.
-    //display player id and name beside tank
-     
-  }
 
-  // setTankSelection(playerID, playerObj, playerName){
-  //   const oldTankSelected = thisScene.state.players[playerID].pNumber
-  //     thisScene.state.players[playerID] = playerObj
-  //     const tankSelected = playerObj.pNumber
-  //     switch(tankSelected){
-  //       case 'p1':
-  //         thisScene.setPlayerText(thisScene.p1Text, playerName, oldTankSelected)
-  //         break;
-  //       case 'p2':
-  //         thisScene.setPlayerText(thisScene.p2Text, playerName, oldTankSelected)
-  //         break;
-  //       case 'p3':
-  //         thisScene.setPlayerText(thisScene.p3Text, playerName, oldTankSelected )
-  //         break;
-  //       case 'p4':
-  //         thisScene.setPlayerText(thisScene.p4Text, playerName, oldTankSelected )    
-  //         break;
-
-  //     };
-  // }
+  
   setPlayerText(textarea, playerName, oldPNumber = ''){
     if (oldPNumber !== ''){
      switch (oldPNumber) {
@@ -436,9 +369,26 @@ export default class Lobby extends Phaser.Scene {
        this.p4Text.setText('');
         break;
      }
-     // console.log("oldtextarea",)
+    
 
     }
    textarea.setText(`Operator:${playerName} will be this tank`)
+  }
+  countDown(text){
+    let count = 4;
+    let counter = setInterval(()=>{
+
+      count -= 1;
+      
+      text.setText(`${count}...`)
+      if(count < 1){
+        this.scene.start('scene-game');
+        this.scene.pause('scene-game');
+        clearInterval(counter);
+        text.destroy();
+       
+      } 
+
+    },1000)
   }
 }

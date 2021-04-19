@@ -88,12 +88,16 @@ export default class WaitingRoom extends Phaser.Scene {
     thisScene.socket.on("keyIsValid", function (input, playerName) {
       if (thisScene.inputElement.getChildByName("pname-form").value) {
         thisScene.socket.emit("joinRoom", input, playerName);
-        thisScene.scene.stop("scene-waitingRoom");
-        thisScene.scene.setActive(true, "scene-lobby");
-        // scene.scene.start('scene-lobby', input) 
       } else {
         thisScene.notValidText.setText("Invalid player name");
       }
+      thisScene.socket.on('joining',() => {
+        thisScene.scene.stop("scene-waitingRoom");
+        thisScene.scene.setActive(true, "scene-lobby");
+      });
+      thisScene.socket.on('roomFull',() =>{
+        thisScene.notValidText.setText('this room is full');
+      });
     });
 
 
@@ -122,9 +126,7 @@ export default class WaitingRoom extends Phaser.Scene {
     thisScene.socket.on("keyNotValid", function () {
       thisScene.notValidText.setText("Invalid Room Key");
     });
-    thisScene.socket.on("gameIsFull", () =>{
-      thisScene.notValidText.setText("This game is full");
-    })
+    
   }
 
 }
