@@ -1,10 +1,10 @@
-// import dotenv from 'dotenv';
+
 import Phaser from 'phaser';
 import io from 'socket.io-client';
-// require('dotenv').config();
+
 const SOCKET = process.env.SOCKET
 
-
+console.log("env check", process.env.SOCKET);
 export default class Lobby extends Phaser.Scene {
   constructor() {
     super('scene-lobby');
