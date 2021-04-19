@@ -34,7 +34,9 @@ export default class GameScene extends Scene {
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
    
-    
+    this.socket.on('playerHasBeenHit', (data)=>{
+      console.log(`player at socket ${data} has been hit`)
+    })
     //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
     const enemyPlayersArray = [];
     for(const player in thisScene.state.players ){
@@ -135,6 +137,7 @@ export default class GameScene extends Scene {
     // });
     this.createLocalProjectileBoxCollisions(boxes, localPlayer.projectilesGroup);
     this.createEnemyProjectileBoxCollisions(boxes, enemyPlayers);
+    this.createEnemyProjectilePlayerCollisions(localPlayer, enemyPlayers);
     
 
     this.createPlayerColliders(localPlayer,{
@@ -262,6 +265,23 @@ export default class GameScene extends Scene {
     })
 
   }
+
+  createEnemyProjectilePlayerCollisions(player, enemyPlayers){
+    enemyPlayers.forEach((enemyPlayer) => {
+      this.physics.add.overlap(enemyPlayer.projectilesGroup, player, (projectile, player) => {
+        console.log("enemy projectile has collided with local player");
+        let data = {
+          socket: this.socket.id,
+          roomKey: this.state.roomKey
+        }
+        this.socket.emit('playerHit', data)
+        //projectile.resetProjectile();
+      }, null, this);
+    })
+
+  }
+  
+
   createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
       box.destroy();
