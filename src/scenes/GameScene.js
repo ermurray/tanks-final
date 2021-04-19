@@ -22,8 +22,12 @@ export default class GameScene extends Scene {
   */
             
   create () {
-
     const thisScene = this;
+    this.timerText = this.add.text(608,320,"Ready",{
+      fill: "#00ff00",
+      fontSize: "80px",
+      fontStyle: "bold"
+    })
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
     const map = this.createMap();
@@ -34,22 +38,23 @@ export default class GameScene extends Scene {
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
-   
+    
     this.socket.on('playerHasBeenHit', (data)=>{
       console.log(`player at socket ${data} has been hit`)
     })
     //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
     const enemyPlayersArray = [];
     for(const player in thisScene.state.players ){
-    if(player !== thisScene.socket.id){
-      enemyPlayersArray.push(thisScene.state.players[player])
+      if(player !== thisScene.socket.id){
+        enemyPlayersArray.push(thisScene.state.players[player])
+      }
     }
-  }
-  
-  
- 
-  
-  const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
+    
+    
+    
+    
+    const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
+   
   
   // console.log("inside create------------->",enemyPlayers)
     
@@ -166,8 +171,8 @@ export default class GameScene extends Scene {
       }
     })
 
-    
-   this.setupFollowCameraOn(localPlayer);
+    this.countDown(this.timerText, localPlayer);
+   
   } 
 
 //----------------end of create method of game scene------------------------------
@@ -285,9 +290,9 @@ export default class GameScene extends Scene {
   }
   createEnemyProjectilePlayerCollisions(player, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) => {
-      this.physics.add.overlap(enemyPlayer.projectilesGroup, player, (projectile, player) => {
+      this.physics.add.collider(player, enemyPlayer.projectilesGroup, (player, projectile) => {
         
-        //projectile.resetProjectile();
+        projectile.resetProjectile();
         console.log("enemy projectile has collided with local player");
         let data = {
           socket: this.socket.id,
@@ -335,5 +340,20 @@ export default class GameScene extends Scene {
 
   }
 
+  countDown(text, localPlayer){
+    let count = 4;
+    let counter = setInterval(()=>{
 
+      count -= 1;
+      
+      text.setText(`${count}...`)
+      if(count < 1){
+        this.scene.resume('scene-game');
+        clearInterval(counter);
+        text.destroy();
+        this.setupFollowCameraOn(localPlayer);
+      } 
+
+    },1000)
+  }
 }

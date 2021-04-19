@@ -383,7 +383,8 @@ export default class Lobby extends Phaser.Scene {
       }
     }
     if (ready === true) {
-      this.scene.start ('scene-game');
+      this.scene.start('scene-game');
+      this.scene.pause('scene-game');
     } else {
       return;
     }
