@@ -7,6 +7,7 @@ module.exports = {
   mode: "development",
   devtool: "eval-source-map",
   devServer: {
+    contentBase: path.resolve(__dirname, '../public'),
     port: 8080,
   },
   module: {
@@ -37,7 +38,8 @@ module.exports = {
       WEBGL_RENDERER: JSON.stringify(true)
     }),
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
+      template: "./index.html",
+      filename: "./index.html"
     })
   ]
 };
