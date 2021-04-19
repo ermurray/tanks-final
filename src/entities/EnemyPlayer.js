@@ -52,7 +52,7 @@ export default class EnemyPlayer extends Tank {
         enemyPlayer.projectilesGroup.fireProjectile(enemyPlayer);
       
       }
-      //console.log(enemyPlayers.projectilesGroup);
+      //// console.log(enemyPlayers.projectilesGroup);
     })
     // this.remoteDirection;
     this.socket.on('playerMoved', function (data) {
@@ -61,7 +61,7 @@ export default class EnemyPlayer extends Tank {
      
       if(data.pNumber === thisPlayer){
         this.remoteDirection = data.direction
-        console.log("this player",data.direction)
+        // console.log("this player",data.direction)
         if (this.remoteDirection === 'left') {
               enemyPlayer.setPosition(data.x, data.y)
               enemyPlayer.setVelocityX(-enemyPlayer.enemySpeed);
@@ -118,11 +118,11 @@ export default class EnemyPlayer extends Tank {
   update() {
     
     // if(this.remoteDirection){
-    //   console.log("i am going left", this.remoteDirection)
+    //   // console.log("i am going left", this.remoteDirection)
     // }
-    // console.log("remote", this.remoteDirection)
+    // // console.log("remote", this.remoteDirection)
     // if (enemyPlayer.remoteDirection === 'left') {
-    //     console.log("left");
+    //     // console.log("left");
     //     enemyPlayer.setVelocityX(-100);
     //     enemyPlayer.setVelocityY(0);
     //     enemyPlayer.setAngle(180);
@@ -131,7 +131,7 @@ export default class EnemyPlayer extends Tank {
        
     //   }
     //   else if (enemyPlayer.remoteDirection === 'right') {
-    //     console.log("right");
+    //     // console.log("right");
     //     enemyPlayer.setVelocityX(100);
     //     enemyPlayer.setVelocityY(0)
     //     enemyPlayer.setAngle(0);    
@@ -139,7 +139,7 @@ export default class EnemyPlayer extends Tank {
     //     enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
     //   }
     //   else if (enemyPlayer.remoteDirection === 'up') {
-    //     console.log("up");
+    //     // console.log("up");
     //     enemyPlayer.setVelocityY(-100);
     //     enemyPlayer.setVelocityX(0)
     //     enemyPlayer.setAngle(-90) 
@@ -147,7 +147,7 @@ export default class EnemyPlayer extends Tank {
     //     enemyPlayer.lastDirection = Phaser.Physics.Arcade.FACING_UP;
     //   }
     //   else if (enemyPlayer.remoteDirection === 'down') {
-    //     console.log("down");
+    //     // console.log("down");
     //     enemyPlayer.setVelocityY(this.playerSpeed);
     //     enemyPlayer.setVelocityX(0)
     //     enemyPlayer.setAngle(90)   

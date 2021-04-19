@@ -24,7 +24,7 @@ export default class Lobby extends Phaser.Scene {
     // 'http://localhost:3000'
     this.socket = io(SOCKET) //this will need to change on prod or dev server
     this.socket.on('connect', function() {
-      console.log('you have connected to the server')
+      // console.log('you have connected to the server')
     });
     
     this.registry.set('socket', this.socket);
@@ -43,7 +43,7 @@ export default class Lobby extends Phaser.Scene {
       const {roomKey, players, numPlayers } = state
       thisScene.state.roomKey = roomKey;
       thisScene.state.players = players;
-      console.log(players);
+      // console.log(players);
       //-----------------------------------------
       // assignment will need to be fixed here it is adding it to state object instead of inside the players object there are other locations that it is being called in the lobby that will break if not all changed.
       thisScene.state.playerName = players[thisScene.socket.id].pName; 
@@ -261,7 +261,7 @@ export default class Lobby extends Phaser.Scene {
           thisScene.setPlayerText(thisScene.p1Text, playerName, oldTankSelected);
           /*
           for(const player in thisScene.state.players) {
-            console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
+            // console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
             if (!thisScene.state.players[player].pNumber) {
               blankCount += 1;
             } else {
@@ -286,7 +286,7 @@ export default class Lobby extends Phaser.Scene {
           thisScene.setPlayerText(thisScene.p2Text, playerName, oldTankSelected);
           /*
           for(const player in thisScene.state.players) {
-            console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
+            // console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
             if (!thisScene.state.players[player].pNumber) {
               blankCount += 1;
             } else {
@@ -311,7 +311,7 @@ export default class Lobby extends Phaser.Scene {
           thisScene.setPlayerText(thisScene.p3Text, playerName, oldTankSelected );
           /*
           for(const player in thisScene.state.players) {
-            console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
+            // console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
             if (!thisScene.state.players[player].pNumber) {
               blankCount += 1;
             } else {
@@ -336,7 +336,7 @@ export default class Lobby extends Phaser.Scene {
           thisScene.setPlayerText(thisScene.p4Text, playerName, oldTankSelected );
           /*
           for(const player in thisScene.state.players) {
-            console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
+            // console.log(`pNumber: ${thisScene.state.players[player].pNumber}`);
             if (!thisScene.state.players[player].pNumber) {
               blankCount += 1;
             } else {
@@ -435,7 +435,7 @@ export default class Lobby extends Phaser.Scene {
        this.p4Text.setText('');
         break;
      }
-     console.log("oldtextarea",)
+     // console.log("oldtextarea",)
 
     }
    textarea.setText(`Operator:${playerName} will be this tank`)

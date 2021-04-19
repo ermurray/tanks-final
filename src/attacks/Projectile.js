@@ -49,7 +49,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.body.reset(x, y);
     this.setVelocityX(this.speedX);
     this.setVelocityY(this.speedY)
-    console.log('Shoot a projectile');
+    // console.log('Shoot a projectile');
   
   }
   resetProjectile(){
