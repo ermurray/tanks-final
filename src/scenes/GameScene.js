@@ -22,14 +22,15 @@ export default class GameScene extends Scene {
   */
             
   create () {
+    this.socket = this.registry.get('socket');
+    this.state = this.registry.get('state');
+    this.socket.emit('in-game',this.state);
     const thisScene = this;
     this.timerText = this.add.text(608,320,"Ready",{
       fill: "#00ff00",
       fontSize: "80px",
       fontStyle: "bold"
     })
-    this.socket = this.registry.get('socket');
-    this.state = this.registry.get('state');
     const map = this.createMap();
     const layers = this.createLayers(map);
     // console.log(layers.wallLayer.layer.data);
@@ -149,6 +150,7 @@ export default class GameScene extends Scene {
 
    
     this.createLocalProjectileBoxCollisions(boxes, localPlayer.projectilesGroup);
+    this.createLocalProjectileEnemyCollisions(enemyPlayers, localPlayer.projectilesGroup)
     this.createEnemyProjectileBoxCollisions(boxes, enemyPlayers);
     this.createEnemyProjectileWallCollisions(layers.wallLayer, enemyPlayers);
     
@@ -309,6 +311,15 @@ export default class GameScene extends Scene {
       projectile.resetProjectile();
 
     }, null, this);
+  }
+
+  createLocalProjectileEnemyCollisions(enemyPlayers, localProjectileGroup){
+    enemyPlayers.forEach((enemyPlayer) =>{
+      this.physics.add.overlap(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
+        projectile.resetProjectile();
+        console.log("local projectile has collided with enemy player");
+      }, null, this);
+    })
   }
 
   

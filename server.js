@@ -53,7 +53,8 @@ const gameRooms = {
       // players: {},  //will hold each player object
       // numPlayers: 0,
       // chatMessages: []  //will hold room chat messages
-      //roomfull: false  //use to check room is full
+      //roomFull: false  //use to check room is full
+      //gameStarted: false
   // }
 };
 
@@ -69,7 +70,7 @@ function codeGenerator() {
   }
   return code;
 }
-
+//==============================begining of socket connection=======================
 io.on("connection", (socket) => {
 
   console.log(
@@ -78,33 +79,43 @@ io.on("connection", (socket) => {
 
 // on join room function begins
   socket.on("joinRoom", (roomKey, playerName) => {
-    socket.join(roomKey);
-    const roomInfo = gameRooms[roomKey];
-    roomInfo.players[socket.id] = {
-      playerId: socket.id,
-      pName: playerName,
-      pNumber:'',
-      chatMessages:[]  //will hold players sent chat messages
-    };
-
-    // update number of players
-    roomInfo.numPlayers = Object.keys(roomInfo.players).length;
-
-    // set initial state
-    socket.emit("setState", roomInfo);
+    let isFull = gameRooms[roomKey].roomFull
     
+    if(!isFull){
+      socket.join(roomKey);
+      const roomInfo = gameRooms[roomKey];
+      roomInfo.players[socket.id] = {
+        playerId: socket.id,
+        pName: playerName,
+        pNumber:'',
+        chatMessages:[]  //will hold players sent chat messages
+      };
+      socket.emit('joining')
+      // update number of players
+      roomInfo.numPlayers = Object.keys(roomInfo.players).length;
 
-    // send the players object to the new player
-    socket.emit("currentPlayers", {
-      players: roomInfo.players,
-      numPlayers: roomInfo.numPlayers,
-    });
+      // set initial state
+      socket.emit("setState", roomInfo);
+      
 
-    // update all other players of the new player
-    socket.to(roomKey).emit("newPlayer", {
-      playerInfo: roomInfo.players[socket.id],
-      numPlayers: roomInfo.numPlayers,
-    });
+      // send the players object to the new player
+      socket.emit("currentPlayers", {
+        players: roomInfo.players,
+        numPlayers: roomInfo.numPlayers,
+      });
+
+      // update all other players of the new player
+      socket.to(roomKey).emit("newPlayer", {
+        playerInfo: roomInfo.players[socket.id],
+        numPlayers: roomInfo.numPlayers,
+      });
+      if(roomInfo.numPlayers > MAX_PLAYERS){
+          gameRooms[roomkey].roomFull = true;
+      }
+    }
+    if(isFull){
+      socket.emit('roomFull')
+    } 
   });
 // on join room function ends
 
@@ -179,9 +190,7 @@ io.on("connection", (socket) => {
   socket.on("isKeyValid", function (input, playerName) {
     if(!Object.keys(gameRooms).includes(input)){
       socket.emit("keyNotValid");
-    } else if (gameRooms[input].numPlayers >= 4) {
-      socket.emit("gameIsFull", input, playerName);
-    } else {
+    }  else {
       socket.emit("keyIsValid", input, playerName);
      
     }
@@ -197,6 +206,8 @@ io.on("connection", (socket) => {
       roomKey: key,
       players: {},
       numPlayers: 0,
+      roomFull: false,
+      gameStarted: false
     };
     console.log("Room created", key);
     socket.emit("roomCreated", key);
@@ -224,38 +235,25 @@ io.on("connection", (socket) => {
     io.in(roomKey).emit('player-selectedTank', socketID, players[socketID], players[socketID].pName)
   });
 
-});
+  socket.on('players-lobbyready', (data)=>{
+    const{ roomKey } = data
+    gameRooms[data.roomKey].gameStarted = true;
+    console.log('players ready', data);
+    console.log('roomdata', gameRooms[data.roomKey]);
+    setTimeout((data)=>{
+      io.in(roomKey).emit('transToGame', data);
+    },500)
 
-// function ServerGameLoop(){
-//   for(var i=0;i<bullet_array.length;i++){
-//     let bullet = bullet_array[i];
-//     bullet.x += bullet.speed_x; 
-//     bullet.y += bullet.speed_y; 
-    
-//     // Check if this bullet is close enough to hit any player 
-//     for(let id in players){
-//       if(bullet.owner_id != id){
-//         // And your own bullet shouldn't kill you
-//         var dx = players[id].x - bullet.x; 
-//         var dy = players[id].y - bullet.y;
-//         var dist = Math.sqrt(dx * dx + dy * dy);
-//         if(dist < 70){
-//           io.emit('player-hit',id); // Tell everyone this player got hit
-//         }
-//       }
-//     }
-    
-//     // Remove if it goes too far off screen 
-//     if(bullet.x < -10 || bullet.x > 1000 || bullet.y < -10 || bullet.y > 1000){
-//         bullet_array.splice(i,1);
-//         i--;
-//     }
-        
-//   }
-//   // Tell everyone where all the bullets are by sending the whole array
-//   io.emit("bullets-update",bullet_array);
-// }
-// setInterval(ServerGameLoop, 16); 
+  })
+  
+  socket.on('in-game',(data)=>{
+    console.log('player', socket.id)
+
+  })
+
+});
+//=========================end of socket connection=======================
+////=======================================================================
 
 
 http.listen(PORT, function() {
