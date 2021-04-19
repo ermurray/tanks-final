@@ -8,11 +8,11 @@ export default class BootScene extends Scene {
   // init(data) {
   //   this.socket = data.socket;
   // }
-
+  
   preload() {
-    this.load.image('bckgrnd', './assets/background.png')
-    this.load.image('logo', './assets/Wartank.png')
-    this.load.image('start', './assets/startBtn.png')
+    this.load.image('bckgrnd', 'assets/background.png')
+    this.load.image('logo', 'assets/Wartank.png')
+    this.load.image('start', 'assets/startBtn.png')
     this.load.image('tankUp', './assets/tank_up32px.png');
     this.load.image('tankDown','./assets/tank_dwn32px.png');
     this.load.image('tankLeft', './assets/tank_lft32px.png');
@@ -34,7 +34,9 @@ export default class BootScene extends Scene {
     this.load.image('breakable', './assets/boxes/1.png');
     this.load.image('breakable2', './assets/boxes/2.png');
     this.load.image('breakable3', './assets/boxes/3.png');
-    this.load.image('enemyPlayers', './assets/tank_lft32px.png')
+    this.load.image('enemyPlayers', './assets/tank_lft32px.png');
+
+    console.log("env check:", process.env)
   }
 
   create() {
