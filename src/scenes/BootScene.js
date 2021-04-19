@@ -13,11 +13,11 @@ export default class BootScene extends Scene {
     this.load.image('bckgrnd', 'assets/background.png')
     this.load.image('logo', 'assets/Wartank.png')
     this.load.image('start', 'assets/startBtn.png')
-    this.load.image('tankUp', './assets/tank_up32px.png');
-    this.load.image('tankDown','./assets/tank_dwn32px.png');
-    this.load.image('tankLeft', './assets/tank_lft32px.png');
-    this.load.image('tankRight', './assets/tank_rht32px.png');
-    this.load.image('localPlayer', './assets/tank_rht32px.png');
+    this.load.image('player1', './assets/tank_blue_rht48px.png');
+    this.load.image('player2', './assets/tank_red_lft48px.png');
+    this.load.image('player3', './assets/tank_green_rht48px.png');
+    this.load.image('player4', './assets/tank_yellow_lft48px.png');
+    
     this.load.image('tilesGrass', './assets/maps/rpl_grass.png');
     this.load.image('tilePaths', './assets/maps/rpl_paths-export.png')
     this.load.image('tilesSand', './assets/maps/rpl_sand.png');
@@ -28,8 +28,8 @@ export default class BootScene extends Scene {
     this.load.html('chat-form', './html/lobby-chat-form.html');
     this.load.image('start-sm', './assets/start.png');
     this.load.image('tankBlue', './assets/tank-blue.png');
-    this.load.image('tankRed', './assets/tank-green.png');
-    this.load.image('tankGreen', './assets/tank-red.png');
+    this.load.image('tankRed', './assets/tank-red.png');
+    this.load.image('tankGreen', './assets/tank-green.png');
     this.load.image('tankYellow', './assets/tank-yellow.png');
     this.load.image('breakable', './assets/boxes/1.png');
     this.load.image('breakable2', './assets/boxes/2.png');

@@ -10,9 +10,9 @@ import EnemyPlayersGroup from '../entities/EnemyPlayer';
 
 export default class GameScene extends Scene {
 
-  constructor () {
+  constructor (config) {
       super("scene-game");
-      
+      this.config = config;
   }
 
   /*
@@ -22,6 +22,7 @@ export default class GameScene extends Scene {
   */
             
   create () {
+
     const thisScene = this;
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
@@ -166,7 +167,7 @@ export default class GameScene extends Scene {
     })
 
     
-   
+   this.setupFollowCameraOn(localPlayer);
   } 
 
 //----------------end of create method of game scene------------------------------
@@ -202,19 +203,19 @@ export default class GameScene extends Scene {
     switch(playerNum){
       case 'p1':
         selectedSpawn = player1Spawn;
-        playerColor = 'localPlayer'
+        playerColor = 'player1'
         break;
       case 'p2':
         selectedSpawn = player2Spawn;
-        playerColor = 'localPlayer'
+        playerColor = 'player2'
         break;
       case 'p3':
         selectedSpawn = player3Spawn;
-        playerColor = 'localPlayer'
+        playerColor = 'player3'
         break;
       case 'p4':
         selectedSpawn = player4Spawn;
-        playerColor = 'localPlayer'
+        playerColor = 'player4'
         break;
     }
 
@@ -236,19 +237,19 @@ export default class GameScene extends Scene {
     switch(playerNum){
       case 'p1':
         selectedSpawn = player1Spawn;
-        playerColor = 'tankBlue'
+        playerColor = 'player1'
         break;
       case 'p2':
         selectedSpawn = player2Spawn;
-        playerColor = 'tankRed'
+        playerColor = 'player2'
         break;
       case 'p3':
         selectedSpawn = player3Spawn;
-        playerColor = 'tankGreen'
+        playerColor = 'player3'
         break;
       case 'p4':
         selectedSpawn = player4Spawn;
-        playerColor = 'tankYellow'
+        playerColor = 'player4'
         break;
     }
     return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, playerColor, this.socket, this.state, playerNum);
@@ -326,4 +327,10 @@ export default class GameScene extends Scene {
     }
   }
 
+  setupFollowCameraOn(player){
+    const{ height, width, zoomfactor } = this.config;
+    this.cameras.main.setBounds(0,0, width, height)
+    this.cameras.main.startFollow(player).setZoom(zoomfactor);
+
+  }
 }

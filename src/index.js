@@ -17,7 +17,7 @@ const SHARED_CONFIG = {
   mapOffset: MAP_WIDTH > WIDTH ? MAP_WIDTH - WIDTH : 0,
   width: WIDTH,
   height: HEIGHT,
-
+  zoomfactor: 1.25
 }
 
 const Scenes = [BootScene, WaitingRoom, GameScene, Lobby];
