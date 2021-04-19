@@ -23,7 +23,7 @@ export default class BootScene extends Scene {
     this.load.image('tilesSand', './assets/maps/rpl_sand.png');
     this.load.tilemapTiledJSON('map1', './assets/maps/tankMap.json');
     this.load.image('bullet', './assets/bullet.png');
-    this.load.image('bulletUp', './assets/bullet_vert.png');
+    this.load.image('enemyBullet', './assets/enemy_bullet.png');
     this.load.html('key-form', './html/room-key-form.html');
     this.load.html('chat-form', './html/lobby-chat-form.html');
     this.load.image('start-sm', './assets/start.png');

@@ -4,7 +4,7 @@ import { getTimeStamp } from '../utils/helpers'
 import collidable from '../mixins/collidable';
 
 export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
-  constructor(scene) {
+  constructor(scene, key) {
     super(scene.physics.world, scene);
 
 
@@ -12,7 +12,7 @@ export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
       frameQuantity: 10,
       active: false,
       visible: false,
-      key: ['bullet','bulletUp'],
+      key,
       classType: Projectile
     })
 
@@ -35,33 +35,26 @@ export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
     if (initiator.lastDirection === Phaser.Physics.Arcade.FACING_RIGHT) {
       projectile.speedY = 0;
       projectile.speedX = Math.abs(projectile.maxSpeed);
-      projectile.setTexture('bullet');
-      projectile.setFlipX(false);
-      projectile.setFlipY(false);
+      projectile.setAngle(0);
       centerX = initiatorCenter.x + 16;
       centerY = initiatorCenter.y;
     } else if ((initiator.lastDirection === Phaser.Physics.Arcade.FACING_LEFT)) {
       projectile.speedY = 0;
       projectile.speedX = -Math.abs(projectile.maxSpeed)
-      projectile.setTexture('bullet');
-      projectile.setFlipX(true);
-      projectile.setFlipY(false);
+      projectile.setAngle(180);
       centerX = initiatorCenter.x - 16;
       centerY = initiatorCenter.y;
     } else if ((initiator.lastDirection === Phaser.Physics.Arcade.FACING_UP)) {
       projectile.speedX = 0;
       projectile.speedY = -Math.abs(projectile.maxSpeed);
-      projectile.setTexture('bulletUp');
-      projectile.setFlipX(false);
-      projectile.setFlipY(false);
+      projectile.setAngle(-90);
+     
       centerX = initiatorCenter.x;
       centerY = initiatorCenter.y - 16;
     } else if ((initiator.lastDirection === Phaser.Physics.Arcade.FACING_DOWN)){
       projectile.speedX = 0;
       projectile.speedY = Math.abs(projectile.maxSpeed); 
-      projectile.setTexture('bulletUp')
-      projectile.setFlipX(false);  
-      projectile.setFlipY(true); 
+      projectile.setAngle(90);
       centerX = initiatorCenter.x;
       centerY = initiatorCenter.y + 16;
     }
