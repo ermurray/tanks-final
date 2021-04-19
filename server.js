@@ -46,15 +46,7 @@ app.use("*", (req, res) => {
 
 
 const MAX_PLAYERS = 4;
-// const players = {};
-//player spwan points 4 corners
 
-const spawnPoints = [
-  [64, 64, "pOne"],
-  [1136, 64, "pTwo"],
-  [64, 536, "pThree"],
-  [1136, 536, "pFour"]
-];
 
 const gameRooms = {
   // [roomKey]: {
@@ -62,7 +54,6 @@ const gameRooms = {
       // numPlayers: 0,
       // chatMessages: []  //will hold room chat messages
       //roomfull: false  //use to check room is full
-
   // }
 };
 
@@ -89,11 +80,7 @@ io.on("connection", (socket) => {
   socket.on("joinRoom", (roomKey, playerName) => {
     socket.join(roomKey);
     const roomInfo = gameRooms[roomKey];
-    console.log("roomInfo", roomInfo);
     roomInfo.players[socket.id] = {
-      // rotation: 0,
-      // x: 400,
-      // y: 300,
       playerId: socket.id,
       pName: playerName,
       pNumber:'',
@@ -123,7 +110,7 @@ io.on("connection", (socket) => {
 
   // when a player moves, update the player data
   socket.on("playerMovement", function (data) {
-  //  console.log('playerMovement data:', data)
+  
     const { direction,vector2, x, y, roomKey } = data;
     gameRooms[roomKey].players[socket.id].x = x;
     gameRooms[roomKey].players[socket.id].y = y;
@@ -196,7 +183,7 @@ io.on("connection", (socket) => {
       socket.emit("gameIsFull", input, playerName);
     } else {
       socket.emit("keyIsValid", input, playerName);
-      console.log("---->",gameRooms[input].numPlayers)
+     
     }
 
   });
@@ -229,11 +216,10 @@ io.on("connection", (socket) => {
 
   socket.on('set-pNumber', (socketID, stateObj)=>{
     const { roomKey, players} = stateObj;
-    console.log('before game room update:',gameRooms[roomKey]);
+    
     const selectedPNumber = players[socketID].pNumber;
     gameRooms[roomKey].players[socketID].pNumber = selectedPNumber;
-    console.log('set-pNumber stateobj players:', players[socketID].pNumber)
-    console.log('players obj in room', gameRooms[roomKey].players[socketID])
+    
    
     io.in(roomKey).emit('player-selectedTank', socketID, players[socketID], players[socketID].pName)
   });

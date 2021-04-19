@@ -58,6 +58,7 @@ export default class GameScene extends Scene {
       projectile.resetProjectile();
     });
     
+
   
 
 
@@ -65,78 +66,27 @@ export default class GameScene extends Scene {
 
     // Destructible box logic, may need refactoring
     let boxes = this.physics.add.group();
-    // for (let i = 0; i < layerData.length; i++) {
-    //   for (let j = 0; j < layerData[i].length; j++) {
-    //     if (layerData[i][j].index === -1) {
-    //       let random = Math.random();
-    //       if (random < 0.5) {
-    //         // Couldn't use a loop here because boxes would overlap 3-4 times on each tile
-    //         if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[0].y - 64)) || 
-    //         /*P2*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[1].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[1].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[1].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[1].y - 64)) || 
-    //         /*P3*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[2].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[2].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[2].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[2].y - 64)) || 
-    //         /*P4*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[3].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
-    //           let randomBox = Math.random();
-    //           if (randomBox < 0.5) {
-    //             boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
-    //           } else {
-    //             boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable3').setScale(0.0625).setOrigin(0.5);
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-
-    for (let i = 0; i < layerData.length; i += 2) {
-      for (let j = 0; j < layerData[i].length; j += 1) {
-        if (layerData[i][j].index === -1) {
-          if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[0].y - 64)) || 
-            /*P2*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[1].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[1].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[1].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[1].y - 64)) || 
-            /*P3*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[2].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[2].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[2].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[2].y - 64)) || 
-            /*P4*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[3].x + 64)) && 
-            ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
-            ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
-            ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
-              boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
-            }
-          }
-        }
-      }
-    // boxes.create(600, 400, 'breakable').setScale(0.08);
-    // boxes.create(800, 400, 'breakable').setScale(0.08);
+    
+    boxes.create(600, 400, 'breakable').setScale(0.08);
+    boxes.create(800, 400, 'breakable').setScale(0.08);
+    boxes.create(500, 300, 'breakable').setScale(0.08);
+    boxes.create(300, 200, 'breakable').setScale(0.08);
+    boxes.create(700, 400, 'breakable').setScale(0.08);
+    boxes.create(200, 500, 'breakable').setScale(0.08);
+    boxes.create(200, 300, 'breakable').setScale(0.08);
+    boxes.create(600, 300, 'breakable').setScale(0.08);
+    boxes.create(400, 200, 'breakable').setScale(0.08);
     boxes.children.each((box) => {
       box.body.immovable = true;
       box.body.moves = false;
 
     })
 
-    // localPlayer.addCollider(boxes);
-    // enemyPlayers.forEach((enemyPlayer) =>{
-    //   enemyPlayer.addCollider(boxes);
-    // });
+   
     this.createLocalProjectileBoxCollisions(boxes, localPlayer.projectilesGroup);
     this.createEnemyProjectileBoxCollisions(boxes, enemyPlayers);
+    this.createEnemyProjectileWallCollisions(layers.wallLayer, enemyPlayers);
+    
     this.createEnemyProjectilePlayerCollisions(localPlayer, enemyPlayers);
     
 
@@ -265,10 +215,18 @@ export default class GameScene extends Scene {
     })
 
   }
-
+  createEnemyProjectileWallCollisions(wallLayer, enemyPlayers){
+    enemyPlayers.forEach((enemyPlayer) =>{
+      this.physics.add.collider(enemyPlayer.projectilesGroup, wallLayer, (projectile,wall) => {
+        projectile.resetProjectile();
+  
+      }, null, this);
+    })
+  }
   createEnemyProjectilePlayerCollisions(player, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) => {
       this.physics.add.overlap(enemyPlayer.projectilesGroup, player, (projectile, player) => {
+        //projectile.resetProjectile();
         console.log("enemy projectile has collided with local player");
         let data = {
           socket: this.socket.id,
