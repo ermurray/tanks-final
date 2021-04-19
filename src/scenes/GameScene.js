@@ -152,8 +152,7 @@ export default class GameScene extends Scene {
     this.createEnemyProjectileBoxCollisions(boxes, enemyPlayers);
     this.createEnemyProjectileWallCollisions(layers.wallLayer, enemyPlayers);
     
-    this.createEnemyProjectilePlayerCollisions(localPlayer, enemyPlayers);
-    
+    this.createEnemyProjectilePlayerCollisions(enemyPlayers, localPlayer);
 
     this.createPlayerColliders(localPlayer,{
       colliders:{
@@ -288,7 +287,7 @@ export default class GameScene extends Scene {
       }, null, this);
     })
   }
-  createEnemyProjectilePlayerCollisions(player, enemyPlayers){
+  createEnemyProjectilePlayerCollisions(enemyPlayers, player){
     enemyPlayers.forEach((enemyPlayer) => {
       this.physics.add.collider(player, enemyPlayer.projectilesGroup, (player, projectile) => {
         
@@ -299,10 +298,8 @@ export default class GameScene extends Scene {
           roomKey: this.state.roomKey
         }
         this.socket.emit('playerHit', data)
-        //projectile.resetProjectile();
       }, null, this);
     })
-
   }
   
 
