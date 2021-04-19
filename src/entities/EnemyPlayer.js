@@ -49,6 +49,7 @@ export default class EnemyPlayer extends Tank {
     this.socket.on('playerHasShot', function (data) {
       
       if(data.pNum === thisPlayer){
+        enemyPlayer.setPosition(data.x, data.y)
         enemyPlayer.projectilesGroup.fireProjectile(enemyPlayer);
       
       }
