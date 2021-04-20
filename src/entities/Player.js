@@ -74,9 +74,12 @@ export default class Player extends Tank {
   }
   update() {
     const { left, right , up, down, space} = this.cursors;
-    
+    if(this.isAlive){
+      
+      
+      
       if (left.isDown || this.wasd.left.isDown) {
-     
+        
         this.setVelocityX(-this.playerSpeed);
         this.setVelocityY(0);
         this.setAngle(180);
@@ -93,7 +96,7 @@ export default class Player extends Tank {
         this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
       }
       else if (up.isDown || this.wasd.up.isDown) {
-    
+        
         this.setVelocityY(-this.playerSpeed);
         this.setVelocityX(0)
         this.setAngle(-90) 
@@ -101,7 +104,7 @@ export default class Player extends Tank {
         this.lastDirection = Phaser.Physics.Arcade.FACING_UP;
       }
       else if (down.isDown || this.wasd.down.isDown) {
-     
+        
         this.setVelocityY(this.playerSpeed);
         this.setVelocityX(0)
         this.setAngle(90)   
@@ -114,7 +117,7 @@ export default class Player extends Tank {
         this.setVelocityY(0);
         
       }
-
+      
       // emit player movement
       let x = this.x;
       let y = this.y;
@@ -122,45 +125,47 @@ export default class Player extends Tank {
       let currentDirection = this.direction;
       let currentVelocity = this.body.velocity;
       const movementData = {
-          direction: currentDirection,
-          x: this.x,
-          y: this.y,
-          vector2: currentVelocity,
-          roomKey: this.state.roomKey,
-          socket: this.socket.id,
-          player: this.pNum
+        direction: currentDirection,
+        x: this.x,
+        y: this.y,
+        vector2: currentVelocity,
+        roomKey: this.state.roomKey,
+        socket: this.socket.id,
+        player: this.pNum
       }
-    
+      
       // if (
-      //   this.oldPosition &&
-      //   (x !== this.oldPosition.x ||
-      //     y !== this.oldPosition.y)
-      // ) {
-      //   this.moving = true;
-      if (this.body.velocity.equals({x:0, y:0})){
-        this.direction = null
-        
-        this.socket.emit("playerMovement",movementData)
-      }
-      
-      // }
-       
-    
-      if (!checkVelocityZero&&
-        (this.oldDirection !== currentDirection)
-      ) {    
-        this.moving = true;
-        this.socket.emit("playerMovement", movementData);
-      }
-      
-      // save old position data
-      // this.oldPosition = {
-      //   x: this.x,
-      //   y: this.y,
-      // };
-      this.oldDirection = this.direction
-      this.oldVelocity = this.body.velocity
+        //   this.oldPosition &&
+        //   (x !== this.oldPosition.x ||
+        //     y !== this.oldPosition.y)
+        // ) {
+          //   this.moving = true;
+          if (this.body.velocity.equals({x:0, y:0})){
+            this.direction = null
+            
+            this.socket.emit("playerMovement",movementData)
+          }
+          
+          // }
+          
+          
+          if (!checkVelocityZero&&
+            (this.oldDirection !== currentDirection)
+            ) {    
+              this.moving = true;
+              this.socket.emit("playerMovement", movementData);
+            }
+            
+            // save old position data
+            // this.oldPosition = {
+              //   x: this.x,
+              //   y: this.y,
+              // };
+              this.oldDirection = this.direction
+              this.oldVelocity = this.body.velocity
+    }
+            
+            
   }
-
-
+            
 }
