@@ -28,6 +28,7 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
 
   static preload(scene) {
    scene.load.spritesheet('shoot', 'assets/shooting.png', 32, 32, 12);
+   scene.load.spritesheet('firetrail', 'assets/fire_trail.png')
 
   }
 
