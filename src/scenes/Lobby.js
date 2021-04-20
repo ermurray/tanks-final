@@ -384,6 +384,12 @@ export default class Lobby extends Phaser.Scene {
       }
     }
     if (ready === true) {
+      this.tweens.add({
+        targets: this.textInput,
+        y:855,
+        duration:3000,
+        ease: 'Power3'
+      })
       // let data = this.state.
       console.log(this.state);
       this.socket.emit('players-lobbyready', this.state)
@@ -432,6 +438,7 @@ export default class Lobby extends Phaser.Scene {
       
       text.setText(`${count}...`)
       if(count < 1){
+        
         this.scene.pause('scene-lobby');
         this.scene.launch('scene-game'); // Change to scene-gameover for testing
         this.scene.pause('scene-game');
