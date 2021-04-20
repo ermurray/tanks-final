@@ -139,7 +139,7 @@ io.on("connection", (socket) => {
     data.owner_id = socket.id; // Attach id of the player to the bullet 
     bulletArray.push(newBullet);
 
-    console.log('bullet object:', data)
+    //console.log('bullet object:', data)
     const { x, y, roomKey } = data;
     // emit a message to all players about the player that shot a bullet
     socket
@@ -148,11 +148,18 @@ io.on("connection", (socket) => {
   });
 
   socket.on('playerHit', (data) => {
-    console.log("------------------PLAYER HIT -----------");
-    console.log(data)
+    //console.log("------------------PLAYER HIT -----------");
+    //console.log(data)
     socket
       .in(data.roomKey)
       .emit("playerHasBeenHit", data.socket);
+  })
+
+  socket.on('playerDeath', (data) => {
+    //console.log("PLAYER DEATH",data.id)
+    socket
+      .in(data.roomKey)
+      .emit('playerHasDied', data)
   })
 
 

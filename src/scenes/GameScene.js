@@ -43,6 +43,10 @@ export default class GameScene extends Scene {
     this.socket.on('playerHasBeenHit', (data)=>{
       console.log(`player at socket ${data} has been hit`)
     })
+    this.socket.on('playerHasDied', (data)=>{
+      console.log(`player at socket ${data.id} has been killed`)
+      console.log(`render explosion animation at ${data.x, data.y}`)
+    })
     //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
     const enemyPlayersArray = [];
     for(const player in thisScene.state.players ){
