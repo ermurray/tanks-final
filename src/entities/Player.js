@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Tank from './Tank';
 import ProjectilesGroup from '../attacks/ProjectilesGroup';
+import HealthBar from '../hud/HealthBar';
 
 
 export default class Player extends Tank {
@@ -18,6 +19,7 @@ export default class Player extends Tank {
 
   init() {
     this.projectilesGroup = new ProjectilesGroup(this.scene, 'bullet');
+    this.healthBar = new HealthBar( this.scene, 0,0, this.health)
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.lastDirection;
     this.direction;
@@ -43,8 +45,8 @@ export default class Player extends Tank {
         this.setAngle(180)
         break;
     }
-   
-   
+    
+    
     
     this.scene.input.keyboard.on('keydown-SPACE', () => {
       // console.log('Shoot');
