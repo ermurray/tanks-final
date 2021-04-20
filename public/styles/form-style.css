@@ -1,5 +1,5 @@
 body {
-  margin: 200;
+
   background-color: black;
 
 }
@@ -7,16 +7,28 @@ body {
 div.form-container {
   
   flex-direction: column;
+
   width: 40px;
   height: 100px;
   border: 4px, solid, #8a2be2;
   
 }
-#game-container{
-  display:flex;
-  border: #000000;
-}
+ #game-container{ 
+  /* display: flex; */
+  width: 1216px;
+  height: 640px;
+  margin: 170;
+  padding-top: 20px;
+} 
 
+#container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+#topbar{
+  height: 40px;
+}
 #chat-input {
   padding: 10px;
   font-size: 18px;

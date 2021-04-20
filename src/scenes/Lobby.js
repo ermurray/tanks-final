@@ -251,7 +251,7 @@ export default class Lobby extends Phaser.Scene {
       thisScene.setPlayerText(thisScene.p3Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p3";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
-      readyPlayers[2] = true;
+      // readyPlayers[2] = true;
     });
 
     this.p3Text = this.add.text(400, 350, "", {
@@ -280,7 +280,7 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     });
     
-    this.p3ReadyText = this.add.text(400, 475, "", {
+    this.p4ReadyText = this.add.text(400, 475, "", {
       fill: "#00ff00",
       fontSize: "20px",
       fontStyle: "bold"
@@ -384,6 +384,7 @@ export default class Lobby extends Phaser.Scene {
       }
     }
     if (ready === true) {
+      
       // let data = this.state.
       console.log(this.state);
       this.socket.emit('players-lobbyready', this.state)
@@ -425,6 +426,12 @@ export default class Lobby extends Phaser.Scene {
    textarea.setText(`Operator:${playerName} will be this tank`)
   }
   countDown(text){
+    this.tweens.add({
+      targets: this.textInput,
+      y:855,
+      duration:3000,
+      ease: 'Power3'
+    })
     let count = 4;
     let counter = setInterval(()=>{
 
@@ -432,6 +439,7 @@ export default class Lobby extends Phaser.Scene {
       
       text.setText(`${count}...`)
       if(count < 1){
+        
         this.scene.pause('scene-lobby');
         this.scene.launch('scene-game'); // Change to scene-gameover for testing
         this.scene.pause('scene-game');
