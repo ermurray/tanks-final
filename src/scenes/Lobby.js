@@ -29,7 +29,12 @@ export default class Lobby extends Phaser.Scene {
     
     this.registry.set('socket', this.socket);
     this.registry.set('state', this.state);
-    this.scene.launch("scene-waitingRoom", {Socket: this.scene.socket})
+    this.state.gameOver = false;
+    
+    this.scene.launch("scene-waitingRoom", {Socket: this.scene.socket});
+    this.scene.launch("scene-gameOver", {gameOver: false, Socket: this.scene.socket});
+    this.scene.setActive(false, 'scene-gameover');
+    this.scene.sendToBack('scene-gameover');
     this.add.image(0,0, 'bckgrnd').setOrigin(0).setScale(0.5);
     
     const roomInfoText = this.add.text(500, 20, "", {
@@ -42,6 +47,7 @@ export default class Lobby extends Phaser.Scene {
     this.socket.on('setState', function(state) {
       const {roomKey, players, numPlayers } = state
       thisScene.state.roomKey = roomKey;
+      console.log(`Roomkey: ${roomKey}`);
       thisScene.state.players = players;
       // console.log(players);
       //-----------------------------------------
@@ -426,7 +432,8 @@ export default class Lobby extends Phaser.Scene {
       
       text.setText(`${count}...`)
       if(count < 1){
-        this.scene.start('scene-game');
+        this.scene.pause('scene-lobby');
+        this.scene.launch('scene-game'); // Change to scene-gameover for testing
         this.scene.pause('scene-game');
         clearInterval(counter);
         text.destroy();
