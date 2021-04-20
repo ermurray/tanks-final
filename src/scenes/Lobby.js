@@ -22,7 +22,7 @@ export default class Lobby extends Phaser.Scene {
     const thisScene = this;
    
     // 'http://localhost:3000' || SOCKET
-    this.socket = io('http://localhost:3000') //this will need to change on prod or dev server
+    this.socket = io(SOCKET) //this will need to change on prod or dev server
     this.socket.on('connect', function() {
       // console.log('you have connected to the server')
     });
