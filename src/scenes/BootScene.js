@@ -41,7 +41,7 @@ export default class BootScene extends Scene {
 
   create() {
   // this.scene.setActive(false, 'scene-lobby');
-  this.scene.setActive(false, 'scene-gameover');
+  this.scene.setActive(false, 'scene-lobby');
 
    this.add.sprite(600, 220, 'logo')
    this.strtBtn = this.add.sprite(600, 540, 'start')
@@ -53,7 +53,7 @@ export default class BootScene extends Scene {
   }
   onDown() {
     // this.scene.start ('scene-lobby');
-    this.scene.start ('scene-gameover');
+    this.scene.start ('scene-lobby');
     // let data = "hello there from bootscene"
     // this.socket.emit("test", data)
   }
