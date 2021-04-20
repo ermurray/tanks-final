@@ -382,8 +382,8 @@ export default class Lobby extends Phaser.Scene {
       
       text.setText(`${count}...`)
       if(count < 1){
-        this.scene.start('scene-game');
-        this.scene.pause('scene-game');
+        this.scene.start('scene-gameover');
+        this.scene.pause('scene-gameover');
         clearInterval(counter);
         text.destroy();
        

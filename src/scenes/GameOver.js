@@ -25,14 +25,14 @@ export default class GameOver extends Scene {
   playAgain() {
     this.registry.destroy();
     this.events.off();
-    this.scene.restart();
+    // this.scene.restart();
     this.scene.start('scene-lobby');
   }
 
   restart() {
     this.registry.destroy();
     this.events.off();
-    this.scene.restart();
+    // this.scene.restart();
     this.scene.start('scene-boot');
   }
 }
