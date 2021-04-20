@@ -25,6 +25,7 @@ export default class GameScene extends Scene {
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
     this.socket.emit('in-game',this.state);
+    this.scene.bringToTop('scene-game');
     const thisScene = this;
     this.timerText = this.add.text(608,320,"Ready",{
       fill: "#00ff00",
@@ -55,7 +56,7 @@ export default class GameScene extends Scene {
       }
     }
     
-    
+    let gameOver = false;
     
     
     const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
@@ -305,9 +306,11 @@ export default class GameScene extends Scene {
           socket: this.socket.id,
           roomKey: this.state.roomKey
         }
-        this.socket.emit('playerHit', data)
+        this.socket.emit('playerHit', data);
+        this.endGame(true);
       }, null, this);
     })
+    
   }
   
 
@@ -315,7 +318,6 @@ export default class GameScene extends Scene {
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
       box.destroy();
       projectile.resetProjectile();
-
     }, null, this);
   }
 
@@ -324,6 +326,7 @@ export default class GameScene extends Scene {
       this.physics.add.overlap(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
         projectile.resetProjectile();
         console.log("local projectile has collided with enemy player");
+        this.endGame(true);
       }, null, this);
     })
   }
@@ -370,5 +373,13 @@ export default class GameScene extends Scene {
       } 
 
     },1000)
+  }
+
+  endGame(gameOver) {
+    if (gameOver === true) {
+      this.scene.setActive(true, 'scene-gameover');
+      this.scene.bringToTop('scene-gameover');
+    }
+
   }
 }
