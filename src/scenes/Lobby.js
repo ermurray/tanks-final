@@ -384,12 +384,7 @@ export default class Lobby extends Phaser.Scene {
       }
     }
     if (ready === true) {
-      this.tweens.add({
-        targets: this.textInput,
-        y:855,
-        duration:3000,
-        ease: 'Power3'
-      })
+      
       // let data = this.state.
       console.log(this.state);
       this.socket.emit('players-lobbyready', this.state)
@@ -431,6 +426,12 @@ export default class Lobby extends Phaser.Scene {
    textarea.setText(`Operator:${playerName} will be this tank`)
   }
   countDown(text){
+    this.tweens.add({
+      targets: this.textInput,
+      y:855,
+      duration:3000,
+      ease: 'Power3'
+    })
     let count = 4;
     let counter = setInterval(()=>{
 
