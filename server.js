@@ -79,9 +79,9 @@ io.on("connection", (socket) => {
 
 // on join room function begins
   socket.on("joinRoom", (roomKey, playerName) => {
-    let isFull = gameRooms[roomKey].roomFull
-    
-    if(!isFull){
+    let isFull = gameRooms[roomKey].roomFull;
+    let isStarted = gameRooms[roomKey].gameStarted;
+    if(!isFull && !isStarted){
       socket.join(roomKey);
       const roomInfo = gameRooms[roomKey];
       roomInfo.players[socket.id] = {
@@ -113,7 +113,7 @@ io.on("connection", (socket) => {
           gameRooms[roomkey].roomFull = true;
       }
     }
-    if(isFull){
+    if(isFull||isStarted){
       socket.emit('roomFull')
     } 
   });
@@ -242,7 +242,7 @@ io.on("connection", (socket) => {
     console.log('roomdata', gameRooms[data.roomKey]);
     setTimeout((data)=>{
       io.in(roomKey).emit('transToGame', data);
-    },500)
+    },100)
 
   })
   
