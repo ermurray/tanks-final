@@ -321,6 +321,7 @@ export default class GameScene extends Scene {
     enemyPlayers.forEach((enemyPlayer) =>{
       this.physics.add.overlap(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
         projectile.resetProjectile();
+        enemyPlayer.playDamageTween();
         console.log("local projectile has collided with enemy player");
       }, null, this);
     })
