@@ -25,6 +25,12 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true);
     
   }
+
+  static preload(scene) {
+   scene.load.spritesheet('shoot', 'assets/shooting.png', 32, 32, 12);
+
+  }
+
   playDamageTween() {
     this.scene.tweens.add({
       targets: this,
@@ -32,6 +38,42 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
       repeat: 4,
       tint: 0xffffff 
     })
+  }
+
+  playMovementAnimation() {
+
+  }
+
+  playFireAnimation(){
+      this.scene.anims.create({
+        key: '',
+        frames: [],
+        skipMissedFrames: true,
+        defaultTextureKey: null,
+        startFrame: 0,
+    
+        // time
+        delay: 0,
+        frameRate: null,
+        duration: null,
+        timeScale: 1,
+    
+        // repeat
+        repeat: 0,              // set to (-1) to repeat forever
+        repeatDelay: 0,
+        yoyo: false,
+    
+        // visible
+        showOnStart: false,
+        hideOnComplete: false
+    });
+  }
+
+  playDeathAnimation(){
+    // this.scene.tweens.add({
+    //   targets: this,
+    //   duration: 10
+    // })
   }
 
   onHit() {
@@ -47,7 +89,7 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
   }
 
   onDeath() {
-    
+    this.playDeathAnimation();
     console.log('disable this tank its dead',this.isAlive)
     let data = {
       id: this.socket.id,
