@@ -40,20 +40,21 @@ export default class BootScene extends Scene {
   }
 
   create() {
-  // this.scene.setActive(false, 'scene-lobby');
-  this.scene.setActive(false, 'scene-lobby');
+    // this.scene.setActive(false, 'scene-lobby');
+    this.add.image(0,0, 'bckgrnd').setOrigin(0).setScale(0.5);
+    this.scene.setActive(false, 'scene-lobby');
 
-   this.add.sprite(600, 220, 'logo')
-   this.strtBtn = this.add.sprite(600, 540, 'start')
-   this.strtBtn.setInteractive();
-   this.strtBtn.on('pointerdown', this.onDown, this);
-    
+    this.add.sprite(600, 220, 'logo')
+    this.strtBtn = this.add.sprite(600, 540, 'start')
+    this.strtBtn.setInteractive();
+    this.strtBtn.on('pointerdown', this.onDown, this);
+      
     
     // this.scene.start ('scene-game')
   }
   onDown() {
     // this.scene.start ('scene-lobby');
-    this.scene.start ('scene-lobby');
+    this.scene.start('scene-lobby');
     // let data = "hello there from bootscene"
     // this.socket.emit("test", data)
   }

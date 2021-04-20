@@ -25,7 +25,7 @@ export default class GameScene extends Scene {
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
     this.socket.emit('in-game',this.state);
-    this.scene.moveAbove("scene-gameover", 'scene-game');
+    this.scene.bringToTop('scene-game');
     const thisScene = this;
     this.timerText = this.add.text(608,320,"Ready",{
       fill: "#00ff00",
@@ -374,7 +374,8 @@ export default class GameScene extends Scene {
 
   endGame(gameOver) {
     if (gameOver === true) {
-      this.scene.start('scene-gameover');
+      this.scene.setActive(true, 'scene-gameover');
+      this.scene.bringToTop('scene-gameover');
     }
 
   }
