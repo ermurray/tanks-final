@@ -292,7 +292,7 @@ export default class GameScene extends Scene {
   createEnemyProjectilePlayerCollisions(enemyPlayers, player){
     enemyPlayers.forEach((enemyPlayer) => {
       this.physics.add.collider(player, enemyPlayer.projectilesGroup, (player, projectile) => {
-        
+        player.onHit();
         projectile.resetProjectile();
         console.log("enemy projectile has collided with local player");
         let data = {
