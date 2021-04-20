@@ -12,14 +12,21 @@ export default class Player extends Tank {
     this.state = state;
     // console.log("Initial State:", state);
     // console.log("Socket", socket);
-
+    // this.health = 30;
       this.init();
       this.initEvents()
   }
 
   init() {
     this.projectilesGroup = new ProjectilesGroup(this.scene, 'bullet');
-    this.healthBar = new HealthBar( this.scene, 0,0, this.health)
+    console.log("this is player Health", this.health)
+    this.healthBar = new HealthBar( 
+      this.scene, 
+      this.scene.config.leftTopCorner.x + 33,
+      this.scene.config.leftTopCorner.y + 5, 
+      this.health
+      );
+    console.log("another health check", this.healthBar.hpValue)
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.lastDirection;
     this.direction;
@@ -169,5 +176,8 @@ export default class Player extends Tank {
             
             
   }
+
+  
+  
             
 }

@@ -296,7 +296,9 @@ export default class GameScene extends Scene {
   createEnemyProjectilePlayerCollisions(enemyPlayers, player){
     enemyPlayers.forEach((enemyPlayer) => {
       this.physics.add.collider(player, enemyPlayer.projectilesGroup, (player, projectile) => {
-        player.onHit();
+        console.log("projectile.damage",projectile.damage)
+        player.healthBar
+        player.onHit(projectile.damage);
         projectile.resetProjectile();
         console.log("enemy projectile has collided with local player");
         let data = {
@@ -346,7 +348,8 @@ export default class GameScene extends Scene {
   }
 
   setupFollowCameraOn(player){
-    const{ height, width, zoomfactor } = this.config;
+    const{ height, width, zoomfactor, leftTopCorner } = this.config;
+    this.add.image(leftTopCorner.x, leftTopCorner.y, 'heathContainer').setOrigin(0).setDepth(1).setScrollFactor(0,0);
     this.cameras.main.setBounds(0,0, width, height)
     this.cameras.main.startFollow(player).setZoom(zoomfactor);
 

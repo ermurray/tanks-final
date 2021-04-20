@@ -245,7 +245,7 @@ export default class Lobby extends Phaser.Scene {
       thisScene.setPlayerText(thisScene.p3Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p3";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
-      readyPlayers[2] = true;
+      // readyPlayers[2] = true;
     });
 
     this.p3Text = this.add.text(400, 350, "", {
@@ -274,7 +274,7 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     });
     
-    this.p3ReadyText = this.add.text(400, 475, "", {
+    this.p4ReadyText = this.add.text(400, 475, "", {
       fill: "#00ff00",
       fontSize: "20px",
       fontStyle: "bold"

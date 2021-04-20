@@ -14,10 +14,10 @@ div.form-container {
   
 }
  #game-container{ 
-  display: flex;
+  /* display: flex; */
   width: 1216px;
   height: 640px;
-  margin: 200;
+  margin: 170;
   padding-top: 20px;
 } 
 

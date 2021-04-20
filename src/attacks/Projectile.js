@@ -19,8 +19,9 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.traveledDistanceX = 0;
     this.traveledDistanceY = 0;
 
-    // projectile rate of fire
+    // projectile rate of fire and damage
     this.fireRate = 500;
+    this.damage = 10;
 
     Object.assign(this, collidable);
 

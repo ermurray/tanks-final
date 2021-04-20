@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import collidable from '../mixins/collidable';
-
+import HealthBar from '../hud/HealthBar';
 
 export default class Tank extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key) {
@@ -16,11 +16,16 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
     this.enemySpeed =100;
     this.setBodySize(42, 42).setOffset(3,3);
     // this.setScale(0.9);
-    this.depth = 3;
+    this.depth = 4;
     this.hasBeenHit = false;
     this.health = 30;
     this.isAlive = true;
-
+    // this.healthBar = new HealthBar( 
+    //   this.scene, 
+    //   this.scene.config.leftTopCorner.x + 33,
+    //   this.scene.config.leftTopCorner.y + 5, 
+    //   this.health
+    //   );
     
     this.setCollideWorldBounds(true);
     
@@ -34,8 +39,9 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
     })
   }
 
-  onHit() {
-    this.health -= 10;
+  onHit(damage) {
+    this.health -= damage;
+    this.healthBar.decreaseHealth(damage)
     this.playDamageTween();
     console.log("You've been hit!")
     console.log(`current hp: ${this.health}`)
