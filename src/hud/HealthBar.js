@@ -5,7 +5,7 @@ export default class HealthBar {
   constructor(scene, x,y, health) {
 
     this.healthBar = new Phaser.GameObjects.Graphics(scene);
-
+    this.healthBar.setScrollFactor(0,0);
     this.x = x;
     this.y = y;
     this.healthValue = health;
