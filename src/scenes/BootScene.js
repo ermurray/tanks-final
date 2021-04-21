@@ -46,6 +46,9 @@ export default class BootScene extends Scene {
     });
     this.load.image('enemyPlayers', './assets/tank_lft32px.png');
     this.load.image('overlay', './assets/overlay.png')
+    this.load.spritesheet('bulletImpact', './assets/bullet_impact_sheet.png', {
+      frameWidth: 32, frameHeight: 32, spacing: 32
+    })
     console.log("env check:", process.env)
   }
 

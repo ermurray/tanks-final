@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import SpriteEffect from '../effects/SpriteEffect';
 import collidable from '../mixins/collidable';
 
 
@@ -53,6 +54,10 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.setVelocityY(this.speedY)
     // console.log('Shoot a projectile');
   
+  }
+  hasHit(target){
+    new SpriteEffect(this.scene, 0,0, 'impact').playOn(target);
+    this.resetProjectile()
   }
   resetProjectile(){
     this.setActive(false);
