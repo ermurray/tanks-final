@@ -58,7 +58,11 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
       pnum: this.pNum,
     }
     this.socket.emit('playerDeath', data)
-    this.setImmovable(true);
+      
+    // this.body.setImmovable(true);
+    //   this.body.stop();
+     
+   
   }
 
 }

@@ -328,6 +328,9 @@ export default class GameScene extends Scene {
       this.physics.add.overlap(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
         projectile.resetProjectile();
         console.log("local projectile has collided with enemy player");
+        this.socket.on('playerHasDied', (data) => {
+          enemyPlayer.body.setImmovable(true);
+        })
         this.endGame(true);
       }, null, this);
     })
@@ -362,8 +365,18 @@ export default class GameScene extends Scene {
     console.log("localplayer??????",player.healthBar)
     player.healthBar.showHealthBar();
     this.cameras.main.setBackgroundColor(0x888076)
-
+    this.playersRemainText = this.add.text(leftTopCorner.x + 265 , leftTopCorner.y + 5, `PLAYERS REMAINING:`, {
+      fill: "#000000",
+      fontSize: '12px',
+      fontStyle: 'bold'
+    }).setOrigin(0,0).setDepth(4).setScrollFactor(0,0);
+    this.timerText = this.add.text(leftTopCorner.x + 565 , leftTopCorner.y + 5, `GAME TIMER:`, {
+      fill: "#000000",
+      fontSize: '12px',
+      fontStyle: 'bold'
+    }).setOrigin(0,0).setDepth(4).setScrollFactor(0,0);
   }
+ 
 
   countDown(text, localPlayer){
     let count = 4;
