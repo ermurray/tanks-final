@@ -29,7 +29,7 @@ export default class GameOver extends Scene {
 
     // Restart button
     // this.restartBtn = this.add.sprite(900, 400, 'start'); // Use with play again button
-    this.restartBtn = this.add.sprite(600, 400, 'start'); // Use without play again button
+    this.restartBtn = this.add.sprite(600, 400, 'restart'); // Use without play again button
     this.restartBtn.setInteractive();
     this.restartBtn.on('pointerdown', () => {
       this.restart();

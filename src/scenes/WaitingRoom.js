@@ -44,27 +44,43 @@ export default class WaitingRoom extends Phaser.Scene {
     thisScene.popUp.fillRect(230, 25, 750, 500);
 
     //title
-    thisScene.title = thisScene.add.text(305, 75, "Tank Multiplayer", {
+    thisScene.title = thisScene.add.text(305, 75, "Create or Join a Game", {
+      fontFamily: 'Pixelar',
       fill: "#add8e6",
-      fontSize: "66px",
+      fontSize: "72px",
       fontStyle: "bold",
     });
 
     //left popup
-    thisScene.boxes.strokeRect(310, 200, 275, 100);
-    thisScene.boxes.fillRect(310, 200, 275, 100);
-    thisScene.requestButton = thisScene.add.text(320, 215, "CREATE NEW GAME", {
-      fill: "#000000",
-      fontSize: "20px",
-      fontStyle: "bold",
-    });
+    // thisScene.boxes.strokeRect(310, 200, 275, 100);
+    // thisScene.boxes.fillRect(310, 200, 275, 200);
+    thisScene.requestButton = thisScene.add.sprite(448, 270, "new-game").setScale(0.5);
 
     
     //right popup
-    thisScene.boxes.strokeRect(625, 200, 275, 100);
-    thisScene.boxes.fillRect(625, 200, 275, 100);
+    // thisScene.boxes.strokeRect(625, 200, 275, 100);
+    // thisScene.boxes.fillRect(625, 200, 275, 200);
 
+    /*
+    thisScene.textInput = this.add.dom(855, 640).createFromCache('chat-form').setOrigin(0);  
+    this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
     
+    this.enterKey.on('down', e => {
+      const chatBox = thisScene.textInput.getChildByName("chat-form");
+      if (chatBox.value !== "") {
+        
+        const message = {
+          message: chatBox.value,
+          pName: thisScene.state.playerName,
+          roomKey: thisScene.state.roomKey
+        };
+        thisScene.socket.emit("chatMessage", message)
+        chatBox.value = ""
+      }
+      // }
+    })
+    */
+
 //prevent form default action on enter key
     thisScene.inputElement = thisScene.add.dom(675, 250).createFromCache('key-form');
     thisScene.input.keyboard.on('keydown_ENTER', e => {
@@ -96,7 +112,7 @@ export default class WaitingRoom extends Phaser.Scene {
         thisScene.scene.setActive(true, "scene-lobby");
       });
       thisScene.socket.on('roomFull',() =>{
-        thisScene.notValidText.setText('this room is full');
+        thisScene.notValidText.setText('This room is full');
       });
     });
 
@@ -112,7 +128,7 @@ export default class WaitingRoom extends Phaser.Scene {
       fontSize: "15px",
     });
 
-    thisScene.roomKeyText = thisScene.add.text(370, 250, "", {
+    thisScene.roomKeyText = thisScene.add.text(370, 320, "", {
       fill: "#00ff00",
       fontSize: "20px",
       fontStyle: "bold",

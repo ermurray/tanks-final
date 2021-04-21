@@ -185,13 +185,19 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     });
     
-    this.strtSmall = this.add.sprite(600, 540, 'start-sm');
+    this.strtSmall = this.add.sprite(600, 540, 'start-sm').setScale(0.5).setAlpha(0);
     // this.strtSmall.setInteractive();
     
 
   
     this.strtSmall.setInteractive();
     this.strtSmall.on('pointerdown', this.onDown,this);
+    this.tweens.add({
+      targets: thisScene.strtSmall,
+      alpha: 1,
+      duration:3000,
+      ease: 'Power3'
+    })
     
     // player Number Selection
   //----------------------------------------------------------------

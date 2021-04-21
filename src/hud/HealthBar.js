@@ -29,8 +29,8 @@ export default class HealthBar {
     this.healthBar.clear();
     const {width, height} = this.size;
     const margin = 2;
-    // this.healthBar.fillStyle(0xFF0000, 1);
-    // this.healthBar.fillRect(x+margin, y+margin, width, height)
+    this.healthBar.fillStyle(0xFF0000, 1);
+    this.healthBar.fillRect(x, y, width, height)
     console.log("this is the health value",this.hpValue)
      this.hpWidth = Math.floor(this.hpValue * this.pixelPerHp);
     console.log("THis is the width",this.hpWidth);

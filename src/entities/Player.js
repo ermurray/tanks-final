@@ -10,6 +10,7 @@ export default class Player extends Tank {
     this.pNum = pNum
     this.socket = socket;
     this.state = state;
+  
     // console.log("Initial State:", state);
     // console.log("Socket", socket);
     // this.health = 30;
@@ -175,8 +176,8 @@ export default class Player extends Tank {
               this.oldDirection = this.direction
               this.oldVelocity = this.body.velocity
     } else{
-      this.body.setImmovable(true);
       this.body.stop(this);
+      this.body.setImmovable(true);
     }
             
             
