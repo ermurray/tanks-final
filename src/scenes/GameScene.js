@@ -6,13 +6,15 @@ import EnemyPlayer from '../entities/EnemyPlayer';
 import ProjectilesGroup from '../attacks/ProjectilesGroup';
 import Projectile from '../attacks/Projectile'
 import EnemyPlayersGroup from '../entities/EnemyPlayer';
-
+import initObjAnimations from '../animations/staticObjAnims';
+import SpriteEffect from '../effects/SpriteEffect';
 
 export default class GameScene extends Scene {
 
   constructor (config) {
       super("scene-game");
       this.config = config;
+      
   }
 
   /*
@@ -26,12 +28,15 @@ export default class GameScene extends Scene {
     this.state = this.registry.get('state');
     this.socket.emit('in-game',this.state);
     this.scene.bringToTop('scene-game');
+    const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+    const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
     const thisScene = this;
-    this.timerText = this.add.text(608,320,"Ready",{
+    this.timerText = this.add.text(screenCenterX, screenCenterY, "Ready", {
       fill: "#00ff00",
       fontSize: "80px",
-      fontStyle: "bold"
-    }).setDepth(2);
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
+    }).setDepth(2).setOrigin(0.5);
     //map creation and layout
     const map = this.createMap();
     const layers = this.createLayers(map);
@@ -60,7 +65,7 @@ export default class GameScene extends Scene {
         enemyPlayersArray.push(thisScene.state.players[player])
       }
     }
-    this.overlay = this.add.image(0,0, 'overlay').setOrigin(0).setDepth(3).setAlpha(0.2);
+    this.overlay = this.add.image(0,0, 'overlay').setOrigin(0).setDepth(3).setAlpha(0.1);
     // this.lights.enable().setAmbientColor(0x333333)
     // this.overlay.setPipeline('Light2D')
     // const light = this.lights.addLight(180, 80, 200).setColor(0xffffff).setIntensity(2);
@@ -90,14 +95,16 @@ export default class GameScene extends Scene {
     woodBoxes.children.each((box) => {
       box.body.immovable = true;
       box.body.moves = false;
+      
     })
 
     greyBoxes.children.each((box)=>{
       box.body.immovable = true;
       box.body.moves = false;
-    })
 
-   
+    })
+    initObjAnimations(this.anims)
+    
     this.createLocalProjectileBoxCollisions(woodBoxes, localPlayer.projectilesGroup);
     this.createLocalProjectileBoxCollisions(greyBoxes, localPlayer.projectilesGroup);
 
@@ -167,6 +174,7 @@ export default class GameScene extends Scene {
     const boxes = this.physics.add.group();
     boxLayer.objects.forEach(box => {
       boxes.get(box.x + 24, box.y -24, 'woodBox');
+      
     })
     return boxes
   }
@@ -174,7 +182,9 @@ export default class GameScene extends Scene {
     const boxes = this.physics.add.group();
     boxLayer.objects.forEach(box => {
       boxes.get(box.x + 24, box.y -24, 'greyBox');
+     
     })
+    
     return boxes
   }
 
@@ -257,13 +267,30 @@ export default class GameScene extends Scene {
   createEnemyProjectileBoxCollisions(boxes, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) =>{
       this.physics.add.overlap(enemyPlayer.projectilesGroup, boxes, (projectile, box) => {
-        box.destroy();
+      
+       //this.play('boxDestroy', true)
+        // box.destroy();
+        console.log("this box key",box);
+        box.play('boxDestroy', true)
+        box.body.checkCollision.none = true;
+        setTimeout(()=>{
+          this.add.tween({
+            targets: box,
+            alpha: 0,
+            duration: 2000,
+            ease: 'Power3'
+          })
+        }, 100)
+        
         projectile.resetProjectile();
-  
+       
       }, null, this);
     })
 
   }
+
+  
+
   createEnemyProjectileWallCollisions(wallLayer, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) =>{
       this.physics.add.collider(enemyPlayer.projectilesGroup, wallLayer, (projectile,wall) => {
@@ -294,8 +321,21 @@ export default class GameScene extends Scene {
 
   createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
-      box.destroy();
+      
+      // box.destroy();
+      box.play('boxDestroy', true)
+      box.body.checkCollision.none = true;
+      
+      setTimeout(()=>{
+        this.add.tween({
+          targets: box,
+          alpha: 0,
+          duration: 2000,
+          ease: 'Power3'
+        })
+      }, 100)
       projectile.resetProjectile();
+      
     }, null, this);
   }
 

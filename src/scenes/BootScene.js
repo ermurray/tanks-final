@@ -38,10 +38,17 @@ export default class BootScene extends Scene {
     this.load.image('tankRed', './assets/tank-red.png');
     this.load.image('tankGreen', './assets/tank-green.png');
     this.load.image('tankYellow', './assets/tank-yellow.png');
-    this.load.image('woodBox', './assets/boxes/box_wood_48px.png');
-    this.load.image('greyBox', './assets/boxes/box_grey_48px.png');
+    this.load.spritesheet('woodBox', './assets/boxes/box_wood_sheet.png', {
+      frameWidth: 48, frameHeight: 48, spacing: 48
+    });
+    this.load.spritesheet('greyBox', './assets/boxes/box_grey_sheet.png', {
+      frameWidth: 48, frameHeight: 48, spacing: 48
+    });
     this.load.image('enemyPlayers', './assets/tank_lft32px.png');
     this.load.image('overlay', './assets/overlay.png')
+    this.load.spritesheet('bulletImpact', './assets/bullet_impact_sheet.png', {
+      frameWidth: 32, frameHeight: 32, spacing: 32
+    })
     console.log("env check:", process.env)
   }
 
