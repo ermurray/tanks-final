@@ -13,6 +13,7 @@ export default class BootScene extends Scene {
     this.load.image('bckgrnd', 'assets/background.png');
     this.load.image('logo', 'assets/Wartank.png');
     this.load.image('start', 'assets/new-start.png');
+    this.load.image('start-p', 'assets/new-start-pressed.png');
     this.load.image('player1', './assets/tank_blue_rht48px.png');
     this.load.image('player2', './assets/tank_red_lft48px.png');
     this.load.image('player3', './assets/tank_green_rht48px.png');
@@ -28,8 +29,11 @@ export default class BootScene extends Scene {
     this.load.html('key-form', './html/room-key-form.html');
     this.load.html('chat-form', './html/lobby-chat-form.html');
     this.load.image('start-sm', './assets/ready-green-b.png');
+    this.load.image('start-sm-p', './assets/ready-green-pressed.png');
     this.load.image('new-game', './assets/new-game.png');
+    this.load.image('new-game-p', '.assets/new-game-pressed.png');
     this.load.image('restart', './assets/restart.png');
+    this.load.image('restart-p', './assets/restart-pressed.png');
     this.load.image('tankBlue', './assets/tank-blue.png');
     this.load.image('tankRed', './assets/tank-red.png');
     this.load.image('tankGreen', './assets/tank-green.png');

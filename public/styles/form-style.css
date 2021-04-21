@@ -30,9 +30,11 @@ div.form-container {
   border-color: transparent;
 }
 
+/*
 #enterRoom-id:active {
   background-image: url("../assets/enter-blue-pressed.png")
 }
+*/
 
  #game-container{ 
   /* display: flex; */
