@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+
 export default class SpriteEffect extends Phaser.Physics.Arcade.Sprite{
   constructor(scene, x, y, effectName) {
     super(scene, x, y);

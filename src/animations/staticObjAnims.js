@@ -16,7 +16,7 @@ export default anims => {
 
   anims.create({
     key:  'boxDestroy',
-    frames: anims.generateFrameNumbers('woodBox', {start:1, end:4}),
+    frames: anims.generateFrameNumbers('woodBox', {start:0, end:4}),
     frameRate: 11,
     repeat: 0
   })

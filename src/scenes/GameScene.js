@@ -7,6 +7,7 @@ import ProjectilesGroup from '../attacks/ProjectilesGroup';
 import Projectile from '../attacks/Projectile'
 import EnemyPlayersGroup from '../entities/EnemyPlayer';
 import initObjAnimations from '../animations/staticObjAnims';
+import SpriteEffect from '../effects/SpriteEffect';
 
 export default class GameScene extends Scene {
 
@@ -263,7 +264,7 @@ export default class GameScene extends Scene {
   createEnemyProjectileBoxCollisions(boxes, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) =>{
       this.physics.add.overlap(enemyPlayer.projectilesGroup, boxes, (projectile, box) => {
-       
+      
        //this.play('boxDestroy', true)
         // box.destroy();
         console.log("this box key",box);
@@ -279,7 +280,7 @@ export default class GameScene extends Scene {
         }, 100)
         
         projectile.resetProjectile();
-  
+       
       }, null, this);
     })
 
@@ -317,6 +318,7 @@ export default class GameScene extends Scene {
 
   createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
+      
       // box.destroy();
       box.play('boxDestroy', true)
       box.body.checkCollision.none = true;
@@ -329,8 +331,8 @@ export default class GameScene extends Scene {
           ease: 'Power3'
         })
       }, 100)
-
       projectile.resetProjectile();
+      
     }, null, this);
   }
 
