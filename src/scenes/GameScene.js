@@ -6,13 +6,14 @@ import EnemyPlayer from '../entities/EnemyPlayer';
 import ProjectilesGroup from '../attacks/ProjectilesGroup';
 import Projectile from '../attacks/Projectile'
 import EnemyPlayersGroup from '../entities/EnemyPlayer';
-
+import initObjAnimations from '../animations/staticObjAnims';
 
 export default class GameScene extends Scene {
 
   constructor (config) {
       super("scene-game");
       this.config = config;
+      
   }
 
   /*
@@ -90,14 +91,16 @@ export default class GameScene extends Scene {
     woodBoxes.children.each((box) => {
       box.body.immovable = true;
       box.body.moves = false;
+      
     })
 
     greyBoxes.children.each((box)=>{
       box.body.immovable = true;
       box.body.moves = false;
-    })
 
-   
+    })
+    initObjAnimations(this.anims)
+    
     this.createLocalProjectileBoxCollisions(woodBoxes, localPlayer.projectilesGroup);
     this.createLocalProjectileBoxCollisions(greyBoxes, localPlayer.projectilesGroup);
 
@@ -167,6 +170,7 @@ export default class GameScene extends Scene {
     const boxes = this.physics.add.group();
     boxLayer.objects.forEach(box => {
       boxes.get(box.x + 24, box.y -24, 'woodBox');
+      
     })
     return boxes
   }
@@ -174,7 +178,9 @@ export default class GameScene extends Scene {
     const boxes = this.physics.add.group();
     boxLayer.objects.forEach(box => {
       boxes.get(box.x + 24, box.y -24, 'greyBox');
+     
     })
+    
     return boxes
   }
 
@@ -257,7 +263,11 @@ export default class GameScene extends Scene {
   createEnemyProjectileBoxCollisions(boxes, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) =>{
       this.physics.add.overlap(enemyPlayer.projectilesGroup, boxes, (projectile, box) => {
-        box.destroy();
+        
+       //this.play('boxDestroy', true)
+        // box.destroy();
+
+        
         projectile.resetProjectile();
   
       }, null, this);
@@ -294,7 +304,8 @@ export default class GameScene extends Scene {
 
   createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
-      box.destroy();
+      box.play('boxDestroy', true)
+      // box.destroy();
       projectile.resetProjectile();
     }, null, this);
   }

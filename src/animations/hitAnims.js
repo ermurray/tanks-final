@@ -1,6 +1,6 @@
 export default anims => {
   // anims.create({key: 'idle',  
-  //   frames: anims.generateFrameNumbers('player', {start:0, end: 7}),
+  //   frames: this.scen.anims.generateFrameNumbers('player', {start:0, end: 7}),
     // frameRate: 10,
     // repeate: -1,  //makes it infinite 
   // })  
@@ -14,12 +14,6 @@ export default anims => {
   // this.play('key', true) where you want it to play
   //use simple ternary to change from idle to moving anim by using this.body.velocity.equals({x:0, y:0})
 
-  anims.create({
-    key:  'boxDestroy',
-    frames: anims.generateFrameNumbers('woodBox', {start:1, end:4}),
-    frameRate: 10,
-    repeat: 0
-  })
   
 
   }
