@@ -12,6 +12,8 @@ node_modules
 # Build
 dist/
 /npm-debug.log
+/public/bundle.min.js
+/public/bundle.min.js.LICENSE.txt
 
 # Logs
 logs

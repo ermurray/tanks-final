@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import Tank from './Tank';
 import ProjectilesGroup from '../attacks/ProjectilesGroup';
 import HealthBar from '../hud/HealthBar';
+import initAnimations from '../animations/tankAnims'
 
 
 export default class Player extends Tank {
@@ -19,6 +20,7 @@ export default class Player extends Tank {
   }
 
   init() {
+    initAnimations(this.scene.anims);
     this.projectilesGroup = new ProjectilesGroup(this.scene, 'bullet');
     console.log("this is player Health", this.health)
     this.healthBar = new HealthBar( 
@@ -154,7 +156,7 @@ export default class Player extends Tank {
           //   this.moving = true;
           if (this.body.velocity.equals({x:0, y:0})){
             this.direction = null
-            
+            this.moving = false;
             this.socket.emit("playerMovement",movementData)
           }
           
@@ -175,6 +177,9 @@ export default class Player extends Tank {
               // };
               this.oldDirection = this.direction
               this.oldVelocity = this.body.velocity
+
+      if (!checkVelocityZero){ this.play('move', true)}
+
     } else{
       this.body.stop(this);
       this.body.setImmovable(true);
