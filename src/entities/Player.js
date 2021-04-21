@@ -178,7 +178,9 @@ export default class Player extends Tank {
               this.oldDirection = this.direction
               this.oldVelocity = this.body.velocity
 
-      if (!checkVelocityZero){ this.play('move', true)}
+      if (!checkVelocityZero){
+         this.play('move', true)
+        } else {this.play('move', false)}
 
     } else{
       this.body.stop(this);
