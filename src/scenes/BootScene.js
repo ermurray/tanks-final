@@ -20,7 +20,7 @@ export default class BootScene extends Scene {
     this.load.image('frame', './assets/camera_frame.png');
     this.load.image('hud', './assets/hud.png');
     this.load.image('tilesGrass', './assets/maps/rpl_grass.png');
-    this.load.image('tilePaths', './assets/maps/rpl_paths-export.png')
+    this.load.image('tilesPaths', './assets/maps/rpl_paths-export.png')
     this.load.image('tilesSand', './assets/maps/rpl_sand.png');
     this.load.tilemapTiledJSON('map1', './assets/maps/tankMap.json');
     this.load.image('bullet', './assets/bullet.png');
@@ -32,9 +32,8 @@ export default class BootScene extends Scene {
     this.load.image('tankRed', './assets/tank-red.png');
     this.load.image('tankGreen', './assets/tank-green.png');
     this.load.image('tankYellow', './assets/tank-yellow.png');
-    this.load.image('breakable', './assets/boxes/1.png');
-    this.load.image('breakable2', './assets/boxes/2.png');
-    this.load.image('breakable3', './assets/boxes/3.png');
+    this.load.image('woodBox', './assets/boxes/box_wood_32px.png');
+    this.load.image('greyBox', './assets/boxes/box_grey_32px.png');
     this.load.image('enemyPlayers', './assets/tank_lft32px.png');
 
     console.log("env check:", process.env)

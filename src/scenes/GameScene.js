@@ -32,9 +32,11 @@ export default class GameScene extends Scene {
       fontSize: "80px",
       fontStyle: "bold"
     })
-
+    //map creation and layout
     const map = this.createMap();
     const layers = this.createLayers(map);
+    const woodBoxes = this.createWoodBoxes(layers.boxWoodLayer);
+    const greyBoxes = this.createGreyBoxes(layers.boxGreyLayer);
     // console.log(layers.wallLayer.layer.data);
     const layerData = layers.wallLayer.layer.data;
     // console.log("layerData:",layerData)
@@ -74,92 +76,23 @@ export default class GameScene extends Scene {
     });
     
 
-  
-
-
-
-
-    // Destructible box logic. Comment out different sections to try different box layouts.
-    let boxes = this.physics.add.group();
-    
-        // for (let i = 0; i < layerData.length; i++) {
-    //   for (let j = 0; j < layerData[i].length; j++) {
-    //     if (layerData[i][j].index === -1) {
-    //       let random = Math.random();
-    //       if (random < 0.5) {
-    //         // Couldn't use a loop here because boxes would overlap 3-4 times on each tile
-    //         if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[0].y - 64)) || 
-    //         /*P2*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[1].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[1].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[1].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[1].y - 64)) || 
-    //         /*P3*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[2].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[2].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[2].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[2].y - 64)) || 
-    //         /*P4*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[3].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
-    //           let randomBox = Math.random();
-    //           if (randomBox < 0.5) {
-    //             boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
-    //           } else {
-    //             boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable3').setScale(0.0625).setOrigin(0.5);
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-
-    // for (let i = 0; i < layerData.length; i += 2) {
-    //   for (let j = 0; j < layerData[i].length; j += 1) {
-    //     if (layerData[i][j].index === -1) {
-    //       if (!(/*P1*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[0].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[0].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[0].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[0].y - 64)) || 
-    //         /*P2*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[1].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[1].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[1].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[1].y - 64)) || 
-    //         /*P3*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[2].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[2].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[2].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[2].y - 64)) || 
-    //         /*P4*/((layerData[i][j].x * 32 + 16) < (layers.spawnZone.objects[3].x + 64)) && 
-    //         ((layerData[i][j].x * 32 + 16) > (layers.spawnZone.objects[3].x - 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) < (layers.spawnZone.objects[3].y + 64)) && 
-    //         ((layerData[i][j].y * 32 + 16) > (layers.spawnZone.objects[3].y - 64)))){
-    //           boxes.create((layerData[i][j].x * 32 + 16), (layerData[i][j].y * 32 + 16), 'breakable').setScale(0.0625).setOrigin(0.5);
-    //       }
-    //     }
-    //   }
-    // }
-      
-    boxes.create(600, 400, 'breakable').setScale(0.08);
-    boxes.create(800, 400, 'breakable').setScale(0.08);
-    boxes.create(500, 300, 'breakable').setScale(0.08);
-    boxes.create(300, 200, 'breakable').setScale(0.08);
-    boxes.create(700, 400, 'breakable').setScale(0.08);
-    boxes.create(200, 500, 'breakable').setScale(0.08);
-    boxes.create(200, 300, 'breakable').setScale(0.08);
-    boxes.create(600, 300, 'breakable').setScale(0.08);
-    boxes.create(400, 200, 'breakable').setScale(0.08);
-    boxes.children.each((box) => {
+    woodBoxes.children.each((box) => {
       box.body.immovable = true;
       box.body.moves = false;
+    })
 
+    greyBoxes.children.each((box)=>{
+      box.body.immovable = true;
+      box.body.moves = false;
     })
 
    
-    this.createLocalProjectileBoxCollisions(boxes, localPlayer.projectilesGroup);
+    this.createLocalProjectileBoxCollisions(woodBoxes, localPlayer.projectilesGroup);
+    this.createLocalProjectileBoxCollisions(greyBoxes, localPlayer.projectilesGroup);
+
     this.createLocalProjectileEnemyCollisions(enemyPlayers, localPlayer.projectilesGroup)
-    this.createEnemyProjectileBoxCollisions(boxes, enemyPlayers);
+    this.createEnemyProjectileBoxCollisions(woodBoxes, enemyPlayers);
+    this.createEnemyProjectileBoxCollisions(greyBoxes, enemyPlayers);
     this.createEnemyProjectileWallCollisions(layers.wallLayer, enemyPlayers);
     
     this.createEnemyProjectilePlayerCollisions(enemyPlayers, localPlayer);
@@ -168,7 +101,8 @@ export default class GameScene extends Scene {
       colliders:{
         wallLayer: layers.wallLayer,
         enemyPlayers,
-        boxes
+        woodBoxes,
+        greyBoxes
       }
     });
 
@@ -176,7 +110,8 @@ export default class GameScene extends Scene {
       colliders:{
         wallLayer: layers.wallLayer,
         localPlayer,
-        boxes
+        woodBoxes,
+        greyBoxes
       }
     })
 
@@ -190,6 +125,7 @@ export default class GameScene extends Scene {
     const map = this.make.tilemap({key: 'map1'});
     map.addTilesetImage('rpl_grass', 'tilesGrass', 32, 32);
     map.addTilesetImage('rpl_sand','tilesSand', 32, 32);
+    map.addTilesetImage('rpl_paths-export', 'tilesPaths', 32, 32);
    
     return map;
   }
@@ -197,15 +133,41 @@ export default class GameScene extends Scene {
   createLayers(map) {
     const tilesetGrass = map.getTileset('rpl_grass');
     const tilesetSand = map.getTileset('rpl_sand');
-    const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand], 0, 0);
+    const tilesetPaths = map.getTileset('rpl_paths-export');
+    const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand, tilesetPaths], 0, 0);
     const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
     const spawnZone = map.getObjectLayer('player_start');
+    const boxWoodLayer = map.getObjectLayer('box1_spawns');
+    const boxGreyLayer = map.getObjectLayer('box2_spawns');
       //need to add collision specific layer to tile map independent of wall layer.
     wallLayer.setCollisionByExclusion([-1]);
     groundLayer.setDepth(-1);
-    return {groundLayer, wallLayer, spawnZone};
+    return {
+      groundLayer, 
+      wallLayer, 
+      spawnZone, 
+      boxWoodLayer, 
+      boxGreyLayer
+    };
 
   }
+
+  createWoodBoxes(boxLayer) {
+    const boxes = this.physics.add.group();
+    boxLayer.objects.forEach(box => {
+      boxes.get(box.x + 16, box.y -16, 'woodBox');
+    })
+    return boxes
+  }
+  createGreyBoxes(boxLayer) {
+    const boxes = this.physics.add.group();
+    boxLayer.objects.forEach(box => {
+      boxes.get(box.x + 16, box.y -16, 'greyBox');
+    })
+    return boxes
+  }
+
+
   
   createPlayer(playerSpawnZones,) {
     //const pNumber = this.state.players[this.socket.id].pNumber;
@@ -274,7 +236,9 @@ export default class GameScene extends Scene {
       enemyPlayer
                 .addCollider(colliders.wallLayer)
                 .addCollider(colliders.localPlayer)
-                .addCollider(colliders.boxes);
+                .addCollider(colliders.woodBoxes)
+                .addCollider(colliders.greyBoxes);
+
 
     })
       
@@ -350,7 +314,8 @@ export default class GameScene extends Scene {
     player
         .addCollider(colliders.wallLayer)
         .addCollider(colliders.enemyPlayers)
-        .addCollider(colliders.boxes);
+        .addCollider(colliders.woodBoxes)
+        .addCollider(colliders.greyBoxes);
   }
 
   getPlayerZones(spawnZoneLayer){
