@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import collidable from '../mixins/collidable';
 
+
 export default class Projectile extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key) {
     super(scene, x, y, key);
