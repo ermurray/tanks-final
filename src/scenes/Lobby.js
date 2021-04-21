@@ -355,7 +355,7 @@ export default class Lobby extends Phaser.Scene {
     })
     this.tweens.add({
       targets: this.timerText,
-      y:280,
+      y:300,
       duration:3000,
       ease: 'Power3'
     })
