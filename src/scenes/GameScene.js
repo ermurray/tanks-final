@@ -389,15 +389,19 @@ export default class GameScene extends Scene {
     console.log("localplayer??????",player.healthBar)
     player.healthBar.showHealthBar();
     this.cameras.main.setBackgroundColor(0x888076)
-    this.playersRemainText = this.add.text(leftTopCorner.x + 265 , leftTopCorner.y + 5, `PLAYERS REMAINING:`, {
+    this.playersRemainText = this.add.text(leftTopCorner.x + 275 , leftTopCorner.y + 5, `PLAYERS REMAINING: `, {
       fill: "#000000",
-      fontSize: '12px',
-      fontStyle: 'bold'
+      fontSize: '16px',
+      fontStyle: 'bold',
+      fontFamily: 'Pixelar',
+      fill: "#00ff00",
     }).setOrigin(0,0).setDepth(4).setScrollFactor(0,0);
-    this.timerText = this.add.text(leftTopCorner.x + 565 , leftTopCorner.y + 5, `GAME TIMER:`, {
+    this.timerText = this.add.text(leftTopCorner.x + 565 , leftTopCorner.y + 5, `GAME TIMER: `, {
       fill: "#000000",
-      fontSize: '12px',
-      fontStyle: 'bold'
+      fontSize: '16px',
+      fontStyle: 'bold',
+      fontFamily: 'Pixelar',
+      fill: "#00ff00",
     }).setOrigin(0,0).setDepth(4).setScrollFactor(0,0);
   }
  
