@@ -61,7 +61,7 @@ export default class GameScene extends Scene {
         enemyPlayersArray.push(thisScene.state.players[player])
       }
     }
-    this.overlay = this.add.image(0,0, 'overlay').setOrigin(0).setDepth(3).setAlpha(0.2);
+    this.overlay = this.add.image(0,0, 'overlay').setOrigin(0).setDepth(3).setAlpha(0.1);
     // this.lights.enable().setAmbientColor(0x333333)
     // this.overlay.setPipeline('Light2D')
     // const light = this.lights.addLight(180, 80, 200).setColor(0xffffff).setIntensity(2);
@@ -304,6 +304,7 @@ export default class GameScene extends Scene {
 
   createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
+    
       box.play('boxDestroy', true)
       // box.destroy();
       projectile.resetProjectile();
