@@ -125,13 +125,15 @@ export default class WaitingRoom extends Phaser.Scene {
 
     thisScene.notValidText = thisScene.add.text(670, 170, "", {
       fill: "#ff0000",
-      fontSize: "15px",
+      fontSize: "28px",
+      fontFamily: "Pixelar"
     });
 
     thisScene.roomKeyText = thisScene.add.text(370, 320, "", {
       fill: "#00ff00",
-      fontSize: "20px",
+      fontSize: "28px",
       fontStyle: "bold",
+      fontFamily: "Pixelar"
     });
 
     thisScene.socket.on("roomCreated", function (roomKey) {

@@ -14,6 +14,11 @@ export default anims => {
   // this.play('key', true) where you want it to play
   //use simple ternary to change from idle to moving anim by using this.body.velocity.equals({x:0, y:0})
 
-  
+  anims.create({
+    key:  'impact',
+    frames: anims.generateFrameNumbers('bulletImpact', {start:0, end:26}),
+    frameRate: 27,
+    repeat: 0
+  })
 
   }
