@@ -52,12 +52,8 @@ export default class WaitingRoom extends Phaser.Scene {
 
     //left popup
     thisScene.boxes.strokeRect(310, 200, 275, 100);
-    thisScene.boxes.fillRect(310, 200, 275, 100);
-    thisScene.requestButton = thisScene.add.text(320, 215, "CREATE NEW GAME", {
-      fill: "#000000",
-      fontSize: "20px",
-      fontStyle: "bold",
-    });
+    thisScene.boxes.fillRect(310, 200, 275, 200);
+    thisScene.requestButton = thisScene.add.sprite(448, 252, "new-game").setScale(0.5);
 
     
     //right popup
@@ -96,7 +92,7 @@ export default class WaitingRoom extends Phaser.Scene {
         thisScene.scene.setActive(true, "scene-lobby");
       });
       thisScene.socket.on('roomFull',() =>{
-        thisScene.notValidText.setText('this room is full');
+        thisScene.notValidText.setText('This room is full');
       });
     });
 
