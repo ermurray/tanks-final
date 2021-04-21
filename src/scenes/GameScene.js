@@ -266,16 +266,17 @@ export default class GameScene extends Scene {
        
        //this.play('boxDestroy', true)
         // box.destroy();
+        console.log("this box key",box);
         box.play('boxDestroy', true)
         box.body.checkCollision.none = true;
-       
-        this.add.tween({
-          targets: box,
-          alpha: 0,
-          duration: 4000,
-          ease: 'Back'
-        })
-        
+        setTimeout(()=>{
+          this.add.tween({
+            targets: box,
+            alpha: 0,
+            duration: 2000,
+            ease: 'Power3'
+          })
+        }, 100)
         
         projectile.resetProjectile();
   
@@ -319,12 +320,15 @@ export default class GameScene extends Scene {
       // box.destroy();
       box.play('boxDestroy', true)
       box.body.checkCollision.none = true;
-      this.add.tween({
-        targets: box,
-        alpha: 0,
-        duration: 2000,
-        ease: 'Power3'
-      })
+      
+      setTimeout(()=>{
+        this.add.tween({
+          targets: box,
+          alpha: 0,
+          duration: 2000,
+          ease: 'Power3'
+        })
+      }, 100)
 
       projectile.resetProjectile();
     }, null, this);
