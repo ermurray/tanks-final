@@ -38,8 +38,9 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
 
   playMovementAnimation() {
     this.scene.anims.create({
-      key: 'blue_tank_walk'
-    })
+      key: 'move', 
+      frames: this.scen.anims.generateFrameNumbers('blue_tank_spritesheet', {start:1, end: 2})
+    });  
   }
 
   playFireAnimation(){

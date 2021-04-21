@@ -73,6 +73,9 @@ export default class Player extends Tank {
 
   }
   update() {
+
+    if (this.moving){this.play('move', true)}
+    
     const { left, right , up, down, space} = this.cursors;
     if(this.isAlive){
       
@@ -142,7 +145,7 @@ export default class Player extends Tank {
           //   this.moving = true;
           if (this.body.velocity.equals({x:0, y:0})){
             this.direction = null
-            
+            this.moving = false;
             this.socket.emit("playerMovement",movementData)
           }
           
