@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Pixelar';
+  src: url(../assets/fonts/PixelarRegular.otf);
+}
+
 body {
 
   background-color: black;
@@ -7,12 +12,30 @@ body {
 div.form-container {
   
   flex-direction: column;
-
+  font-family: 'Pixelar';
   width: 40px;
   height: 100px;
   border: 4px, solid, #8a2be2;
+  font-size: 24px;
   
 }
+
+#enterRoom-id {
+  background-image: url("../assets/enter-blue.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100px;
+  height: 41.18px;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+/*
+#enterRoom-id:active {
+  background-image: url("../assets/enter-blue-pressed.png")
+}
+*/
+
  #game-container{ 
   /* display: flex; */
   width: 1216px;

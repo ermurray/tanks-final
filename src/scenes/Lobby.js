@@ -185,7 +185,7 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold"
     });
     
-    this.strtSmall = this.add.sprite(600, 540, 'start-sm');
+    this.strtSmall = this.add.sprite(600, 540, 'start-sm').setScale(0.5);
     // this.strtSmall.setInteractive();
     
 
