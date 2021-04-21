@@ -44,6 +44,7 @@ export default class GameScene extends Scene {
     const localPlayer = this.createPlayer(playerSpawnZones); 
     
     this.socket.on('playerHasBeenHit', (data)=>{
+      
       console.log(`player at socket ${data} has been hit`)
     })
     this.socket.on('playerHasDied', (data)=>{
@@ -328,7 +329,14 @@ export default class GameScene extends Scene {
       this.physics.add.overlap(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
         projectile.resetProjectile();
         console.log("local projectile has collided with enemy player");
+        this.socket.on('playerHasBeenHit', (data)=>{
+          enemyPlayer.playDamageTween();
+          console.log(`player at socket ${data} has been hit`)
+        })
+     
         this.socket.on('playerHasDied', (data) => {
+          console.log(`render explosion animation at ${data.x, data.y}`)
+          enemyPlayer.body.stop(this);
           enemyPlayer.body.setImmovable(true);
         })
         this.endGame(true);
