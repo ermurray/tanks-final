@@ -17,8 +17,8 @@ export default class BootScene extends Scene {
     this.load.image('player2', './assets/tank_red_lft48px.png');
     this.load.image('player3', './assets/tank_green_rht48px.png');
     this.load.image('player4', './assets/tank_yellow_lft48px.png');
-    this.load.image('heathContainer', './assets/health_container.png');
-    
+    this.load.image('frame', './assets/camera_frame.png');
+    this.load.image('hud', './assets/hud.png');
     this.load.image('tilesGrass', './assets/maps/rpl_grass.png');
     this.load.image('tilePaths', './assets/maps/rpl_paths-export.png')
     this.load.image('tilesSand', './assets/maps/rpl_sand.png');

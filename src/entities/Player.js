@@ -56,6 +56,7 @@ export default class Player extends Tank {
     
     
     this.scene.input.keyboard.on('keydown-SPACE', () => {
+      if(this.isAlive){
       // console.log('Shoot');
       this.projectilesGroup.fireProjectile(this);
       //Emit bullet data
@@ -67,8 +68,9 @@ export default class Player extends Tank {
         socket: this.socket.id,
         pNum: this.pNum
       });
+      }
     });
-
+    
     this.wasd = {
       up: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
       down: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
@@ -172,10 +174,15 @@ export default class Player extends Tank {
               // };
               this.oldDirection = this.direction
               this.oldVelocity = this.body.velocity
+    } else{
+      this.body.setImmovable(true);
+      this.body.stop(this);
     }
             
             
   }
+  
+  
 
   
   
