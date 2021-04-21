@@ -60,7 +60,7 @@ export default class GameScene extends Scene {
         enemyPlayersArray.push(thisScene.state.players[player])
       }
     }
-    this.overlay = this.add.image(0,0, 'overlay').setOrigin(0).setDepth(3).setAlpha(0.3);
+    this.overlay = this.add.image(0,0, 'overlay').setOrigin(0).setDepth(3).setAlpha(0.2);
     // this.lights.enable().setAmbientColor(0x333333)
     // this.overlay.setPipeline('Light2D')
     // const light = this.lights.addLight(180, 80, 200).setColor(0xffffff).setIntensity(2);
@@ -166,14 +166,14 @@ export default class GameScene extends Scene {
   createWoodBoxes(boxLayer) {
     const boxes = this.physics.add.group();
     boxLayer.objects.forEach(box => {
-      boxes.get(box.x + 16, box.y -16, 'woodBox');
+      boxes.get(box.x + 24, box.y -24, 'woodBox');
     })
     return boxes
   }
   createGreyBoxes(boxLayer) {
     const boxes = this.physics.add.group();
     boxLayer.objects.forEach(box => {
-      boxes.get(box.x + 16, box.y -16, 'greyBox');
+      boxes.get(box.x + 24, box.y -24, 'greyBox');
     })
     return boxes
   }
