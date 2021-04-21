@@ -263,10 +263,19 @@ export default class GameScene extends Scene {
   createEnemyProjectileBoxCollisions(boxes, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) =>{
       this.physics.add.overlap(enemyPlayer.projectilesGroup, boxes, (projectile, box) => {
-        
+       
        //this.play('boxDestroy', true)
         // box.destroy();
-
+        box.play('boxDestroy', true)
+        box.body.checkCollision.none = true;
+       
+        this.add.tween({
+          targets: box,
+          alpha: 0,
+          duration: 4000,
+          ease: 'Back'
+        })
+        
         
         projectile.resetProjectile();
   
@@ -274,6 +283,9 @@ export default class GameScene extends Scene {
     })
 
   }
+
+  
+
   createEnemyProjectileWallCollisions(wallLayer, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) =>{
       this.physics.add.collider(enemyPlayer.projectilesGroup, wallLayer, (projectile,wall) => {
