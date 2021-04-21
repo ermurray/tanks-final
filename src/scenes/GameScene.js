@@ -32,11 +32,13 @@ export default class GameScene extends Scene {
       fontSize: "80px",
       fontStyle: "bold"
     })
+
     const map = this.createMap();
     const layers = this.createLayers(map);
     // console.log(layers.wallLayer.layer.data);
     const layerData = layers.wallLayer.layer.data;
     // console.log("layerData:",layerData)
+    // this.add.image(0,0, 'overlay').setOrigin(0).setAlpha(0.5);
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
@@ -55,7 +57,7 @@ export default class GameScene extends Scene {
         enemyPlayersArray.push(thisScene.state.players[player])
       }
     }
-    
+  
     let gameOver = false;
     
     
@@ -352,9 +354,14 @@ export default class GameScene extends Scene {
 
   setupFollowCameraOn(player){
     const{ height, width, zoomfactor, leftTopCorner } = this.config;
-    this.add.image(leftTopCorner.x, leftTopCorner.y, 'heathContainer').setOrigin(0).setDepth(1).setScrollFactor(0,0);
+    this.frame = this.add.image(leftTopCorner.x, leftTopCorner.y, 'frame').setOrigin(0).setDepth(1).setScrollFactor(0,0).setAlpha(-5);
+    this.add.image(leftTopCorner.x, leftTopCorner.y, 'hud').setOrigin(0).setDepth(1).setScrollFactor(0,0);
+  
     this.cameras.main.setBounds(0,0, width, height)
-    this.cameras.main.startFollow(player).setZoom(zoomfactor);
+    this.cameras.main.startFollow(player).zoomTo(zoomfactor, 750);
+    console.log("localplayer??????",player.healthBar)
+    player.healthBar.showHealthBar();
+    this.cameras.main.setBackgroundColor(0x888076)
 
   }
 
@@ -370,6 +377,16 @@ export default class GameScene extends Scene {
         clearInterval(counter);
         text.destroy();
         this.setupFollowCameraOn(localPlayer);
+        setTimeout(()=>{
+
+          this.tweens.add({
+            targets: this.frame,
+            alpha: 1,
+            duration: 2000,
+            ease: 'Power3'
+  
+          })
+        },1000)
       } 
 
     },1000)

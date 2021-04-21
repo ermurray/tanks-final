@@ -9,7 +9,7 @@ export default class HealthBar {
     this.x = x;
     this.y = y;
     this.hpValue = health;
-    this.healthBar.setVisible(true);
+    this.healthBar.setVisible(false);
     
   
 
@@ -38,5 +38,7 @@ export default class HealthBar {
     this.healthBar.fillRect(x+margin, y+margin, this.hpWidth, height)
 
   }
-
+  showHealthBar(){
+    this.healthBar.setVisible(true);
+  }
 }
