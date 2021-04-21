@@ -39,8 +39,9 @@ export default class Lobby extends Phaser.Scene {
     
     const roomInfoText = this.add.text(500, 20, "", {
       fill: "#00ff00",
-      fontSize: "20px",
-      fontStyle: "bold"
+      fontSize: "36px",
+      fontStyle: "bold",
+      fontFamily: 'Pixelar',
     })
     
     
@@ -111,10 +112,12 @@ export default class Lobby extends Phaser.Scene {
     
     this.chatheader = this.add.text(850, -100, "TANK CHAT",{
       lineSpacing: 10,
+      fontFamily: 'Pixelar',
       backroundColor: '0xa9a9a9',
       color: '#26924F',
       padding: 10,
       fontStyle: 'bold',
+      fontSize: '28px'
     }) 
 
     
@@ -127,6 +130,8 @@ export default class Lobby extends Phaser.Scene {
       color: '#26924F',
       padding: 10,
       fontStyle: 'bold',
+      fontFamily: 'Pixelar',
+      fontSize: '28px',
       wordWrap: {
         width: 325
       }
@@ -182,7 +187,8 @@ export default class Lobby extends Phaser.Scene {
     this.timerText = this.add.text(400,800,"waiting for other players",{
       fill: "#00ff00",
       fontSize: "40px",
-      fontStyle: "bold"
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
     });
     
     this.strtSmall = this.add.sprite(600, 540, 'start-sm').setScale(0.5).setAlpha(0);
@@ -204,14 +210,16 @@ export default class Lobby extends Phaser.Scene {
   
     this.p1Text = this.add.text(400, 150, "", {
       fill: "#00ff00",
-      fontSize: "20px",
-      fontStyle: "bold"
+      fontSize: "28px",
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
     });
 
     this.p1ReadyText = this.add.text(400, 175, "", {
       fill: "#00ff00",
-      fontSize: "20px",
-      fontStyle: "bold"
+      fontSize: "28px",
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
     })
 
     // let readyPlayers = [0, 0, 0, 0]
@@ -240,14 +248,16 @@ export default class Lobby extends Phaser.Scene {
 
     this.p2Text = this.add.text(400, 250, "", {
       fill: "#00ff00",
-      fontSize: "20px",
-      fontStyle: "bold"
+      fontSize: "28px",
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
     });
 
     this.p2ReadyText = this.add.text(400, 275, "", {
       fill: "#00ff00",
-      fontSize: "20px",
-      fontStyle: "bold"
+      fontSize: "28px",
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
     })
 
     this.p3Select = this.add.sprite(-100, 350,'tankGreen').setInteractive();
@@ -262,13 +272,15 @@ export default class Lobby extends Phaser.Scene {
 
     this.p3Text = this.add.text(400, 350, "", {
       fill: "#00ff00",
-      fontSize: "20px",
-      fontStyle: "bold"
+      fontSize: "28px",
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
     })
     this.p3ReadyText = this.add.text(400, 375, "", {
       fill: "#00ff00",
-      fontSize: "20px",
-      fontStyle: "bold"
+      fontSize: "28px",
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
     })
 
     this.p4Select = this.add.sprite(-100,450,'tankYellow').setInteractive();
@@ -282,14 +294,16 @@ export default class Lobby extends Phaser.Scene {
 
     this.p4Text = this.add.text(400, 450, "", {
       fill: "#00ff00",
-      fontSize: "20px",
-      fontStyle: "bold"
+      fontSize: "28px",
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
     });
     
     this.p4ReadyText = this.add.text(400, 475, "", {
       fill: "#00ff00",
-      fontSize: "20px",
-      fontStyle: "bold"
+      fontSize: "28px",
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
     })
 
     this.socket.on('player-selectedTank', (playerID, playerObj, playerName) => {
@@ -429,7 +443,7 @@ export default class Lobby extends Phaser.Scene {
     
 
     }
-   textarea.setText(`Operator:${playerName} will be this tank`)
+   textarea.setText(`Operator: ${playerName} will be this tank`)
   }
   countDown(text){
     this.tweens.add({

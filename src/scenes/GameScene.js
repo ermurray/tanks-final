@@ -27,12 +27,15 @@ export default class GameScene extends Scene {
     this.state = this.registry.get('state');
     this.socket.emit('in-game',this.state);
     this.scene.bringToTop('scene-game');
+    const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+    const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
     const thisScene = this;
-    this.timerText = this.add.text(608,320,"Ready",{
+    this.timerText = this.add.text(screenCenterX, screenCenterY, "Ready", {
       fill: "#00ff00",
       fontSize: "80px",
-      fontStyle: "bold"
-    }).setDepth(2);
+      fontStyle: "bold",
+      fontFamily: "Pixelar"
+    }).setDepth(2).setOrigin(0.5);
     //map creation and layout
     const map = this.createMap();
     const layers = this.createLayers(map);
