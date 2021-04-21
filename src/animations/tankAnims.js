@@ -13,4 +13,11 @@ export default anims => {
 // and call with the function initAnimations(this.scene.anims); in the init of the class
 // this.play('key', true) where you want it to play
 //use simple ternary to change from idle to moving anim by using this.body.velocity.equals({x:0, y:0})
+
+  anims.create({
+    key:  'move',
+    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start:0, end:1}),
+    frameRate: 10,
+    repeat: -1 
+  })
 }

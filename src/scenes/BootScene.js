@@ -46,6 +46,7 @@ export default class BootScene extends Scene {
     });
     this.load.image('enemyPlayers', './assets/tank_lft32px.png');
     this.load.image('overlay', './assets/overlay.png')
+    this.load.spritesheet('blue_tank_spritesheet', './assets/tanks/tank_blue_walk.png',{frameWidth: 48, frameHeight: 48});
     console.log("env check:", process.env)
   }
 
