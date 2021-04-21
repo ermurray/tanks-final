@@ -26,11 +26,6 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
     
   }
 
-  static preload(scene) {
-   scene.load.spritesheet('shoot', 'assets/shooting.png', 32, 32, 12);
-   scene.load.spritesheet('firetrail', 'assets/fire_trail.png')
-
-  }
 
   playDamageTween() {
     this.scene.tweens.add({
@@ -42,7 +37,9 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
   }
 
   playMovementAnimation() {
-
+    this.scene.anims.create({
+      key: 'blue_tank_walk'
+    })
   }
 
   playFireAnimation(){
