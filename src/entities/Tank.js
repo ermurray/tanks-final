@@ -20,12 +20,7 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
     this.hasBeenHit = false;
     this.health = 30;
     this.isAlive = true;
-    // this.healthBar = new HealthBar( 
-    //   this.scene, 
-    //   this.scene.config.leftTopCorner.x + 33,
-    //   this.scene.config.leftTopCorner.y + 5, 
-    //   this.health
-    //   );
+  
     
     this.setCollideWorldBounds(true);
     
@@ -63,6 +58,7 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
       pnum: this.pNum,
     }
     this.socket.emit('playerDeath', data)
+    this.setImmovable(true);
   }
 
 }
