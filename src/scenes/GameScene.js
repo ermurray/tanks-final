@@ -304,9 +304,16 @@ export default class GameScene extends Scene {
 
   createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
-    
-      box.play('boxDestroy', true)
       // box.destroy();
+      box.play('boxDestroy', true)
+      box.body.checkCollision.none = true;
+      this.add.tween({
+        targets: box,
+        alpha: 0,
+        duration: 2000,
+        ease: 'Power3'
+      })
+
       projectile.resetProjectile();
     }, null, this);
   }
