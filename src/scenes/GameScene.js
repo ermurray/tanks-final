@@ -60,7 +60,18 @@ export default class GameScene extends Scene {
         enemyPlayersArray.push(thisScene.state.players[player])
       }
     }
-  
+    this.overlay = this.add.image(0,0, 'overlay').setOrigin(0).setDepth(3).setAlpha(0.3);
+    // this.lights.enable().setAmbientColor(0x333333)
+    // this.overlay.setPipeline('Light2D')
+    // const light = this.lights.addLight(180, 80, 200).setColor(0xffffff).setIntensity(2);
+
+    // //  Track the pointer
+    // this.input.on('pointermove', function (pointer) {
+
+    //     light.x = pointer.x;
+    //     light.y = pointer.y;
+    // });
+
     let gameOver = false;
     
     

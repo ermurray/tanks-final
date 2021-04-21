@@ -41,7 +41,7 @@ export default class BootScene extends Scene {
     this.load.image('woodBox', './assets/boxes/box_wood_32px.png');
     this.load.image('greyBox', './assets/boxes/box_grey_32px.png');
     this.load.image('enemyPlayers', './assets/tank_lft32px.png');
-
+    this.load.image('overlay', './assets/overlay.png')
     console.log("env check:", process.env)
   }
 
