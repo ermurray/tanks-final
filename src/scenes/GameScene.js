@@ -31,7 +31,7 @@ export default class GameScene extends Scene {
       fill: "#00ff00",
       fontSize: "80px",
       fontStyle: "bold"
-    })
+    }).setDepth(2);
     //map creation and layout
     const map = this.createMap();
     const layers = this.createLayers(map);
