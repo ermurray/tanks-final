@@ -7,7 +7,8 @@ import ProjectilesGroup from '../attacks/ProjectilesGroup';
 import Projectile from '../attacks/Projectile'
 import EnemyPlayersGroup from '../entities/EnemyPlayer';
 import initObjAnimations from '../animations/staticObjAnims';
-import SpriteEffect from '../effects/SpriteEffect';
+import initHitAnimations from '../animations/hitAnims';
+
 
 export default class GameScene extends Scene {
 
@@ -104,7 +105,7 @@ export default class GameScene extends Scene {
 
     })
     initObjAnimations(this.anims)
-    
+    initHitAnimations(this.anims)
     this.createLocalProjectileBoxCollisions(woodBoxes, localPlayer.projectilesGroup);
     this.createLocalProjectileBoxCollisions(greyBoxes, localPlayer.projectilesGroup);
 
@@ -270,7 +271,9 @@ export default class GameScene extends Scene {
       
        //this.play('boxDestroy', true)
         // box.destroy();
+        projectile.hasHit(box);
         console.log("this box key",box);
+        this.play('impact',true)
         box.play('boxDestroy', true)
         box.body.checkCollision.none = true;
         setTimeout(()=>{
@@ -282,7 +285,7 @@ export default class GameScene extends Scene {
           })
         }, 100)
         
-        projectile.resetProjectile();
+        
        
       }, null, this);
     })
@@ -293,8 +296,8 @@ export default class GameScene extends Scene {
 
   createEnemyProjectileWallCollisions(wallLayer, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) =>{
-      this.physics.add.collider(enemyPlayer.projectilesGroup, wallLayer, (projectile,wall) => {
-        projectile.resetProjectile();
+      this.physics.add.collider(enemyPlayer.projectilesGroup, wallLayer, (projectile, wallLayer) => {
+        projectile.hasHit(wallLayer);
   
       }, null, this);
     })
@@ -305,7 +308,7 @@ export default class GameScene extends Scene {
         console.log("projectile.damage",projectile.damage)
         player.healthBar
         player.onHit(projectile.damage);
-        projectile.resetProjectile();
+        projectile.hasHit(player);
         console.log("enemy projectile has collided with local player");
         let data = {
           socket: this.socket.id,
@@ -322,8 +325,11 @@ export default class GameScene extends Scene {
   createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
       
-      // box.destroy();
-      box.play('boxDestroy', true)
+      projectile.hasHit(box);
+      setTimeout(()=>{
+        box.play('boxDestroy')
+
+      },0)
       box.body.checkCollision.none = true;
       
       setTimeout(()=>{
@@ -333,8 +339,8 @@ export default class GameScene extends Scene {
           duration: 2000,
           ease: 'Power3'
         })
-      }, 100)
-      projectile.resetProjectile();
+      }, 300)
+      // projectile.resetProjectile();
       
     }, null, this);
   }
@@ -342,10 +348,11 @@ export default class GameScene extends Scene {
   createLocalProjectileEnemyCollisions(enemyPlayers, localProjectileGroup){
     enemyPlayers.forEach((enemyPlayer) =>{
       this.physics.add.overlap(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
-        projectile.resetProjectile();
+        projectile.hasHit(enemyPlayer);
         console.log("local projectile has collided with enemy player");
         this.socket.on('playerHasBeenHit', (data)=>{
           enemyPlayer.playDamageTween();
+          
           console.log(`player at socket ${data} has been hit`)
         })
      
