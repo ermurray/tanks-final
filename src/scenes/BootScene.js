@@ -54,6 +54,9 @@ export default class BootScene extends Scene {
         frameWidth: 32, frameHeight: 32, spacing: 32
     })
    this.load.audio('mainTheme', './assets/audio/soundtracks/mainTheme.wav')
+   this.load.audio('buttonclick', './assets/audio/sfx/button_click.wav')
+   this.load.audio('hitExplode', './assets/audio/sfx/explode.wav')
+   this.load.audio('collect', './assets/audio/sfx/pickUp.wav')
 
    
   }
@@ -62,13 +65,12 @@ export default class BootScene extends Scene {
     // this.scene.setActive(false, 'scene-lobby');
     this.add.image(0,0, 'bckgrnd').setOrigin(0).setScale(0.5);
     this.scene.setActive(false, 'scene-lobby');
-
+    
     this.add.sprite(600, 220, 'logo');
     this.strtBtn = this.add.sprite(600, 540, 'start');
     this.strtBtn.setInteractive();
     this.strtBtn.on('pointerdown', this.onDown, this);
       
-    
     // this.scene.start ('scene-game')
   }
   onDown() {
