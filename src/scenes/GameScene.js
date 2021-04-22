@@ -52,7 +52,6 @@ export default class GameScene extends Scene {
     // this.add.image(0,0, 'overlay').setOrigin(0).setAlpha(0.5);
 
 
-
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
@@ -92,7 +91,9 @@ export default class GameScene extends Scene {
   
   // console.log("inside create------------->",enemyPlayers)
     
-    
+  
+   
+
     
     this.physics.add.collider(localPlayer.projectilesGroup, layers.wallLayer, (projectile, wall) => {
       projectile.resetProjectile();
@@ -126,7 +127,8 @@ export default class GameScene extends Scene {
         wallLayer: layers.wallLayer,
         enemyPlayers,
         woodBoxes,
-        greyBoxes
+        greyBoxes,
+        hearts
       }
     });
 
@@ -135,7 +137,8 @@ export default class GameScene extends Scene {
         wallLayer: layers.wallLayer,
         localPlayer,
         woodBoxes,
-        greyBoxes
+        greyBoxes,
+        hearts
       }
     })
 
@@ -279,7 +282,7 @@ export default class GameScene extends Scene {
                 .addCollider(colliders.localPlayer)
                 .addCollider(colliders.woodBoxes)
                 .addCollider(colliders.greyBoxes);
-
+                
 
     })
       
@@ -383,6 +386,15 @@ export default class GameScene extends Scene {
     })
   }
 
+
+  onCollect(entity, collectable){
+    console.log('collecting')
+
+    // if(localPlayer.health < 30){
+    //   localPlayer.health += 10
+    //   localPlayer.increaseHealth(10);
+    //   heart.destroy()
+  }
   
 
   createPlayerColliders(player, { colliders }){
@@ -391,6 +403,8 @@ export default class GameScene extends Scene {
         .addCollider(colliders.enemyPlayers)
         .addCollider(colliders.woodBoxes)
         .addCollider(colliders.greyBoxes);
+       
+        
   }
 
   getPlayerZones(spawnZoneLayer){
