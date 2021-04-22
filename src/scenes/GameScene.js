@@ -24,6 +24,7 @@ export default class GameScene extends Scene {
   */
             
   create () {
+    let deadPlayerCount = 0;
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
     this.socket.emit('in-game',this.state);
@@ -49,6 +50,7 @@ export default class GameScene extends Scene {
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
+    console.log(thisScene.state.numPlayers);
     
     this.socket.on('playerHasBeenHit', (data)=>{
       
@@ -57,6 +59,9 @@ export default class GameScene extends Scene {
     this.socket.on('playerHasDied', (data)=>{
       console.log(`player at socket ${data.id} has been killed`)
       console.log(`render explosion animation at ${data.x, data.y}`)
+      deadPlayerCount += 1;
+      // Check for Game Over
+      thisScene.checkLivingPlayers(deadPlayerCount, thisScene.state.numPlayers);
     })
     //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
     const enemyPlayersArray = [];
@@ -185,7 +190,7 @@ export default class GameScene extends Scene {
      
     })
     
-    return boxes
+    return boxes;
   }
 
 
@@ -433,9 +438,20 @@ export default class GameScene extends Scene {
     },1000)
   }
 
+  checkLivingPlayers(deadPlayers, numPlayers) {
+    console.log(`Dead players: ${deadPlayers}`);
+    console.log(`Num players: ${numPlayers}`);
+    if (numPlayers - deadPlayers <= 1) {
+      this.endGame(true);
+    }
+  }
+
   endGame(gameOver) {
+    console.log(`Game over: ${gameOver}`);
     if (gameOver === true) {
-      this.scene.setActive(true, 'scene-gameover');
+      console.log(`Game is really over`);
+      this.scene.start('scene-gameover');
+      this.scene.pause('scene-game');
       this.scene.bringToTop('scene-gameover');
     }
 
