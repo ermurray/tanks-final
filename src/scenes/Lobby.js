@@ -18,7 +18,9 @@ export default class Lobby extends Phaser.Scene {
   
   create() {
 
-    this.sound.add('mainTheme', {loop: true, volume: 0.25}).play();
+    this.mainTheme = this.sound.add('mainTheme', {loop: true, volume: 0.25})
+    
+
     const thisScene = this;
    
     // 'http://localhost:3000' || SOCKET
@@ -361,11 +363,15 @@ export default class Lobby extends Phaser.Scene {
     })
     })
     
-
+    if(this.mainTheme){
+      this.mainTheme.play();
+    }
   }
 //-----------------------------------------------------------------
 //endof scene create method
-  
+  playTheme(){
+    this.mainTheme.play();
+  }
   onDown() {
     let thisPlayer = this.state.players[this.socket.id].pNumber;
     console.log("thisplayer ----->",thisPlayer)
