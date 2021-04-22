@@ -294,8 +294,8 @@ export default class GameScene extends Scene {
 
   createEnemyProjectileWallCollisions(wallLayer, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) =>{
-      this.physics.add.collider(enemyPlayer.projectilesGroup, wallLayer, (projectile, wallLayer) => {
-        projectile.hasHit(wallLayer);
+      this.physics.add.collider(enemyPlayer.projectilesGroup, wallLayer, (projectile, wall) => {
+        projectile.resetProjectile();
   
       }, null, this);
     })
