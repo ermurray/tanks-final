@@ -87,6 +87,89 @@
         }, 
         {
          "draworder":"topdown",
+         "id":7,
+         "name":"health_power",
+         "objects":[
+                {
+                 "gid":603,
+                 "height":32,
+                 "id":304,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":576,
+                 "y":352
+                }, 
+                {
+                 "gid":603,
+                 "height":32,
+                 "id":305,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":544,
+                 "y":160
+                }, 
+                {
+                 "gid":603,
+                 "height":32,
+                 "id":306,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":544,
+                 "y":576
+                }, 
+                {
+                 "gid":603,
+                 "height":32,
+                 "id":307,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":224,
+                 "y":288
+                }, 
+                {
+                 "gid":603,
+                 "height":32,
+                 "id":308,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1024,
+                 "y":384
+                }, 
+                {
+                 "gid":603,
+                 "height":32,
+                 "id":309,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":768,
+                 "y":96
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":5,
          "name":"box1_spawns",
          "objects":[
@@ -1067,8 +1150,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":7,
- "nextobjectid":304,
+ "nextlayerid":8,
+ "nextobjectid":310,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.5.0",
@@ -1158,6 +1241,29 @@
                  "imagewidth":48
                 }],
          "tilewidth":48
+        }, 
+        {
+         "columns":0,
+         "firstgid":603,
+         "grid":
+            {
+             "height":1,
+             "orientation":"orthogonal",
+             "width":1
+            },
+         "margin":0,
+         "name":"heart_32px5",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":32,
+         "tiles":[
+                {
+                 "id":0,
+                 "image":"..\/heart_32px5.png",
+                 "imageheight":32,
+                 "imagewidth":32
+                }],
+         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",

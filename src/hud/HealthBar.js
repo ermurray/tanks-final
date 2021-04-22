@@ -25,6 +25,12 @@ export default class HealthBar {
     this.hpValue -= ammount;
     this.draw(this.x, this.y);
   }
+  
+  increaseHealth(ammount){
+    this.hpValue += ammount;
+    this.draw(this.x, this.y);
+  }
+
   draw(x, y) {
     this.healthBar.clear();
     const {width, height} = this.size;

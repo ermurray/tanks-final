@@ -7,7 +7,8 @@ import ProjectilesGroup from '../attacks/ProjectilesGroup';
 import Projectile from '../attacks/Projectile'
 import EnemyPlayersGroup from '../entities/EnemyPlayer';
 import initObjAnimations from '../animations/staticObjAnims';
-import SpriteEffect from '../effects/SpriteEffect';
+import initHitAnimations from '../animations/hitAnims';
+
 
 export default class GameScene extends Scene {
 
@@ -40,12 +41,15 @@ export default class GameScene extends Scene {
     //map creation and layout
     const map = this.createMap();
     const layers = this.createLayers(map);
+    initObjAnimations(this.anims)
+    const hearts = this.createHearts(layers.heartLayer)
     const woodBoxes = this.createWoodBoxes(layers.boxWoodLayer);
     const greyBoxes = this.createGreyBoxes(layers.boxGreyLayer);
     // console.log(layers.wallLayer.layer.data);
     const layerData = layers.wallLayer.layer.data;
-    // console.log("layerData:",layerData)
-    // this.add.image(0,0, 'overlay').setOrigin(0).setAlpha(0.5);
+
+    
+    
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
@@ -66,6 +70,7 @@ export default class GameScene extends Scene {
       }
     }
     this.overlay = this.add.image(0,0, 'overlay').setOrigin(0).setDepth(3).setAlpha(0.1);
+    initHitAnimations(this.anims)
     // this.lights.enable().setAmbientColor(0x333333)
     // this.overlay.setPipeline('Light2D')
     // const light = this.lights.addLight(180, 80, 200).setColor(0xffffff).setIntensity(2);
@@ -85,12 +90,18 @@ export default class GameScene extends Scene {
   
   // console.log("inside create------------->",enemyPlayers)
     
-    
+  
+   
+
     
     this.physics.add.collider(localPlayer.projectilesGroup, layers.wallLayer, (projectile, wall) => {
       projectile.resetProjectile();
     });
     
+    hearts.children.each((heart) =>{
+      heart.body.setSize(10,10)
+   
+    })
 
     woodBoxes.children.each((box) => {
       box.body.immovable = true;
@@ -103,7 +114,6 @@ export default class GameScene extends Scene {
       box.body.moves = false;
 
     })
-    initObjAnimations(this.anims)
     
     this.createLocalProjectileBoxCollisions(woodBoxes, localPlayer.projectilesGroup);
     this.createLocalProjectileBoxCollisions(greyBoxes, localPlayer.projectilesGroup);
@@ -120,7 +130,8 @@ export default class GameScene extends Scene {
         wallLayer: layers.wallLayer,
         enemyPlayers,
         woodBoxes,
-        greyBoxes
+        greyBoxes,
+        hearts
       }
     });
 
@@ -129,9 +140,14 @@ export default class GameScene extends Scene {
         wallLayer: layers.wallLayer,
         localPlayer,
         woodBoxes,
-        greyBoxes
+        greyBoxes,
+        hearts
       }
     })
+
+
+    
+
 
     this.countDown(this.timerText, localPlayer);
    
@@ -155,17 +171,20 @@ export default class GameScene extends Scene {
     const groundLayer = map.createLayer('background', [tilesetGrass, tilesetSand, tilesetPaths], 0, 0);
     const wallLayer = map.createLayer('blockedlayer', [tilesetGrass, tilesetSand], 0, 0);
     const spawnZone = map.getObjectLayer('player_start');
+    const heartLayer = map.getObjectLayer('health_power');
     const boxWoodLayer = map.getObjectLayer('box1_spawns');
     const boxGreyLayer = map.getObjectLayer('box2_spawns');
       //need to add collision specific layer to tile map independent of wall layer.
     wallLayer.setCollisionByExclusion([-1]);
     groundLayer.setDepth(-1);
+
     return {
       groundLayer, 
       wallLayer, 
       spawnZone, 
       boxWoodLayer, 
-      boxGreyLayer
+      boxGreyLayer,
+      heartLayer
     };
 
   }
@@ -188,6 +207,14 @@ export default class GameScene extends Scene {
     return boxes
   }
 
+  createHearts(heartLayer){
+    const heartsGroup = this.physics.add.group();
+    heartLayer.objects.forEach(heart => {
+      heartsGroup.get(heart.x +16, heart.y -16,'hearts')
+    })
+    heartsGroup.playAnimation('heartRotate')
+    return heartsGroup;
+  }
 
   
   createPlayer(playerSpawnZones,) {
@@ -258,8 +285,9 @@ export default class GameScene extends Scene {
                 .addCollider(colliders.wallLayer)
                 .addCollider(colliders.localPlayer)
                 .addCollider(colliders.woodBoxes)
-                .addCollider(colliders.greyBoxes);
-
+                .addCollider(colliders.greyBoxes)
+                .addCollider(colliders.hearts,this.onEnemyCollect);
+                
 
     })
       
@@ -270,7 +298,7 @@ export default class GameScene extends Scene {
       
        //this.play('boxDestroy', true)
         // box.destroy();
-        console.log("this box key",box);
+        projectile.hasHit(box);
         box.play('boxDestroy', true)
         box.body.checkCollision.none = true;
         setTimeout(()=>{
@@ -282,7 +310,7 @@ export default class GameScene extends Scene {
           })
         }, 100)
         
-        projectile.resetProjectile();
+        
        
       }, null, this);
     })
@@ -293,7 +321,7 @@ export default class GameScene extends Scene {
 
   createEnemyProjectileWallCollisions(wallLayer, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) =>{
-      this.physics.add.collider(enemyPlayer.projectilesGroup, wallLayer, (projectile,wall) => {
+      this.physics.add.collider(enemyPlayer.projectilesGroup, wallLayer, (projectile, wall) => {
         projectile.resetProjectile();
   
       }, null, this);
@@ -305,7 +333,7 @@ export default class GameScene extends Scene {
         console.log("projectile.damage",projectile.damage)
         player.healthBar
         player.onHit(projectile.damage);
-        projectile.resetProjectile();
+        projectile.hasHit(player);
         console.log("enemy projectile has collided with local player");
         let data = {
           socket: this.socket.id,
@@ -322,8 +350,11 @@ export default class GameScene extends Scene {
   createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
       
-      // box.destroy();
-      box.play('boxDestroy', true)
+      projectile.hasHit(box);
+      setTimeout(()=>{
+        box.play('boxDestroy')
+
+      },0)
       box.body.checkCollision.none = true;
       
       setTimeout(()=>{
@@ -333,40 +364,60 @@ export default class GameScene extends Scene {
           duration: 2000,
           ease: 'Power3'
         })
-      }, 100)
-      projectile.resetProjectile();
+      }, 300)
+      // projectile.resetProjectile();
       
     }, null, this);
   }
 
   createLocalProjectileEnemyCollisions(enemyPlayers, localProjectileGroup){
     enemyPlayers.forEach((enemyPlayer) =>{
-      this.physics.add.overlap(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
-        projectile.resetProjectile();
-        console.log("local projectile has collided with enemy player");
+      this.physics.add.collider(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
+        projectile.hasHit(enemyPlayer);
+     
+
         this.socket.on('playerHasBeenHit', (data)=>{
           enemyPlayer.playDamageTween();
+          
           console.log(`player at socket ${data} has been hit`)
         })
      
         this.socket.on('playerHasDied', (data) => {
-          console.log(`render explosion animation at ${data.x, data.y}`)
           enemyPlayer.body.stop(this);
           enemyPlayer.body.setImmovable(true);
+          setTimeout(()=>{
+            enemyPlayer.disableBody(true,true)
+          },200)
         })
         this.endGame(true);
       }, null, this);
     })
   }
 
-  
+
+  onCollectHeart(localPlayer, heart){
+    console.log('collecting')
+    heart.disableBody(true,true)
+    if(localPlayer.health < 30){
+      localPlayer.health += 10
+      localPlayer.healthBar.increaseHealth(10);
+    }
+     
+  }
+  onEnemyCollect(enemyPlayer, collectable){
+    console.log('enemypicked up')
+    collectable.disableBody(true,true)
+  }
 
   createPlayerColliders(player, { colliders }){
     player
         .addCollider(colliders.wallLayer)
         .addCollider(colliders.enemyPlayers)
         .addCollider(colliders.woodBoxes)
-        .addCollider(colliders.greyBoxes);
+        .addCollider(colliders.greyBoxes)
+        .addCollider(colliders.hearts,this.onCollectHeart);
+        
+        
   }
 
   getPlayerZones(spawnZoneLayer){
@@ -389,15 +440,19 @@ export default class GameScene extends Scene {
     console.log("localplayer??????",player.healthBar)
     player.healthBar.showHealthBar();
     this.cameras.main.setBackgroundColor(0x888076)
-    this.playersRemainText = this.add.text(leftTopCorner.x + 265 , leftTopCorner.y + 5, `PLAYERS REMAINING:`, {
+    this.playersRemainText = this.add.text(leftTopCorner.x + 275 , leftTopCorner.y + 5, `PLAYERS REMAINING: `, {
       fill: "#000000",
-      fontSize: '12px',
-      fontStyle: 'bold'
+      fontSize: '16px',
+      fontStyle: 'bold',
+      fontFamily: 'Pixelar',
+      fill: "#00ff00",
     }).setOrigin(0,0).setDepth(4).setScrollFactor(0,0);
-    this.timerText = this.add.text(leftTopCorner.x + 565 , leftTopCorner.y + 5, `GAME TIMER:`, {
+    this.timerText = this.add.text(leftTopCorner.x + 565 , leftTopCorner.y + 5, `GAME TIMER: `, {
       fill: "#000000",
-      fontSize: '12px',
-      fontStyle: 'bold'
+      fontSize: '16px',
+      fontStyle: 'bold',
+      fontFamily: 'Pixelar',
+      fill: "#00ff00",
     }).setOrigin(0,0).setDepth(4).setScrollFactor(0,0);
   }
  

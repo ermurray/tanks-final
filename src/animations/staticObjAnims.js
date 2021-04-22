@@ -20,6 +20,13 @@ export default anims => {
     frameRate: 11,
     repeat: 0
   })
+
+  anims.create({
+    key: 'heartRotate',
+    frames: anims.generateFrameNumbers('hearts', {start:0, end:7}),
+    frameRate: 7,
+    repeat: -1
+  })
   
 
   }
