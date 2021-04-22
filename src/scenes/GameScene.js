@@ -385,9 +385,7 @@ export default class GameScene extends Scene {
         this.socket.on('playerHasDied', (data) => {
           enemyPlayer.body.stop(this);
           enemyPlayer.body.setImmovable(true);
-          setTimeout(()=>{
-            enemyPlayer.disableBody(true,true)
-          },200)
+          
         })
         this.endGame(true);
       }, null, this);
