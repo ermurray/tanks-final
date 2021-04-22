@@ -49,7 +49,7 @@ export default class Tank extends Phaser.Physics.Arcade.Sprite {
 
   onDeath() {
     
-    console.log('disable this tank its dead',this.isAlive)
+    console.log('you are died',this.isAlive)
     let data = {
       id: this.socket.id,
       roomKey: this.state.roomKey,

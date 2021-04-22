@@ -368,7 +368,7 @@ export default class Lobby extends Phaser.Scene {
   
   onDown() {
     let thisPlayer = this.state.players[this.socket.id].pNumber;
-    console.log("thisplayer ----->",thisPlayer)
+    //console.log("thisplayer ----->",thisPlayer)
     switch (thisPlayer) {
       case 'p1':
        this.p1ReadyText.setText('READY');
