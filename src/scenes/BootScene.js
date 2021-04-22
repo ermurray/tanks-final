@@ -34,6 +34,10 @@ export default class BootScene extends Scene {
     this.load.image('new-game-p', '.assets/new-game-pressed.png');
     this.load.image('restart', './assets/restart.png');
     this.load.image('restart-p', './assets/restart-pressed.png');
+    this.load.image('main-menu', './assets/main-menu.png');
+    this.load.image('main-menu-p', './assets/main-menu-pressed.png');
+    this.load.image('play-again', './assets/play-again.png');
+    this.load.image('play-again-p', './assets/play-again-p.png');
     this.load.image('tankBlue', './assets/tank-blue.png');
     this.load.image('tankRed', './assets/tank-red.png');
     this.load.image('tankGreen', './assets/tank-green.png');

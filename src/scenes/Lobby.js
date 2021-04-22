@@ -43,6 +43,13 @@ export default class Lobby extends Phaser.Scene {
       fontStyle: "bold",
       fontFamily: 'Pixelar',
     })
+
+    const instructions = this.add.text(440, 100, "", {
+      fill: "#00ff00",
+      fontSize: "20px",
+      fontStyle: "bold",
+      fontFamily: 'Pixelar',
+    })
     
     
     this.socket.on('setState', function(state) {
@@ -60,6 +67,7 @@ export default class Lobby extends Phaser.Scene {
       thisScene.state.players[thisScene.socket.id].pNumber = players[thisScene.socket.id].pNumber;
       const roomtext = `GAME KEY: ${roomKey} \n PLAYERS: ${numPlayers}/4`
       roomInfoText.setText(roomtext);
+      instructions.setText("WASD / ARROW KEYS = MOVE      SPACE = SHOOT");
       //---------------------------------------
       // for(const player in thisScene.state.players){
       //   thisScene.setTankSelection(player.id, player, player.pName)
