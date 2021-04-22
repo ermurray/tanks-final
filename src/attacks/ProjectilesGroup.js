@@ -18,7 +18,7 @@ export default class ProjectilesGroup extends Phaser.Physics.Arcade.Group {
 
     this.timeFromlastFire = null;
     Object.assign(this, collidable);
-
+    
   }
 
   fireProjectile(initiator) {
