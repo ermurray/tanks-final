@@ -16,7 +16,7 @@ export default anims => {
 
   anims.create({
     key:  'move',
-    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start:0, end:2}),
+    frames: anims.generateFrameNumbers('blue_tank_spritesheet2', {start:0, end:5}),
     frameRate: 15,
     repeat: -1 
   })
