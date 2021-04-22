@@ -89,6 +89,7 @@ export default class Player extends Tank {
   }
   update() {
     const { left, right , up, down, space} = this.cursors;
+    if (!this.isAlive){this.play('playerDeath', true)}
     if(this.isAlive){
       
       
@@ -126,7 +127,9 @@ export default class Player extends Tank {
         this.direction = "down"
         this.lastDirection = Phaser.Physics.Arcade.FACING_DOWN;
       }
-      else
+      else if (space.isDown){
+      this.play('shoot', true);
+      } else
       {
         this.setVelocityX(0);
         this.setVelocityY(0);
@@ -184,7 +187,6 @@ export default class Player extends Tank {
         } else {this.play('move', false)}
 
     } else{
-      this.play('playerDeath', true)
       this.body.stop(this);
       this.body.setImmovable(true);
     }

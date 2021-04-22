@@ -16,20 +16,20 @@ export default anims => {
 
   anims.create({
     key:  'move',
-    frames: anims.generateFrameNumbers('blue_tank_spritesheet2', {start:0, end:5}),
+    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start:0, end:1}),
     frameRate: 15,
     repeat: -1 
   })
   anims.create({
     key: 'shoot',
-    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start:3, end:10}),
-    frameRate: 10,
+    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start:2, end:13}),
+    frameRate: 15,
     repeat: 0
   })
   anims.create({
     key: 'playerDeath', 
-    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start: 0, end: 12}),
-    frameRate: 10,
+    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start:13 , end: 29 }),
+    frameRate: 24,
     repeat: 0
   })
 }
