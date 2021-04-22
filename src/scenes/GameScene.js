@@ -42,16 +42,14 @@ export default class GameScene extends Scene {
     const map = this.createMap();
     const layers = this.createLayers(map);
     initObjAnimations(this.anims)
-    initHitAnimations(this.anims)
     const hearts = this.createHearts(layers.heartLayer)
     const woodBoxes = this.createWoodBoxes(layers.boxWoodLayer);
     const greyBoxes = this.createGreyBoxes(layers.boxGreyLayer);
     // console.log(layers.wallLayer.layer.data);
     const layerData = layers.wallLayer.layer.data;
-   
-    // this.add.image(0,0, 'overlay').setOrigin(0).setAlpha(0.5);
 
-
+    
+    
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
@@ -72,6 +70,7 @@ export default class GameScene extends Scene {
       }
     }
     this.overlay = this.add.image(0,0, 'overlay').setOrigin(0).setDepth(3).setAlpha(0.1);
+    initHitAnimations(this.anims)
     // this.lights.enable().setAmbientColor(0x333333)
     // this.overlay.setPipeline('Light2D')
     // const light = this.lights.addLight(180, 80, 200).setColor(0xffffff).setIntensity(2);
@@ -99,6 +98,10 @@ export default class GameScene extends Scene {
       projectile.resetProjectile();
     });
     
+    hearts.children.each((heart) =>{
+      heart.body.setSize(10,10)
+   
+    })
 
     woodBoxes.children.each((box) => {
       box.body.immovable = true;
@@ -174,6 +177,7 @@ export default class GameScene extends Scene {
       //need to add collision specific layer to tile map independent of wall layer.
     wallLayer.setCollisionByExclusion([-1]);
     groundLayer.setDepth(-1);
+
     return {
       groundLayer, 
       wallLayer, 
@@ -204,12 +208,12 @@ export default class GameScene extends Scene {
   }
 
   createHearts(heartLayer){
-    const hearts = this.physics.add.group();
+    const heartsGroup = this.physics.add.group();
     heartLayer.objects.forEach(heart => {
-      hearts.get(heart.x +16, heart.y -16,'hearts')
+      heartsGroup.get(heart.x +16, heart.y -16,'hearts')
     })
-    hearts.playAnimation('heartRotate')
-    return hearts
+    heartsGroup.playAnimation('heartRotate')
+    return heartsGroup;
   }
 
   
@@ -281,7 +285,8 @@ export default class GameScene extends Scene {
                 .addCollider(colliders.wallLayer)
                 .addCollider(colliders.localPlayer)
                 .addCollider(colliders.woodBoxes)
-                .addCollider(colliders.greyBoxes);
+                .addCollider(colliders.greyBoxes)
+                .addCollider(colliders.hearts,this.onEnemyCollect);
                 
 
     })
@@ -367,9 +372,10 @@ export default class GameScene extends Scene {
 
   createLocalProjectileEnemyCollisions(enemyPlayers, localProjectileGroup){
     enemyPlayers.forEach((enemyPlayer) =>{
-      this.physics.add.overlap(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
+      this.physics.add.collider(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
         projectile.hasHit(enemyPlayer);
-        console.log("local projectile has collided with enemy player");
+     
+
         this.socket.on('playerHasBeenHit', (data)=>{
           enemyPlayer.playDamageTween();
           
@@ -377,9 +383,11 @@ export default class GameScene extends Scene {
         })
      
         this.socket.on('playerHasDied', (data) => {
-          console.log(`render explosion animation at ${data.x, data.y}`)
           enemyPlayer.body.stop(this);
           enemyPlayer.body.setImmovable(true);
+          setTimeout(()=>{
+            enemyPlayer.disableBody(true,true)
+          },200)
         })
         this.endGame(true);
       }, null, this);
@@ -387,23 +395,28 @@ export default class GameScene extends Scene {
   }
 
 
-  onCollect(entity, collectable){
+  onCollectHeart(localPlayer, heart){
     console.log('collecting')
-
-    // if(localPlayer.health < 30){
-    //   localPlayer.health += 10
-    //   localPlayer.increaseHealth(10);
-    //   heart.destroy()
+    heart.disableBody(true,true)
+    if(localPlayer.health < 30){
+      localPlayer.health += 10
+      localPlayer.healthBar.increaseHealth(10);
+    }
+     
   }
-  
+  onEnemyCollect(enemyPlayer, collectable){
+    console.log('enemypicked up')
+    collectable.disableBody(true,true)
+  }
 
   createPlayerColliders(player, { colliders }){
     player
         .addCollider(colliders.wallLayer)
         .addCollider(colliders.enemyPlayers)
         .addCollider(colliders.woodBoxes)
-        .addCollider(colliders.greyBoxes);
-       
+        .addCollider(colliders.greyBoxes)
+        .addCollider(colliders.hearts,this.onCollectHeart);
+        
         
   }
 
