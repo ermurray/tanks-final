@@ -234,19 +234,19 @@ export default class GameScene extends Scene {
     switch(playerNum){
       case 'p1':
         selectedSpawn = player1Spawn;
-        playerColor = 'player1'
+        playerColor = 'player1'               //'blue_tank_spritesheet'
         break;
       case 'p2':
         selectedSpawn = player2Spawn;
-        playerColor = 'player2'
+        playerColor = 'player2'               //'red_tank_spritesheet'
         break;
       case 'p3':
         selectedSpawn = player3Spawn;
-        playerColor = 'player3'
+        playerColor = 'player3'               //'green_tank_spritesheet'
         break;
       case 'p4':
         selectedSpawn = player4Spawn;
-        playerColor = 'player4'
+        playerColor = 'player4'               //'yellow_tank_spritesheet'
         break;
     }
     return new EnemyPlayer(this, selectedSpawn.x, selectedSpawn.y, playerColor, this.socket, this.state, playerNum);

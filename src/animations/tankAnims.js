@@ -15,8 +15,26 @@ export default anims => {
 //use simple ternary to change from idle to moving anim by using this.body.velocity.equals({x:0, y:0})
 
   anims.create({
-    key:  'move',
+    key:  'move_blue',
     frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start:0, end:1}),
+    frameRate: 10,
+    repeat: -1 
+  })
+  anims.create({
+    key:  'move_red',
+    frames: anims.generateFrameNumbers('red_tank_spritesheet', {start:0, end:1}),
+    frameRate: 10,
+    repeat: -1 
+  })
+  anims.create({
+    key:  'move_green',
+    frames: anims.generateFrameNumbers('green_tank_spritesheet', {start:0, end:1}),
+    frameRate: 10,
+    repeat: -1 
+  })
+  anims.create({
+    key:  'move_yellow',
+    frames: anims.generateFrameNumbers('yellow_tank_spritesheet', {start:0, end:1}),
     frameRate: 10,
     repeat: -1 
   })
