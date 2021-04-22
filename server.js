@@ -74,7 +74,7 @@ function codeGenerator() {
 io.on("connection", (socket) => {
 
   console.log(
-    `A socket connection to the server has been made: ${socket.id}`
+    `${socket.id} has connected to the server`
   );
 
 // on join room function begins
@@ -156,7 +156,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on('playerDeath', (data) => {
-    //console.log("PLAYER DEATH",data.id)
+    console.log("---PLAYER DEATH---",data.id)
     socket
       .in(data.roomKey)
       .emit('playerHasDied', data)
@@ -228,7 +228,7 @@ io.on("connection", (socket) => {
     //   gameRooms[roomKey].chatMessages.length.shift();
     // }
     console.log('chatlogserver:\n',newMessage);
-    console.log(gameRooms)
+    //console.log(gameRooms)
     io.in(roomKey).emit("message", pName, message )
   })
 
@@ -245,8 +245,9 @@ io.on("connection", (socket) => {
   socket.on('players-lobbyready', (data)=>{
     const{ roomKey } = data
     gameRooms[data.roomKey].gameStarted = true;
-    console.log('players ready', data);
-    console.log('roomdata', gameRooms[data.roomKey]);
+    console.log(`Game started in room ${data.roomKey}`);
+    //console.log('players ready', data);
+    //console.log('roomdata', gameRooms[data.roomKey]);
     setTimeout((data)=>{
       io.in(roomKey).emit('transToGame', data);
     },100)
@@ -254,7 +255,7 @@ io.on("connection", (socket) => {
   })
   
   socket.on('in-game',(data)=>{
-    console.log('player', socket.id)
+    //console.log('player', socket.id)
 
   })
 
