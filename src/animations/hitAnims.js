@@ -16,8 +16,8 @@ export default anims => {
 
   anims.create({
     key:  'impact',
-    frames: anims.generateFrameNumbers('bulletImpact', {start:0, end:26}),
-    frameRate: 27,
+    frames: anims.generateFrameNumbers('bulletImpact', {start:0, end:27}),
+    frameRate: 50,
     repeat: 0
   })
 

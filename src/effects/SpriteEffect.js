@@ -13,12 +13,18 @@ export default class SpriteEffect extends Phaser.Physics.Arcade.Sprite{
     this.effectName = effectName;
   }
 
+  preUpdate(time, delta){
+    super.preUpdate(time, delta);
+    this.locateEffect();
+
+
+  }
+
   locateEffect() {
-    if (!this.target) {
-      return;
-    }
+    if (!this.target || !this.body) {return;}
     const center = this.target.getCenter();
     this.body.reset(center.x, center.y)
+  
   }
 
   playOn(target){

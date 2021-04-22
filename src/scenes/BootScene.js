@@ -50,8 +50,12 @@ export default class BootScene extends Scene {
     this.load.spritesheet('bulletImpact', './assets/bullet_impact_sheet.png', {
       frameWidth: 32, frameHeight: 32, spacing: 32
     })
+    this.load.spritesheet('hearts', './assets/heart_32px-sheet.png', {
+        frameWidth: 32, frameHeight: 32, spacing: 32
+    })
    this.load.audio('mainTheme', './assets/audio/soundtracks/mainTheme.wav')
 
+   
   }
 
   create() {
