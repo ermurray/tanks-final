@@ -50,7 +50,8 @@ export default class BootScene extends Scene {
     this.load.spritesheet('bulletImpact', './assets/bullet_impact_sheet.png', {
       frameWidth: 32, frameHeight: 32, spacing: 32
     })
-    console.log("env check:", process.env)
+   this.load.audio('themeMain', './assets/audio/soundtracks/')
+
   }
 
   create() {
