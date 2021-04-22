@@ -131,7 +131,7 @@ export default class Lobby extends Phaser.Scene {
       padding: 10,
       fontStyle: 'bold',
       fontFamily: 'Pixelar',
-      fontSize: '28px',
+      fontSize: '20px',
       wordWrap: {
         width: 325
       }
