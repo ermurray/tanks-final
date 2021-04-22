@@ -16,8 +16,14 @@ export default anims => {
 
   anims.create({
     key:  'move',
-    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start:0, end:1}),
-    frameRate: 10,
+    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start:0, end:2}),
+    frameRate: 15,
     repeat: -1 
+  })
+  anims.create({
+    key: 'shoot',
+    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start:3, end:10}),
+    frameRate: 10,
+    repeat: 0
   })
 }

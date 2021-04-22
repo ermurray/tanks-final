@@ -62,6 +62,7 @@ export default class Player extends Tank {
       if(this.isAlive){
       // console.log('Shoot');
       this.projectilesGroup.fireProjectile(this);
+      this.play('shoot', true)
       //Emit bullet data
       this.socket.emit("playerShoot", {
         x: this.x,
