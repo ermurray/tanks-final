@@ -184,6 +184,7 @@ export default class Player extends Tank {
         } else {this.play('move', false)}
 
     } else{
+      this.play('playerDeath', true)
       this.body.stop(this);
       this.body.setImmovable(true);
     }

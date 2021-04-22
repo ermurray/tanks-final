@@ -26,4 +26,10 @@ export default anims => {
     frameRate: 10,
     repeat: 0
   })
+  anims.create({
+    key: 'playerDeath', 
+    frames: anims.generateFrameNumbers('blue_tank_spritesheet', {start: 0, end: 12}),
+    frameRate: 10,
+    repeat: 0
+  })
 }
