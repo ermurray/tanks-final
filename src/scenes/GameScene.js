@@ -272,8 +272,6 @@ export default class GameScene extends Scene {
        //this.play('boxDestroy', true)
         // box.destroy();
         projectile.hasHit(box);
-        console.log("this box key",box);
-        this.play('impact',true)
         box.play('boxDestroy', true)
         box.body.checkCollision.none = true;
         setTimeout(()=>{
