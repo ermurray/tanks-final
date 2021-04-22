@@ -47,6 +47,7 @@ export default class BootScene extends Scene {
     this.load.image('enemyPlayers', './assets/tank_lft32px.png');
     this.load.image('overlay', './assets/overlay.png')
     this.load.spritesheet('blue_tank_spritesheet', './assets/tanks/tank_blue.png',{frameWidth: 48, frameHeight: 48});
+    this.load.spritesheet('blue_tank_spritesheet2', './assets/tanks/tank_blue_v2.png',{frameWidth: 48, frameHeight: 48});
     this.load.spritesheet('mushroom_cloud', './assets/explosions/mushroom_cloud.png', {frameWidth: 32, frameHeight: 32});
     this.load.spritesheet('muzzle_flash','./assets/explosions/muzzle_flash.png', {frameWidth:50, frameHeight:30});
     this.load.spritesheet('bulletImpact', './assets/bullet_impact_sheet.png', {
