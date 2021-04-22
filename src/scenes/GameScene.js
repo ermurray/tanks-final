@@ -67,6 +67,12 @@ export default class GameScene extends Scene {
       // Check for Game Over
       thisScene.checkLivingPlayers(deadPlayerCount, thisScene.state.numPlayers);
     })
+
+    // Added Game Over logic
+    this.socket.on('playerDeath', (data) => {
+      console.log("Game ending");
+      this.endGame(true);
+    })
     //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
     const enemyPlayersArray = [];
     for(const player in thisScene.state.players ){
@@ -348,7 +354,6 @@ export default class GameScene extends Scene {
 
       }, null, this);
     })
-    
   }
   
 
