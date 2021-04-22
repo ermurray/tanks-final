@@ -18,7 +18,7 @@ export default class Lobby extends Phaser.Scene {
   
   create() {
 
-
+    this.sound.add('mainTheme', {loop: true, volume: 0.25}).play();
     const thisScene = this;
    
     // 'http://localhost:3000' || SOCKET
