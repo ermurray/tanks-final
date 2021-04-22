@@ -317,7 +317,7 @@ export default class GameScene extends Scene {
           roomKey: this.state.roomKey
         }
         this.socket.emit('playerHit', data);
-        this.endGame(true);
+
       }, null, this);
     })
     
@@ -359,7 +359,7 @@ export default class GameScene extends Scene {
           enemyPlayer.body.stop(this);
           enemyPlayer.body.setImmovable(true);
         })
-        this.endGame(true);
+        // this.endGame(true);
       }, null, this);
     })
   }
