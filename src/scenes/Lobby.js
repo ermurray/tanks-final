@@ -18,7 +18,7 @@ export default class Lobby extends Phaser.Scene {
   
   create() {
 
-    this.mainTheme = this.sound.add('mainTheme', {loop: true, volume: 0.25})
+    this.mainTheme = this.sound.add('mainTheme', {loop: true, volume: 0.10})
     
 
     const thisScene = this;
@@ -369,9 +369,9 @@ export default class Lobby extends Phaser.Scene {
   }
 //-----------------------------------------------------------------
 //endof scene create method
-  playTheme(){
-    this.mainTheme.play();
-  }
+  // playTheme(){
+  //   this.mainTheme.play();
+  // }
   onDown() {
     let thisPlayer = this.state.players[this.socket.id].pNumber;
     console.log("thisplayer ----->",thisPlayer)
@@ -452,6 +452,7 @@ export default class Lobby extends Phaser.Scene {
    textarea.setText(`Operator: ${playerName} will be this tank`)
   }
   countDown(text){
+    this.mainTheme.pause();
     this.tweens.add({
       targets: this.textInput,
       y:855,
