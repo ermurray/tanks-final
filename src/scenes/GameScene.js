@@ -18,26 +18,25 @@ export default class GameScene extends Scene {
       
   }
 
-  /*
-  preload () {
-    this.load.image('box1', '../assets/boxes/1.png');
-  }
-  */
+
             
   create () {
     this.socket = this.registry.get('socket');
     this.state = this.registry.get('state');
     this.socket.emit('in-game',this.state);
     this.scene.bringToTop('scene-game');
+
     const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
     const thisScene = this;
+
     this.timerText = this.add.text(screenCenterX, screenCenterY, "Ready", {
       fill: "#00ff00",
       fontSize: "80px",
       fontStyle: "bold",
       fontFamily: "Pixelar"
     }).setDepth(2).setOrigin(0.5);
+
     //map creation and layout
     const map = this.createMap();
     const layers = this.createLayers(map);
@@ -45,11 +44,7 @@ export default class GameScene extends Scene {
     const hearts = this.createHearts(layers.heartLayer)
     const woodBoxes = this.createWoodBoxes(layers.boxWoodLayer);
     const greyBoxes = this.createGreyBoxes(layers.boxGreyLayer);
-    // console.log(layers.wallLayer.layer.data);
-    const layerData = layers.wallLayer.layer.data;
-
-    
-    
+    const layerData = layers.wallLayer.layer.data;  
     const playerSpawnZones = this.getPlayerZones(layers.spawnZone);
     
     const localPlayer = this.createPlayer(playerSpawnZones); 
@@ -62,7 +57,7 @@ export default class GameScene extends Scene {
       console.log(`player at socket ${data.id} has been killed`)
       console.log(`render explosion animation at ${data.x, data.y}`)
     })
-    //----------------------need to creat logic to create multiple enemy based on state.players obj for each player....
+
     const enemyPlayersArray = [];
     for(const player in thisScene.state.players ){
       if(player !== thisScene.socket.id){
@@ -88,10 +83,6 @@ export default class GameScene extends Scene {
     const enemyPlayers = this.createEnemyPlayers(playerSpawnZones, enemyPlayersArray);
    
   
-  // console.log("inside create------------->",enemyPlayers)
-    
-  
-   
 
     
     this.physics.add.collider(localPlayer.projectilesGroup, layers.wallLayer, (projectile, wall) => {

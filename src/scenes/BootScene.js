@@ -1,7 +1,8 @@
-import {Scene} from 'phaser';
+import Phaser from 'phaser';
+// import mainTheme from '../../public/assets/Audio/soundtracks/'
 
 
-export default class BootScene extends Scene {
+export default class BootScene extends Phaser.Scene {
   constructor() {
     super("scene-boot");
   }
@@ -53,10 +54,10 @@ export default class BootScene extends Scene {
     this.load.spritesheet('hearts', './assets/heart_32px-sheet.png', {
         frameWidth: 32, frameHeight: 32, spacing: 32
     })
-   this.load.audio('mainTheme', './assets/audio/soundtracks/mainTheme.wav')
-   this.load.audio('buttonclick', './assets/audio/sfx/button_click.wav')
-   this.load.audio('hitExplode', './assets/audio/sfx/explode.wav')
-   this.load.audio('collect', './assets/audio/sfx/pickUp.wav')
+   this.load.audio('mainTheme', './assets/Audio/soundTracks/mainTheme.wav');
+   this.load.audio('buttonclick', './assets/Audio/sfx/button_click.wav');
+   this.load.audio('hitExplode', './assets/Audio/sfx/explode.wav');
+   this.load.audio('collect', './assets/Audio/sfx/pickUp.wav');
 
    
   }
