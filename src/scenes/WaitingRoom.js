@@ -92,6 +92,7 @@ export default class WaitingRoom extends Phaser.Scene {
     thisScene.inputElement.on("click", function (event) {
       if (event.target.name === "enterRoom") {
 // form input in waiting room
+        thisScene.sound.play('buttonClick',{loop:false, volume:0.5});
         const input = thisScene.inputElement.getChildByName("code-form");
         const playerName = thisScene.inputElement.getChildByName('pname-form');
         // console.log(thisScene.inputElement.getChildByName("pname-form").value);
@@ -120,6 +121,11 @@ export default class WaitingRoom extends Phaser.Scene {
 //emit event to server to generate room code and create new room
     thisScene.requestButton.setInteractive();
     thisScene.requestButton.on("pointerdown", () => {
+      thisScene.requestButton.setTexture('new-game-p');
+      thisScene.sound.play('buttonClick',{loop:false, volume:0.5});
+      setTimeout(() => {
+        thisScene.requestButton.setTexture('new-game');
+      }, 200);
       thisScene.socket.emit("getRoomCode");
     });
 

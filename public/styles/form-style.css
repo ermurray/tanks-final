@@ -30,6 +30,15 @@ div.form-container {
   border-color: transparent;
 }
 
+#enterRoom-id:active {
+  background-image: url("../assets/enter-blue-pressed.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100px;
+  height: 41.18px;
+  background-color: transparent;
+  border-color: transparent;
+}
 /*
 #enterRoom-id:active {
   background-image: url("../assets/enter-blue-pressed.png")
