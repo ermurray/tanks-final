@@ -373,6 +373,7 @@ export default class Lobby extends Phaser.Scene {
   //   this.mainTheme.play();
   // }
   onDown() {
+    
     let thisPlayer = this.state.players[this.socket.id].pNumber;
     console.log("thisplayer ----->",thisPlayer)
     switch (thisPlayer) {
