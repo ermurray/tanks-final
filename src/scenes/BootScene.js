@@ -76,7 +76,7 @@ export default class BootScene extends Phaser.Scene {
     // this.scene.start ('scene-game')
   }
   onDown() {
-    // this.scene.start ('scene-lobby');
+    
     this.strtBtn.setTexture('start-p');
     setTimeout(()=>{
       this.strtBtn.setTexture('start');
