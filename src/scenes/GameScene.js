@@ -25,7 +25,8 @@ export default class GameScene extends Scene {
     this.state = this.registry.get('state');
     this.socket.emit('in-game',this.state);
     this.scene.bringToTop('scene-game');
-    this.gameTheme = this.sound.add('gameTheme', {loop: true, volume: 0.05})
+    this.gameTheme = this.sound.add('gameTheme', {loop: true, volume: 0.05});
+    this.shotFired = this.sound.add('shot', {loop: false, volume: 0.25});
     
     const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
