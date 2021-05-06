@@ -62,6 +62,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
   }
   hasHit(target){
     // const impactPosition = {x: this.x, y: this.y};
+    this.scene.tankHit.play();
     this.resetProjectile();
     this.effectManager.playEffectOn('impact', target);
   }

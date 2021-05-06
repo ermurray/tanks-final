@@ -26,9 +26,11 @@ export default class GameScene extends Scene {
     this.socket.emit('in-game',this.state);
     this.scene.bringToTop('scene-game');
     this.gameTheme = this.sound.add('gameTheme', {loop: true, volume: 0.05});
-    this.shotFired = this.sound.add('shot', {loop: false, volume: 0.25});
-    this.boxDestroy = this.sound.add('boxDestroy', {loop: false, volume: 0.15});
-    
+    this.shotFired = this.sound.add('shot', {loop: false, volume: 0.1});
+    this.boxDestroy = this.sound.add('boxDestroy', {loop: false, volume: 0.1});
+    this.tankHit = this.sound.add('tankHit', {loop: false, volume: 0.1});
+    this.heartPickUp = this.sound.add('collect', {loop: false, volume: 0.1});
+
     const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
     const thisScene = this;
@@ -289,7 +291,7 @@ export default class GameScene extends Scene {
   createEnemyProjectileBoxCollisions(boxes, enemyPlayers){
     enemyPlayers.forEach((enemyPlayer) =>{
       this.physics.add.overlap(enemyPlayer.projectilesGroup, boxes, (projectile, box) => {
-      
+        this.boxDestroy.play();
        //this.play('boxDestroy', true)
         // box.destroy();
         projectile.hasHit(box);
@@ -321,10 +323,12 @@ export default class GameScene extends Scene {
       }, null, this);
     })
   }
+
   createEnemyProjectilePlayerCollisions(enemyPlayers, player){
     enemyPlayers.forEach((enemyPlayer) => {
       this.physics.add.collider(player, enemyPlayer.projectilesGroup, (player, projectile) => {
         console.log("projectile.damage",projectile.damage)
+        // this.tankHit.play();
         player.healthBar
         player.onHit(projectile.damage);
         projectile.hasHit(player);
@@ -368,7 +372,7 @@ export default class GameScene extends Scene {
     enemyPlayers.forEach((enemyPlayer) =>{
       this.physics.add.collider(localProjectileGroup, enemyPlayer, (enemyPlayer, projectile) => {
         projectile.hasHit(enemyPlayer);
-     
+        
 
         this.socket.on('playerHasBeenHit', (data)=>{
           enemyPlayer.playDamageTween();
@@ -380,7 +384,7 @@ export default class GameScene extends Scene {
           enemyPlayer.body.stop(this);
           enemyPlayer.body.setImmovable(true);
           setTimeout(()=>{
-            enemyPlayer.disableBody(true,true)
+            enemyPlayer.disableBody(true, false)
           },200)
         })
         this.endGame(true);
@@ -391,6 +395,7 @@ export default class GameScene extends Scene {
 
   onCollectHeart(localPlayer, heart){
     console.log('collecting')
+    this.scene.heartPickUp.play();
     heart.disableBody(true,true)
     if(localPlayer.health < 30){
       localPlayer.health += 10
