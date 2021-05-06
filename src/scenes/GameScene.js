@@ -27,6 +27,7 @@ export default class GameScene extends Scene {
     this.scene.bringToTop('scene-game');
     this.gameTheme = this.sound.add('gameTheme', {loop: true, volume: 0.05});
     this.shotFired = this.sound.add('shot', {loop: false, volume: 0.25});
+    this.boxDestroy = this.sound.add('boxDestroy', {loop: false, volume: 0.15});
     
     const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
@@ -342,7 +343,7 @@ export default class GameScene extends Scene {
 
   createLocalProjectileBoxCollisions(boxes, localProjectileGroup,){
     this.physics.add.overlap(localProjectileGroup, boxes, (projectile, box) => {
-      
+      this.boxDestroy.play();
       projectile.hasHit(box);
       setTimeout(()=>{
         box.play('boxDestroy')
