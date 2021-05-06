@@ -54,12 +54,15 @@ export default class BootScene extends Phaser.Scene {
     this.load.spritesheet('hearts', './assets/heart_32px-sheet.png', {
         frameWidth: 32, frameHeight: 32, spacing: 32
     })
-   this.load.audio('mainTheme', './assets/Audio/soundTracks/mainTheme.wav');
-   this.load.audio('gameTheme', './assets/Audio/soundTracks/gameTheme.wav');
-   this.load.audio('buttonClick', './assets/Audio/sfx/button_click.wav');
-   this.load.audio('hitExplode', './assets/Audio/sfx/explode.wav');
-   this.load.audio('collect', './assets/Audio/sfx/pickUp.wav');
-
+    //load audio
+    this.load.audio('mainTheme', './assets/Audio/soundTracks/mainTheme.wav');
+    this.load.audio('gameTheme', './assets/Audio/soundTracks/gameTheme.wav');
+    this.load.audio('buttonClick', './assets/Audio/sfx/button_click.wav');
+    this.load.audio('hitExplode', './assets/Audio/sfx/explode.wav');
+    this.load.audio('collect', './assets/Audio/sfx/pickUp.wav');
+    this.load.audio('shot','./assets/Audio/sfx/shot.wav');
+    this.load.audio('boxDestroy','./assets/Audio/sfx/box_destroy.wav');
+    this.load.audio('tankHit', './assets/Audio/sfx/explode.wav'); 
    
   }
 
