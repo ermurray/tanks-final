@@ -194,10 +194,7 @@ export default class Lobby extends Phaser.Scene {
     });
     
     this.strtSmall = this.add.sprite(600, 540, 'start-sm').setScale(0.5).setAlpha(0);
-    // this.strtSmall.setInteractive();
     
-
-  
     this.strtSmall.setInteractive();
     this.strtSmall.on('pointerdown', this.onDown,this);
     this.tweens.add({
@@ -369,9 +366,7 @@ export default class Lobby extends Phaser.Scene {
   }
 //-----------------------------------------------------------------
 //endof scene create method
-  // playTheme(){
-  //   this.mainTheme.play();
-  // }
+
   onDown() {
     
     let thisPlayer = this.state.players[this.socket.id].pNumber;
@@ -412,7 +407,6 @@ export default class Lobby extends Phaser.Scene {
     }
     if (ready === true) {
       
-      // let data = this.state.
       console.log(this.state);
       this.socket.emit('players-lobbyready', this.state)
       
