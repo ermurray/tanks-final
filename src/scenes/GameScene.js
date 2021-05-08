@@ -1,7 +1,6 @@
 import {Scene} from 'phaser';
 import io from 'socket.io-client';
 import Player from '../entities/Player';
-import Bullet from '../entities/Bullet';
 import EnemyPlayer from '../entities/EnemyPlayer';
 import ProjectilesGroup from '../attacks/ProjectilesGroup';
 import Projectile from '../attacks/Projectile'
