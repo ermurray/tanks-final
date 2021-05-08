@@ -353,14 +353,15 @@ export default class Lobby extends Phaser.Scene {
       alpha: 1,
       duration:1000,
       ease: 'Power3'
-    })
+     })
     this.tweens.add({
       targets: this.timerText,
       y:300,
       duration:3000,
       ease: 'Power3'
+      })
     })
-    })
+
     //listen for playerIsReady set state and text for which player is ready
     this.socket.on('playerIsReady',(readyPlayer) =>{
       switch (readyPlayer) {
@@ -408,40 +409,12 @@ export default class Lobby extends Phaser.Scene {
     }, 200)
     this.disableSelectors();
     let readyPlayer = this.state.players[this.socket.id].pNumber;
-    console.log('num of players ------>', this.state.numPlayers)
+   
     this.state.players[this.socket.id].isReady = true;
   
-    this.state.numReadyPlayers +=1
+    
+   
     this.socket.emit('playerReady', this.state, readyPlayer)
-  
-// If there are enough players
-    // let ready = true;
-    // for (const player in this.state.players) {
-    //   if (!this.state.players[player].pNumber) {
-    //     ready = false;
-    //     this.tweens.add({
-    //       targets: this.timerText,
-    //       y:280,
-    //       duration:3000,
-    //       ease: 'Power3'
-    //     })
-    //     this.tweens.add({
-    //       targets: this.timerText,
-    //       alpha: 0,
-    //       duration:6000,
-    //       ease: 'Power3'
-    //     })
-
-    //   }
-    // }
-    // if (ready === true) {
-      
-    //   console.log(this.state);
-    //   this.socket.emit('players-lobbyready', this.state)
-      
-    // } else {
-    //   return;
-    // }
     
   }
 

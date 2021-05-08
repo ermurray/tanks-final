@@ -215,7 +215,6 @@ io.on("connection", (socket) => {
       players: {},
       numPlayers: 0,
       numReadyPlayers: 0,
-      roomReady: false,
       roomFull: false,
       gameStarted: false
     };
@@ -246,26 +245,14 @@ io.on("connection", (socket) => {
   });
   socket.on('playerReady', (data, readyPlayer) => {
     const { roomKey, players} = data
-    console.log('datain playerReady',data);
-    console.log('players---->', players);
-    console.log('thisPlayer ===',readyPlayer)
+    gameRooms[roomKey].numReadyPlayers +=1;
+    
     io.in(roomKey).emit('playerIsReady',readyPlayer);
-    if (data.roomReady) {
+    if (gameRooms[roomKey].numReadyPlayers === gameRooms[roomKey].numPlayers) {
       io.in(roomKey).emit('transToGame', data);
     }
     
   });
-  // socket.on('players-lobbyready', (data)=>{
-  //   const{ roomKey, thisPlayer } = data
-  //   gameRooms[data.roomKey].gameStarted = true;
-  //   console.log('players ready', data);
-   
-  //   console.log('roomdata', gameRooms[data.roomKey]);
-  //   setTimeout((data)=>{
-  //     io.in(roomKey).emit('transToGame', data);
-  //   },100)
-
-  // })
   
   socket.on('in-game',(data)=>{
     console.log('player', socket.id)
