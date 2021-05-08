@@ -12,9 +12,7 @@ export default class Player extends Tank {
     this.socket = socket;
     this.state = state;
   
-    // console.log("Initial State:", state);
-    // console.log("Socket", socket);
-    // this.health = 30;
+    
       this.init();
       this.initEvents()
   }
