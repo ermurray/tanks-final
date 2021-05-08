@@ -48,17 +48,19 @@ export default class Lobby extends Phaser.Scene {
     
     
     this.socket.on('setState', function(state) {
-      const {roomKey, players, numPlayers } = state
+      const {roomKey, players, numPlayers, numReadyPlayers, roomReady} = state
       thisScene.state.roomKey = roomKey;
+      thisScene.state.numReadyPlayers = numReadyPlayers;
       console.log(`Roomkey: ${roomKey}`);
       thisScene.state.players = players;
       // console.log(players);
       //-----------------------------------------
       // assignment will need to be fixed here it is adding it to state object instead of inside the players object there are other locations that it is being called in the lobby that will break if not all changed.
-      thisScene.state.playerName = players[thisScene.socket.id].pName; 
+      //thisScene.state.playerName = players[thisScene.socket.id].pName; 
       //--------------------------------------
       thisScene.state.numPlayers = numPlayers;
-  
+      thisScene.state.roomReady = roomReady;
+      thisScene.state.numReadyPlayers = numReadyPlayers;
       thisScene.state.players[thisScene.socket.id].pNumber = players[thisScene.socket.id].pNumber;
       const roomtext = `GAME KEY: ${roomKey} \n PLAYERS: ${numPlayers}/4`
       roomInfoText.setText(roomtext);
@@ -388,7 +390,7 @@ export default class Lobby extends Phaser.Scene {
         this.p4ReadyText.setText('READY');
         break;
      }
-    // If there are enough players
+// If there are enough players
     // let ready = true;
     // for (const player in this.state.players) {
     //   if (!this.state.players[player].pNumber) {

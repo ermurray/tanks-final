@@ -246,6 +246,7 @@ io.on("connection", (socket) => {
   });
   socket.on('playerReady', (data) => {
     const { roomKey, players } = data
+    console.log('datain playerReady',data);
     console.log('players---->', players);
     io.in(roomKey).emit('playerIsReady')
     
