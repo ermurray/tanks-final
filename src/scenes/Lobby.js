@@ -48,17 +48,19 @@ export default class Lobby extends Phaser.Scene {
     
     
     this.socket.on('setState', function(state) {
-      const {roomKey, players, numPlayers } = state
+      const {roomKey, players, numPlayers, numReadyPlayers, roomReady} = state
       thisScene.state.roomKey = roomKey;
+      thisScene.state.numReadyPlayers = numReadyPlayers;
       console.log(`Roomkey: ${roomKey}`);
       thisScene.state.players = players;
       // console.log(players);
       //-----------------------------------------
       // assignment will need to be fixed here it is adding it to state object instead of inside the players object there are other locations that it is being called in the lobby that will break if not all changed.
-      thisScene.state.playerName = players[thisScene.socket.id].pName; 
+      //thisScene.state.playerName = players[thisScene.socket.id].pName; 
       //--------------------------------------
       thisScene.state.numPlayers = numPlayers;
-  
+      thisScene.state.roomReady = roomReady;
+      thisScene.state.numReadyPlayers = numReadyPlayers;
       thisScene.state.players[thisScene.socket.id].pNumber = players[thisScene.socket.id].pNumber;
       const roomtext = `GAME KEY: ${roomKey} \n PLAYERS: ${numPlayers}/4`
       roomInfoText.setText(roomtext);
@@ -193,12 +195,12 @@ export default class Lobby extends Phaser.Scene {
       fontFamily: "Pixelar"
     });
     
-    this.strtSmall = this.add.sprite(600, 540, 'start-sm').setScale(0.5).setAlpha(0);
+    this.readyBtn = this.add.sprite(600, 540, 'readyBtn').setScale(0.5).setAlpha(0);
     
-    this.strtSmall.setInteractive();
-    this.strtSmall.on('pointerdown', this.onDown,this);
+    this.readyBtn.setInteractive();
+    this.readyBtn.on('pointerdown', this.onDown, this);
     this.tweens.add({
-      targets: thisScene.strtSmall,
+      targets: thisScene.readyBtn,
       alpha: 1,
       duration:3000,
       ease: 'Power3'
@@ -221,15 +223,15 @@ export default class Lobby extends Phaser.Scene {
       fontFamily: "Pixelar"
     })
 
-    // let readyPlayers = [0, 0, 0, 0]
+  
     this.p1Select = this.add.sprite(-100,150,'tankBlue').setInteractive();
     this.p1Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p1Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       
       thisScene.state.players[thisScene.socket.id].pNumber = "p1";
-      // thisScene.state.players[thisScene.socket.id].ready = true;
+      
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
-      //readyPlayers[0] = true;
+      
     
     });
 
@@ -241,7 +243,7 @@ export default class Lobby extends Phaser.Scene {
      
       thisScene.state.players[thisScene.socket.id].pNumber = "p2";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
-      // readyPlayers[1] = true;
+      
     });
 
 
@@ -266,7 +268,7 @@ export default class Lobby extends Phaser.Scene {
       thisScene.setPlayerText(thisScene.p3Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p3";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
-      // readyPlayers[2] = true;
+     
     });
 
     this.p3Text = this.add.text(400, 350, "", {
@@ -288,7 +290,7 @@ export default class Lobby extends Phaser.Scene {
       thisScene.state.players[thisScene.socket.id].pNumber = "p4";
       
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
-      // readyPlayers[3] = true;
+     
     });
 
     this.p4Text = this.add.text(400, 450, "", {
@@ -309,7 +311,7 @@ export default class Lobby extends Phaser.Scene {
       const oldTankSelected = thisScene.state.players[playerID].pNumber
       thisScene.state.players[playerID] = playerObj
       const tankSelected = playerObj.pNumber
-      // let blankCount = 1;
+   
       switch(tankSelected){
         case 'p1':
           thisScene.setPlayerText(thisScene.p1Text, playerName, oldTankSelected);
@@ -351,14 +353,40 @@ export default class Lobby extends Phaser.Scene {
       alpha: 1,
       duration:1000,
       ease: 'Power3'
-    })
+     })
     this.tweens.add({
       targets: this.timerText,
       y:300,
       duration:3000,
       ease: 'Power3'
+      })
     })
-    })
+
+    //listen for playerIsReady set state and text for which player is ready
+    this.socket.on('playerIsReady',(readyPlayer) =>{
+      switch (readyPlayer) {
+        case 'p1':
+         this.p1ReadyText.setText('READY');
+         this.p1Select.disableInteractive();
+          break;
+        case 'p2':
+          this.p2ReadyText.setText('READY');
+          this.p2Select.disableInteractive();
+          break;
+        case 'p3':
+          this.p3ReadyText.setText('READY');
+          this.p3Select.disableInteractive();
+          break;
+        case 'p4':
+          this.p4ReadyText.setText('READY');
+          this.p4Select.disableInteractive();
+          break;
+       }
+
+    });
+
+
+
     
     if(this.mainTheme){
       this.mainTheme.play();
@@ -366,53 +394,27 @@ export default class Lobby extends Phaser.Scene {
   }
 //-----------------------------------------------------------------
 //endof scene create method
+  disableSelectors(){
+    this.p1Select.disableInteractive();
+    this.p2Select.disableInteractive();
+    this.p3Select.disableInteractive();
+    this.p4Select.disableInteractive();
+    this.readyBtn.disableInteractive();
+  }
 
   onDown() {
+    this.readyBtn.setTexture('readyBtn-p')
+    setTimeout(() => {
+      this.readyBtn.setTexture('readyBtn');
+    }, 200)
+    this.disableSelectors();
+    let readyPlayer = this.state.players[this.socket.id].pNumber;
+   
+    this.state.players[this.socket.id].isReady = true;
+  
     
-    let thisPlayer = this.state.players[this.socket.id].pNumber;
-    console.log("thisplayer ----->",thisPlayer)
-    switch (thisPlayer) {
-      case 'p1':
-       this.p1ReadyText.setText('READY');
-        break;
-      case 'p2':
-        this.p2ReadyText.setText('READY');
-        break;
-      case 'p3':
-        this.p3ReadyText.setText('READY');
-        break;
-      case 'p4':
-        this.p4ReadyText.setText('READY');
-        break;
-     }
-    // If there are enough players
-    let ready = true;
-    for (const player in this.state.players) {
-      if (!this.state.players[player].pNumber) {
-        ready = false;
-        this.tweens.add({
-          targets: this.timerText,
-          y:280,
-          duration:3000,
-          ease: 'Power3'
-        })
-        this.tweens.add({
-          targets: this.timerText,
-          alpha: 0,
-          duration:6000,
-          ease: 'Power3'
-        })
-
-      }
-    }
-    if (ready === true) {
-      
-      console.log(this.state);
-      this.socket.emit('players-lobbyready', this.state)
-      
-    } else {
-      return;
-    }
+   
+    this.socket.emit('playerReady', this.state, readyPlayer)
     
   }
 
@@ -446,6 +448,7 @@ export default class Lobby extends Phaser.Scene {
     }
    textarea.setText(`Operator: ${playerName} will be this tank`)
   }
+
   countDown(text){
     this.mainTheme.pause();
     this.tweens.add({

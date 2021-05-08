@@ -29,8 +29,8 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('enemyBullet', './assets/enemy_bullet.png');
     this.load.html('key-form', './html/room-key-form.html');
     this.load.html('chat-form', './html/lobby-chat-form.html');
-    this.load.image('start-sm', './assets/ready-green-b.png');
-    this.load.image('start-sm-p', './assets/ready-green-pressed.png');
+    this.load.image('readyBtn', './assets/ready-green-b.png');
+    this.load.image('readyBtn-p', './assets/ready-green-pressed.png');
     this.load.image('new-game', './assets/new-game.png');
     this.load.image('new-game-p', './assets/new-game-pressed.png');
     this.load.image('restart', './assets/restart.png');
