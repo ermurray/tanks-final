@@ -88,6 +88,7 @@ io.on("connection", (socket) => {
         playerId: socket.id,
         pName: playerName,
         pNumber:'',
+        isReady: false,
         chatMessages:[]  //will hold players sent chat messages
       };
       socket.emit('joining')
@@ -213,6 +214,8 @@ io.on("connection", (socket) => {
       roomKey: key,
       players: {},
       numPlayers: 0,
+      numReadyPlayers: 0,
+      roomReady: false,
       roomFull: false,
       gameStarted: false
     };
@@ -241,7 +244,12 @@ io.on("connection", (socket) => {
    
     io.in(roomKey).emit('player-selectedTank', socketID, players[socketID], players[socketID].pName)
   });
-
+  socket.on('playerReady', (data) => {
+    const { roomKey, players } = data
+    console.log('players---->', players);
+    io.in(roomKey).emit('playerIsReady')
+    
+  });
   socket.on('players-lobbyready', (data)=>{
     const{ roomKey } = data
     gameRooms[data.roomKey].gameStarted = true;

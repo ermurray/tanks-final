@@ -368,9 +368,12 @@ export default class Lobby extends Phaser.Scene {
 //endof scene create method
 
   onDown() {
-    
+   
     let thisPlayer = this.state.players[this.socket.id].pNumber;
     console.log("thisplayer ----->",thisPlayer)
+    console.log('num of players ------>', this.state.numPlayers)
+    this.state.players[this.socket.id].isReady = true;
+    this.socket.emit('playerReady', this.state)
     switch (thisPlayer) {
       case 'p1':
        this.p1ReadyText.setText('READY');
@@ -386,33 +389,33 @@ export default class Lobby extends Phaser.Scene {
         break;
      }
     // If there are enough players
-    let ready = true;
-    for (const player in this.state.players) {
-      if (!this.state.players[player].pNumber) {
-        ready = false;
-        this.tweens.add({
-          targets: this.timerText,
-          y:280,
-          duration:3000,
-          ease: 'Power3'
-        })
-        this.tweens.add({
-          targets: this.timerText,
-          alpha: 0,
-          duration:6000,
-          ease: 'Power3'
-        })
+    // let ready = true;
+    // for (const player in this.state.players) {
+    //   if (!this.state.players[player].pNumber) {
+    //     ready = false;
+    //     this.tweens.add({
+    //       targets: this.timerText,
+    //       y:280,
+    //       duration:3000,
+    //       ease: 'Power3'
+    //     })
+    //     this.tweens.add({
+    //       targets: this.timerText,
+    //       alpha: 0,
+    //       duration:6000,
+    //       ease: 'Power3'
+    //     })
 
-      }
-    }
-    if (ready === true) {
+    //   }
+    // }
+    // if (ready === true) {
       
-      console.log(this.state);
-      this.socket.emit('players-lobbyready', this.state)
+    //   console.log(this.state);
+    //   this.socket.emit('players-lobbyready', this.state)
       
-    } else {
-      return;
-    }
+    // } else {
+    //   return;
+    // }
     
   }
 
@@ -446,6 +449,7 @@ export default class Lobby extends Phaser.Scene {
     }
    textarea.setText(`Operator: ${playerName} will be this tank`)
   }
+
   countDown(text){
     this.mainTheme.pause();
     this.tweens.add({
