@@ -183,6 +183,7 @@ export default class Player extends Tank {
     } else{
       this.body.stop(this);
       this.body.setImmovable(true);
+      this.scene.setupSpectateCameraOn(this)
     }
             
             
