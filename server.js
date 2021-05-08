@@ -244,23 +244,28 @@ io.on("connection", (socket) => {
    
     io.in(roomKey).emit('player-selectedTank', socketID, players[socketID], players[socketID].pName)
   });
-  socket.on('playerReady', (data) => {
-    const { roomKey, players } = data
+  socket.on('playerReady', (data, readyPlayer) => {
+    const { roomKey, players} = data
     console.log('datain playerReady',data);
     console.log('players---->', players);
-    io.in(roomKey).emit('playerIsReady')
+    console.log('thisPlayer ===',readyPlayer)
+    io.in(roomKey).emit('playerIsReady',readyPlayer);
+    if (data.roomReady) {
+      io.in(roomKey).emit('transToGame', data);
+    }
     
   });
-  socket.on('players-lobbyready', (data)=>{
-    const{ roomKey } = data
-    gameRooms[data.roomKey].gameStarted = true;
-    console.log('players ready', data);
-    console.log('roomdata', gameRooms[data.roomKey]);
-    setTimeout((data)=>{
-      io.in(roomKey).emit('transToGame', data);
-    },100)
+  // socket.on('players-lobbyready', (data)=>{
+  //   const{ roomKey, thisPlayer } = data
+  //   gameRooms[data.roomKey].gameStarted = true;
+  //   console.log('players ready', data);
+   
+  //   console.log('roomdata', gameRooms[data.roomKey]);
+  //   setTimeout((data)=>{
+  //     io.in(roomKey).emit('transToGame', data);
+  //   },100)
 
-  })
+  // })
   
   socket.on('in-game',(data)=>{
     console.log('player', socket.id)

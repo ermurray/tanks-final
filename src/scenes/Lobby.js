@@ -195,12 +195,12 @@ export default class Lobby extends Phaser.Scene {
       fontFamily: "Pixelar"
     });
     
-    this.strtSmall = this.add.sprite(600, 540, 'start-sm').setScale(0.5).setAlpha(0);
+    this.readyBtn = this.add.sprite(600, 540, 'readyBtn').setScale(0.5).setAlpha(0);
     
-    this.strtSmall.setInteractive();
-    this.strtSmall.on('pointerdown', this.onDown,this);
+    this.readyBtn.setInteractive();
+    this.readyBtn.on('pointerdown', this.onDown, this);
     this.tweens.add({
-      targets: thisScene.strtSmall,
+      targets: thisScene.readyBtn,
       alpha: 1,
       duration:3000,
       ease: 'Power3'
@@ -223,15 +223,15 @@ export default class Lobby extends Phaser.Scene {
       fontFamily: "Pixelar"
     })
 
-    // let readyPlayers = [0, 0, 0, 0]
+  
     this.p1Select = this.add.sprite(-100,150,'tankBlue').setInteractive();
     this.p1Select.on('pointerdown', (e) => {
       thisScene.setPlayerText(thisScene.p1Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       
       thisScene.state.players[thisScene.socket.id].pNumber = "p1";
-      // thisScene.state.players[thisScene.socket.id].ready = true;
+      
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
-      //readyPlayers[0] = true;
+      
     
     });
 
@@ -243,7 +243,7 @@ export default class Lobby extends Phaser.Scene {
      
       thisScene.state.players[thisScene.socket.id].pNumber = "p2";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
-      // readyPlayers[1] = true;
+      
     });
 
 
@@ -268,7 +268,7 @@ export default class Lobby extends Phaser.Scene {
       thisScene.setPlayerText(thisScene.p3Text, thisScene.state.playerName, thisScene.state.players[thisScene.socket.id].pNumber);
       thisScene.state.players[thisScene.socket.id].pNumber = "p3";
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state)
-      // readyPlayers[2] = true;
+     
     });
 
     this.p3Text = this.add.text(400, 350, "", {
@@ -290,7 +290,7 @@ export default class Lobby extends Phaser.Scene {
       thisScene.state.players[thisScene.socket.id].pNumber = "p4";
       
       thisScene.socket.emit("set-pNumber", this.socket.id, thisScene.state);
-      // readyPlayers[3] = true;
+     
     });
 
     this.p4Text = this.add.text(400, 450, "", {
@@ -311,7 +311,7 @@ export default class Lobby extends Phaser.Scene {
       const oldTankSelected = thisScene.state.players[playerID].pNumber
       thisScene.state.players[playerID] = playerObj
       const tankSelected = playerObj.pNumber
-      // let blankCount = 1;
+   
       switch(tankSelected){
         case 'p1':
           thisScene.setPlayerText(thisScene.p1Text, playerName, oldTankSelected);
@@ -361,6 +361,31 @@ export default class Lobby extends Phaser.Scene {
       ease: 'Power3'
     })
     })
+    //listen for playerIsReady set state and text for which player is ready
+    this.socket.on('playerIsReady',(readyPlayer) =>{
+      switch (readyPlayer) {
+        case 'p1':
+         this.p1ReadyText.setText('READY');
+         this.p1Select.disableInteractive();
+          break;
+        case 'p2':
+          this.p2ReadyText.setText('READY');
+          this.p2Select.disableInteractive();
+          break;
+        case 'p3':
+          this.p3ReadyText.setText('READY');
+          this.p3Select.disableInteractive();
+          break;
+        case 'p4':
+          this.p4ReadyText.setText('READY');
+          this.p4Select.disableInteractive();
+          break;
+       }
+
+    });
+
+
+
     
     if(this.mainTheme){
       this.mainTheme.play();
@@ -368,28 +393,27 @@ export default class Lobby extends Phaser.Scene {
   }
 //-----------------------------------------------------------------
 //endof scene create method
+  disableSelectors(){
+    this.p1Select.disableInteractive();
+    this.p2Select.disableInteractive();
+    this.p3Select.disableInteractive();
+    this.p4Select.disableInteractive();
+    this.readyBtn.disableInteractive();
+  }
 
   onDown() {
-   
-    let thisPlayer = this.state.players[this.socket.id].pNumber;
-    console.log("thisplayer ----->",thisPlayer)
+    this.readyBtn.setTexture('readyBtn-p')
+    setTimeout(() => {
+      this.readyBtn.setTexture('readyBtn');
+    }, 200)
+    this.disableSelectors();
+    let readyPlayer = this.state.players[this.socket.id].pNumber;
     console.log('num of players ------>', this.state.numPlayers)
     this.state.players[this.socket.id].isReady = true;
-    this.socket.emit('playerReady', this.state)
-    switch (thisPlayer) {
-      case 'p1':
-       this.p1ReadyText.setText('READY');
-        break;
-      case 'p2':
-        this.p2ReadyText.setText('READY');
-        break;
-      case 'p3':
-        this.p3ReadyText.setText('READY');
-        break;
-      case 'p4':
-        this.p4ReadyText.setText('READY');
-        break;
-     }
+  
+    this.state.numReadyPlayers +=1
+    this.socket.emit('playerReady', this.state, readyPlayer)
+  
 // If there are enough players
     // let ready = true;
     // for (const player in this.state.players) {
