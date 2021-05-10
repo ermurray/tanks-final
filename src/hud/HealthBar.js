@@ -47,4 +47,7 @@ export default class HealthBar {
   showHealthBar(){
     this.healthBar.setVisible(true);
   }
+  hideHealthBar(){
+    this.healthBar.setVisible(false);
+  }
 }

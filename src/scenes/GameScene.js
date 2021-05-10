@@ -145,6 +145,11 @@ export default class GameScene extends Scene {
 
 
     this.countDown(this.timerText, localPlayer);
+
+    const{ height, width, zoomfactor, leftTopCorner } = this.config;
+    this.playerHud= this.add.image(leftTopCorner.x, leftTopCorner.y, 'hud').setOrigin(0).setDepth(1).setScrollFactor(0,0).setVisible(false);
+    this.playerFrame = this.add.image(leftTopCorner.x, leftTopCorner.y, 'frame').setOrigin(0).setDepth(1).setScrollFactor(0,0).setAlpha(-5);
+
    
   } 
 
@@ -430,8 +435,8 @@ export default class GameScene extends Scene {
 
   setupFollowCameraOn(player){
     const{ height, width, zoomfactor, leftTopCorner } = this.config;
-    this.frame = this.add.image(leftTopCorner.x, leftTopCorner.y, 'frame').setOrigin(0).setDepth(1).setScrollFactor(0,0).setAlpha(-5);
-    this.add.image(leftTopCorner.x, leftTopCorner.y, 'hud').setOrigin(0).setDepth(1).setScrollFactor(0,0);
+    // this.frame = this.add.image(leftTopCorner.x, leftTopCorner.y, 'frame').setOrigin(0).setDepth(1).setScrollFactor(0,0).setAlpha(-5);
+    // this.add.image(leftTopCorner.x, leftTopCorner.y, 'hud').setOrigin(0).setDepth(1).setScrollFactor(0,0);
   
     this.cameras.main.setBounds(0,0, width, height)
     this.cameras.main.startFollow(player).zoomTo(zoomfactor, 750);
@@ -447,6 +452,20 @@ export default class GameScene extends Scene {
     }).setOrigin(0,0).setDepth(4).setScrollFactor(0,0);
     this.timerText = this.add.text(leftTopCorner.x + 565 , leftTopCorner.y + 5, `GAME TIMER: `, {
       fill: "#000000",
+      fontSize: '16px',
+      fontStyle: 'bold',
+      fontFamily: 'Pixelar',
+      fill: "#00ff00",
+    }).setOrigin(0,0).setDepth(4).setScrollFactor(0,0);
+  }
+
+  setupSpectateCameraOn(player){
+    const{ height, width, zoomfactor, leftTopCorner } = this.config;
+    player.healthBar.hideHealthBar();
+    this.cameras.main.setBounds(0,0, width, height)
+    this.cameras.main.startFollow(player).zoomTo(1, 750);
+    this.gameOverText = this.add.text(leftTopCorner.x + 275 , leftTopCorner.y + 5, `GAME OVER`, {
+      fill: "#FF0000",
       fontSize: '16px',
       fontStyle: 'bold',
       fontFamily: 'Pixelar',
@@ -477,6 +496,16 @@ export default class GameScene extends Scene {
             ease: 'Power3'
   
           })
+
+          this.tweens.add({
+            targets: this.playerHud,
+            alpha: 1,
+            duration: 2000,
+            ease: 'Power3'
+  
+          })
+
+          localPlayer.healthBar.showHealthBar();
         },1000)
       } 
 
