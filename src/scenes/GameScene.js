@@ -147,8 +147,8 @@ export default class GameScene extends Scene {
     this.countDown(this.timerText, localPlayer);
 
     const{ height, width, zoomfactor, leftTopCorner } = this.config;
-    this.playerHud= this.add.image(leftTopCorner.x, leftTopCorner.y, 'hud').setOrigin(0).setDepth(1).setScrollFactor(0,0).setVisible(false);
     this.playerFrame = this.add.image(leftTopCorner.x, leftTopCorner.y, 'frame').setOrigin(0).setDepth(1).setScrollFactor(0,0).setAlpha(-5);
+    this.playerHud = this.add.image(leftTopCorner.x, leftTopCorner.y, 'hud').setOrigin(0).setDepth(1).setScrollFactor(0,0).setVisible(false);
 
    
   } 
@@ -437,7 +437,7 @@ export default class GameScene extends Scene {
     const{ height, width, zoomfactor, leftTopCorner } = this.config;
     // this.frame = this.add.image(leftTopCorner.x, leftTopCorner.y, 'frame').setOrigin(0).setDepth(1).setScrollFactor(0,0).setAlpha(-5);
     // this.add.image(leftTopCorner.x, leftTopCorner.y, 'hud').setOrigin(0).setDepth(1).setScrollFactor(0,0);
-  
+    this.playerHud.setVisible(true);
     this.cameras.main.setBounds(0,0, width, height)
     this.cameras.main.startFollow(player).zoomTo(zoomfactor, 750);
     console.log("localplayer??????",player.healthBar)
@@ -490,7 +490,7 @@ export default class GameScene extends Scene {
         setTimeout(()=>{
 
           this.tweens.add({
-            targets: this.frame,
+            targets: this.playerFrame,
             alpha: 1,
             duration: 2000,
             ease: 'Power3'
