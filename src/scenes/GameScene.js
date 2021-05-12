@@ -29,7 +29,7 @@ export default class GameScene extends Scene {
     this.boxDestroy = this.sound.add('boxDestroy', {loop: false, volume: 0.1});
     this.tankHit = this.sound.add('tankHit', {loop: false, volume: 0.1});
     this.heartPickUp = this.sound.add('collect', {loop: false, volume: 0.1});
-
+    this.tankEngine = this.sound.add('tankEngine', {loop:false, volume: 0.1});
     const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
     const thisScene = this;
@@ -149,7 +149,7 @@ export default class GameScene extends Scene {
     const{ height, width, zoomfactor, leftTopCorner } = this.config;
     this.playerFrame = this.add.image(leftTopCorner.x, leftTopCorner.y, 'frame').setOrigin(0).setDepth(1).setScrollFactor(0,0).setAlpha(-5);
     this.playerHud = this.add.image(leftTopCorner.x, leftTopCorner.y, 'hud').setOrigin(0).setDepth(1).setScrollFactor(0,0).setVisible(false);
-
+    
    
   } 
 
