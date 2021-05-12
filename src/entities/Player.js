@@ -175,7 +175,9 @@ export default class Player extends Tank {
               // };
               this.oldDirection = this.direction
               this.oldVelocity = this.body.velocity
-
+          if(!checkVelocityZero){
+            this.scene.tankEngine.play();
+          }
       // if (!checkVelocityZero){
       //    this.play('move', true)
       //   } else {this.play('move', false)}
