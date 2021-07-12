@@ -3,6 +3,8 @@ LHL bootcamp final group project
 
 Select your tank and hop in a room with your friends. Last tank standing wins!
 
+Live version available at https://lhltanks.herokuapp.com/
+
 ## Controls
 Use WASD or arrow keys to move, SPACEBAR to shoot
 
